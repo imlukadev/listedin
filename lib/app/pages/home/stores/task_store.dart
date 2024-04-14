@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:listedin/app/data/http/exceptions.dart';
-import 'package:listedin/app/data/models/Task.dart';
+import 'package:listedin/app/data/models/task.dart';
 import 'package:listedin/app/data/repositories/task_repository.dart';
 
 class TaskStore {

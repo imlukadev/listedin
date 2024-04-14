@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:listedin/app/data/http/http_client.dart';
 import 'package:listedin/app/data/repositories/task_repository.dart';
+import 'package:listedin/app/pages/todo/todo_app.dart';
 import 'package:listedin/app/pages/home/stores/task_store.dart';
-
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -26,8 +26,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return 
-    Scaffold(
+    return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.deepPurple,
         title: const Text(
@@ -76,11 +75,20 @@ class _HomePageState extends State<HomePage> {
             return ListView.builder(
               itemBuilder: (context, index) {
                 final task = store.state.value[index];
-                return Row(
-                  children: [
-                    Text(task.name),
-                    Text(task.createdAt as String),
-                  ],
+                return ListTile(
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const TodoApp()));
+                  },
+                  contentPadding: const EdgeInsets.all(32),
+                  leading: CircleAvatar(
+                    backgroundColor: Colors.blue,
+                    child: Text(task.id),
+                  ),
+                  title: Text(task.name),
+                  subtitle: Text(task.createdAt),
                 );
               },
               itemCount: store.state.value.length,
