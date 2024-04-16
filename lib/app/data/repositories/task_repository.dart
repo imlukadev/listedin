@@ -14,7 +14,7 @@ class TaskRepository implements ITaskRepository {
   @override
   Future<List<Task>> getTasks() async {
     final response = await client.get(
-        url: 'https://6619b6df125e9bb9f29a9dfc.mockapi.io/api/luka/task');
+        url: 'https://mocki.io/v1/bfeef8c1-82ce-48ad-914b-b119b12c603c');
     if (response.statusCode == 200) {
       List<dynamic> body = jsonDecode(response.body);
       return body.map((taskJson) => Task.fromJson(taskJson)).toList();
