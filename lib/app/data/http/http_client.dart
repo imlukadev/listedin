@@ -5,7 +5,7 @@ class HttpClient {
 
   Future<Response> get(String url) async {
     try {
-      return await _dio.get(url);
+      return await _dio.get(url).then((value) => value);
     } catch (e) {
       throw Exception('Erro ao carregar os dados: $e');
     }
@@ -27,7 +27,7 @@ class HttpClient {
     }
   }
 
-    Future<Response> patchObject(String url, Map<String, dynamic> data) async {
+  Future<Response> patchObject(String url, Map<String, dynamic> data) async {
     try {
       return await _dio.post(url, data: data);
     } catch (e) {
