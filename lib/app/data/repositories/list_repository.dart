@@ -4,6 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:listedin/app/data/http/http_client.dart';
 import 'package:listedin/app/data/model/list.dart';
 
+
 abstract class IListRepository {
   Future<ShopList> findById(int id);
   Future<List<ShopList>> findAll();
