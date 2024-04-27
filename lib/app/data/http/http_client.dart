@@ -35,6 +35,14 @@ class HttpClient {
     }
   }
 
+    Future<Response> patchLists(String url, List<Map<String, dynamic>> data) async {
+    try {
+      return await _dio.post(url, data: data);
+    } catch (e) {
+      throw Exception('Erro ao enviar os dados: $e');
+    }
+  }
+
   Future<Response> save(String url, Map<String, dynamic> data) async {
     try {
       return await _dio.post(url, data: data);

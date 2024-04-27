@@ -4,7 +4,6 @@ import 'package:dio/dio.dart';
 import 'package:listedin/app/data/http/http_client.dart';
 import 'package:listedin/app/data/model/list.dart';
 
-
 abstract class IListRepository {
   Future<ShopList> findById(int id);
   Future<List<ShopList>> findAll();
@@ -113,10 +112,14 @@ class ListRepository extends IListRepository {
   }
 
   @override
-  Future<ShopList> patchSchedules(
-      int listId, ShopList list) async {
+  Future<ShopList> patchSchedules(int listId, ShopList list) async {
+    Map<String, dynamic> listJSON = list.toJSON();
+    print("calaboca cara");
+    print(listJSON['schedulings']);
+
     try {
-      Response response = await client.patchObject("/list/$listId",list.toJSON()['schedulings']);
+      Response response =
+          await client.patchLists("/list/$listId", listJSON['schedulings']);
       Map<String, dynamic> list = json.decode(response.data);
       return ShopList.fromJSON(list);
     } catch (e) {

@@ -4,7 +4,10 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:listedin/app/data/http/http_client.dart';
 import 'package:listedin/app/data/model/file.dart';
+import 'package:listedin/app/data/model/list.dart';
+import 'package:listedin/app/data/model/scheduling.dart';
 import 'package:listedin/app/data/model/user.dart';
+import 'package:listedin/app/data/repositories/list_repository.dart';
 import 'package:listedin/app/data/repositories/user_repository.dart';
 
 void main() {
@@ -85,9 +88,10 @@ class _MyHomePageState extends State<MyHomePage> {
     // than having to individually change instances of widgets.
 
     UserRepository userRepository = UserRepository(HttpClient());
-
+ListRepository listRepository = ListRepository(HttpClient());
     User user;
     User userReq;
+    ShopList list;
     return Scaffold(
       appBar: AppBar(
         // TRY THIS: Try changing the color here to a specific color (to
@@ -130,6 +134,8 @@ class _MyHomePageState extends State<MyHomePage> {
       floatingActionButton: FloatingActionButton(
         onPressed: () async => 
          {
+
+         list = await listRepository.patchSchedules(1, ShopList(1, "name", true, DateTime.now(), 0, [], [], List<Scheduling>.of([Scheduling(1, DateTime.now()),Scheduling(2, DateTime.now())]))),
           user = User(1, "name", password: "password", "email",image:  File(1, "", "", Uint8List(1)), lists: [],createdProducts: [], isDark:  false, isNotificationsActive:  true),
           userReq = await userRepository.create(user),
           // print(userReq)
