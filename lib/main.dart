@@ -1,4 +1,11 @@
+import 'dart:io';
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
+import 'package:listedin/app/data/http/http_client.dart';
+import 'package:listedin/app/data/model/file.dart';
+import 'package:listedin/app/data/model/user.dart';
+import 'package:listedin/app/data/repositories/user_repository.dart';
 
 void main() {
   runApp(const MyApp());
@@ -76,6 +83,11 @@ class _MyHomePageState extends State<MyHomePage> {
     // The Flutter framework has been optimized to make rerunning build methods
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
+
+    UserRepository userRepository = UserRepository(HttpClient());
+
+    User user;
+    User userReq;
     return Scaffold(
       appBar: AppBar(
         // TRY THIS: Try changing the color here to a specific color (to
@@ -116,7 +128,13 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
+        onPressed: () async => 
+         {
+          user = User(1, "name", password: "password", "email",image:  File(1, "", "", Uint8List(1)), lists: [],createdProducts: [], isDark:  false, isNotificationsActive:  true),
+          userReq = await userRepository.create(user),
+          // print(userReq)
+          },
+
         tooltip: 'Increment',
         child: const Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.

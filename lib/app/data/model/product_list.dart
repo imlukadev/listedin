@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:listedin/app/data/model/list.dart';
 import 'package:listedin/app/data/model/product.dart';
 
@@ -8,8 +6,8 @@ class ProductList {
   int listId;
   ShopList list;
   Product product;
-  Double quantity;
-  Double price;
+  double quantity;
+  double price;
 
   ProductList(this.productId, this.listId, this.list, this.product,
       this.quantity, this.price);
@@ -23,4 +21,16 @@ class ProductList {
         map['quantity'],
         map['price']);
   }
+
+  Map<String, dynamic> toJSON(){
+    Map<String, dynamic> data = <String, dynamic>{};
+      data['productId'];
+      data['listId'];
+      data['list'] = list.toJSON();
+      data['product'] = product.toJSON();
+      data['quantity'] = quantity;
+      data['price'] = price;
+      return data;
+  }
+
 }
