@@ -1,7 +1,6 @@
 
 import 'dart:typed_data';
 
-import 'package:flutter/foundation.dart';
 
 class File {
   int id;
@@ -13,4 +12,16 @@ class File {
   factory File.fromJson(Map<String, dynamic> map) {
     return File(map["id"], map["name"], map["type"], map["data"]);
   }
+
+
+
+  Map<String, dynamic> toJSON(){
+    Map<String, dynamic> data = <String, dynamic>{};
+    data["id"] = id;
+    data["name"] = name;
+    data["type"] = type;
+    data["data"] = this.data;
+    return data;
+  }
+
 }

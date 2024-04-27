@@ -1,11 +1,9 @@
-import 'dart:ffi';
-
 import 'package:listedin/app/data/model/category.dart';
 
 class Product {
   int id;
   String name;
-  Double price;
+  double price;
   Category category;
   // List<ProductList> productList
   // User user;
@@ -16,4 +14,14 @@ class Product {
     return Product(map["id"], map["name"], map["price"],
         Category.fromJSON(map["category"]));
   }
+
+  Map<String, dynamic> toJSON(){
+    Map<String, dynamic> data = <String, dynamic>{};
+    data["id"] = id;
+    data["name"] = name;
+    data["price"] = price;
+    data["category"] = category.toJSON();
+    return data;
+  }
+
 }

@@ -32,4 +32,18 @@ class ShopList {
         map['schedulings']
             .map((scheduling) => Scheduling.fromJSON(scheduling)));
   }
+
+  Map<String, dynamic> toJSON(){
+    Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['name'] = name;
+    data['isFavorited'] = isFavorited;
+    data['lastAccess'] = lastAccess.toString();
+    data['purchasedQuantity'] = purchasedQuantity;
+    data['categories'] = categories.map((e) => e.toJSON()).toList();
+    data['products'] = products.map((e) => e.toJSON()).toList();
+    data['schedulings'] = schedulings.map((e) => e.toJSON()).toList();
+    return data;
+  }
+
 }
