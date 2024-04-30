@@ -18,16 +18,16 @@ class User {
       this.createdProducts, this.isDark, this.isNotificationsActive});
 
 
-  factory User.fromJson(Map<String, dynamic> map) {
+  factory User.fromJSON(Map<String, dynamic> map) {
     return User(
         map["id"],
         map["name"],
-        password:  map["password"],
+        password: map.keys.contains("password") ? map["password"] : null,
         map["email"],
         image: File.fromJson(map["image"]),
         lists:  map["lists"].map((list) => ShopList.fromJSON(list)).toList(),
         createdProducts:  map["createdProducts"]
-            .map((product) => Product.fromJson(product))
+            .map((product) => Product.fromJSON(product))
             .toList(),
         isDark:  map["isDark"],
         isNotificationsActive:  map["isNotificationsActive"]);

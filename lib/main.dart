@@ -9,6 +9,7 @@ import 'package:listedin/app/data/model/scheduling.dart';
 import 'package:listedin/app/data/model/user.dart';
 import 'package:listedin/app/data/repositories/list_repository.dart';
 import 'package:listedin/app/data/repositories/user_repository.dart';
+import 'package:listedin/app/styles/colors.dart';
 
 void main() {
   runApp(const MyApp());
@@ -88,7 +89,7 @@ class _MyHomePageState extends State<MyHomePage> {
     // than having to individually change instances of widgets.
 
     UserRepository userRepository = UserRepository(HttpClient());
-ListRepository listRepository = ListRepository(HttpClient());
+    ListRepository listRepository = ListRepository(HttpClient());
     User user;
     User userReq;
     ShopList list;
@@ -121,9 +122,8 @@ ListRepository listRepository = ListRepository(HttpClient());
           // wireframe for each widget.
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
+            Text('You have pushed the button this many times:',
+                selectionColor: primary),
             Text(
               '$_counter',
               style: Theme.of(context).textTheme.headlineMedium,
@@ -132,15 +132,34 @@ ListRepository listRepository = ListRepository(HttpClient());
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () async => 
-         {
-
-         list = await listRepository.patchSchedules(1, ShopList(1, "name", true, DateTime.now(), 0, [], [], List<Scheduling>.of([Scheduling(1, DateTime.now()),Scheduling(2, DateTime.now())]))),
-          user = User(1, "name", password: "password", "email",image:  File(1, "", "", Uint8List(1)), lists: [],createdProducts: [], isDark:  false, isNotificationsActive:  true),
+        onPressed: () async => {
+          list = await listRepository.patchSchedules(
+              1,
+              ShopList(
+                  1,
+                  "name",
+                  true,
+                  DateTime.now(),
+                  0,
+                  [],
+                  [],
+                  List<Scheduling>.of([
+                    Scheduling(1, DateTime.now()),
+                    Scheduling(2, DateTime.now())
+                  ]))),
+          user = User(
+              1,
+              "name",
+              password: "password",
+              "email",
+              image: File(1, "", "", Uint8List(1)),
+              lists: [],
+              createdProducts: [],
+              isDark: false,
+              isNotificationsActive: true),
           userReq = await userRepository.create(user),
           // print(userReq)
-          },
-
+        },
         tooltip: 'Increment',
         child: const Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.

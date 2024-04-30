@@ -12,12 +12,12 @@ class ProductList {
   ProductList(this.productId, this.listId, this.list, this.product,
       this.quantity, this.price);
 
-  factory ProductList.fromJson(Map<String, dynamic> map) {
+  factory ProductList.fromJSON(Map<String, dynamic> map) {
     return ProductList(
         map['productId'],
         map['listId'],
         ShopList.fromJSON(map['list']),
-        Product.fromJson(map['product']),
+        Product.fromJSON(map['product']),
         map['quantity'],
         map['price']);
   }
