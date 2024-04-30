@@ -113,9 +113,6 @@ class ListRepository extends IListRepository {
   @override
   Future<ShopList> patchSchedules(int listId, ShopList list) async {
     Map<String, dynamic> listJSON = list.toJSON();
-    print("calaboca cara");
-    print(listJSON['schedulings']);
-
     try {
       Response response =
           await client.patchLists("/list/$listId", listJSON['schedulings']);

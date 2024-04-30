@@ -18,6 +18,7 @@ class Product {
         user: map.keys.contains('user') ? User.fromJSON(map['user']) : null,
         lists: map.keys.contains('lists') ?  (map['lists'] as List<dynamic>).map((list) => ProductList.fromJSON(list)).toList() : null 
         );
+
   }
 
   Map<String, dynamic> toJSON() {

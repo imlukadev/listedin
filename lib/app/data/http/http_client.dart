@@ -21,7 +21,7 @@ class HttpClient {
 
   Future<Response> patch(String url, Map<String, dynamic> data) async {
     try {
-      return await _dio.post(url, queryParameters: data);
+      return await _dio.patch(url, queryParameters: data);
     } catch (e) {
       throw Exception('Erro ao enviar os dados: $e');
     }
@@ -29,7 +29,7 @@ class HttpClient {
 
   Future<Response> patchObject(String url, Map<String, dynamic> data) async {
     try {
-      return await _dio.post(url, data: data);
+      return await _dio.patch(url, data: data);
     } catch (e) {
       throw Exception('Erro ao enviar os dados: $e');
     }
@@ -37,7 +37,7 @@ class HttpClient {
 
     Future<Response> patchLists(String url, List<Map<String, dynamic>> data) async {
     try {
-      return await _dio.post(url, data: data);
+      return await _dio.patch(url, data: data);
     } catch (e) {
       throw Exception('Erro ao enviar os dados: $e');
     }
