@@ -2,16 +2,16 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
-
 class File {
-  int id;
+  int? id;
   String name;
   String type;
   Uint8List data;
 
+
   File(this.id, this.name, this.type, this.data);
   factory File.fromJSON(Map<String, dynamic> map) {
-    return File(map["id"], map["name"], map["type"], dataStringToByte(map["data"]));
+    return File(id: map["id"], map["name"], map["type"], dataStringToByte(map["data"]));
   }
 
   static dataStringToByte(String data){
@@ -20,8 +20,7 @@ class File {
     return bytes;
   }
 
-
-  Map<String, dynamic> toJSON(){
+  Map<String, dynamic> toJSON() {
     Map<String, dynamic> data = <String, dynamic>{};
     data["id"] = id;
     data["name"] = name;
@@ -29,5 +28,4 @@ class File {
     data["data"] = utf8.decode(this.data);
     return data;
   }
-
 }

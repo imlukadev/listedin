@@ -9,7 +9,7 @@ class ShopList {
   DateTime lastAccess;
   int purchasedQuantity;
   List<Category> categories;
-  List<ProductList> products;
+  List<ProductList>? products;
   List<Scheduling> schedulings;
 
   ShopList(this.id, this.name, this.isFavorited, this.lastAccess,
@@ -22,18 +22,18 @@ class ShopList {
         map['isFavorited'],
         DateTime.parse(map['lastAccess']),
         map['purchasedQuantity'],
-        map['categories']
+        (map['categories'] as List<dynamic>)
             .map((category) =>
                 Category.fromJSON(category as Map<String, dynamic>))
             .toList(),
-        map['products']
-            .map((products) => ProductList.fromJson(products))
+        (map['products'] as List<dynamic>)
+            .map((products) => ProductList.fromJSON(products))
             .toList(),
-        map['schedulings']
-            .map((scheduling) => Scheduling.fromJSON(scheduling)));
+        (map['schedulings'] as List<dynamic>)
+            .map((scheduling) => Scheduling.fromJSON(scheduling))
+            .toList());
   }
-
-  Map<String, dynamic> toJSON(){
+  Map<String, dynamic> toJSON() {
     Map<String, dynamic> data = <String, dynamic>{};
     data['id'] = id;
     data['name'] = name;
@@ -41,9 +41,8 @@ class ShopList {
     data['lastAccess'] = lastAccess.toString();
     data['purchasedQuantity'] = purchasedQuantity;
     data['categories'] = categories.map((e) => e.toJSON()).toList();
-    data['products'] = products.map((e) => e.toJSON()).toList();
+    data['products'] = products!.map((e) => e.toJSON()).toList();
     data['schedulings'] = schedulings.map((e) => e.toJSON()).toList();
     return data;
   }
-
 }
