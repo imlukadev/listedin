@@ -16,6 +16,6 @@ class FileRepository extends IFileRepository {
   Future<File> getFile() async {
     Response response = await client.get("/file");
     Map<String, dynamic> body = jsonDecode(response.data);
-    return File.fromJson(body);
+    return File.fromJSON(body);
   }
 }

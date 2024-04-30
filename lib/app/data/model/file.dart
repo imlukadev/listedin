@@ -1,4 +1,3 @@
-
 import 'dart:convert';
 import 'dart:typed_data';
 
@@ -8,13 +7,13 @@ class File {
   String type;
   Uint8List data;
 
-
-  File(this.id, this.name, this.type, this.data);
+  File(this.name, this.type, this.data, {this.id});
   factory File.fromJSON(Map<String, dynamic> map) {
-    return File(id: map["id"], map["name"], map["type"], dataStringToByte(map["data"]));
+    return File(
+        id: map["id"], map["name"], map["type"], dataStringToByte(map["data"]));
   }
 
-  static dataStringToByte(String data){
+  static dataStringToByte(String data) {
     List<int> list = utf8.encode(data);
     Uint8List bytes = Uint8List.fromList(list);
     return bytes;

@@ -1,8 +1,4 @@
 
-import 'dart:collection';
-import 'dart:ui';
-
-import 'package:dio/dio.dart';
 import 'package:listedin/app/data/model/file.dart';
 import 'package:listedin/app/data/model/list.dart';
 import 'package:listedin/app/data/model/product.dart';
