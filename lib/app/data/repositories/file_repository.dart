@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:listedin/app/data/http/http_client.dart';
-import 'package:listedin/app/data/model/File.dart';
+import 'package:listedin/app/data/model/file.dart';
 
 abstract class IFileRepository {
   Future<File> getFile();
