@@ -11,12 +11,11 @@ class Category {
     return Category(map['id'], map['name'], color);
   }
 
-  Map<String, dynamic> toJSON(){
+  Map<String, dynamic> toJSON() {
     Map<String, dynamic> data = <String, dynamic>{};
     data['id'] = id;
     data['name'] = name;
     data["color"] = color.toString();
     return data;
   }
-
 }
