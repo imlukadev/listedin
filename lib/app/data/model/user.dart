@@ -1,4 +1,7 @@
 
+import 'dart:collection';
+
+import 'package:dio/dio.dart';
 import 'package:listedin/app/data/model/file.dart';
 import 'package:listedin/app/data/model/list.dart';
 import 'package:listedin/app/data/model/product.dart';
@@ -22,16 +25,23 @@ class User {
     return User(
         map["id"],
         map["name"],
-        password:  map["password"],
+        password: map.keys.contains("password") ? map["password"] : "",
         map["email"],
-        image: File.fromJson(map["image"]),
-        lists:  map["lists"].map((list) => ShopList.fromJSON(list)).toList(),
-        createdProducts:  map["createdProducts"]
+        image: map.keys.contains("image") ? File.fromJson(map["image"]) : null,
+        lists:  map.keys.contains("lists") ? (map["lists"] as List<dynamic>).map((list) => ShopList.fromJSON(list)).toList() : null,
+        createdProducts: map.keys.contains("createdProducts") ? (map["createdProducts"] as List<dynamic>)
             .map((product) => Product.fromJson(product))
-            .toList(),
-        isDark:  map["isDark"],
-        isNotificationsActive:  map["isNotificationsActive"]);
+            .toList() 
+            : null,
+        isDark:  map.keys.contains("isDark") ? map["isDark"] : false,
+        isNotificationsActive: map.keys.contains("isNotificationsActive") ? map["isNotificationsActive"] : null
+    );
   }
+
+
+  // static printar(Object o){
+  //   print(o)
+  // }
 
     factory User.getDTO(Map<String, dynamic> map) {
     return User(
