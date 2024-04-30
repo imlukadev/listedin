@@ -9,7 +9,7 @@ class StatsIcon extends StatelessWidget{
 
   @override
   Widget build(BuildContext context){
-    return Icon(Icons.query_stats, color: color, size: size)
+    return Icon(Icons.query_stats, color: color, size: size);
   }
 
 }
