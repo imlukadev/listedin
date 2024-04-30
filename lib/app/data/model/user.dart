@@ -1,5 +1,6 @@
 
 import 'dart:collection';
+import 'dart:ui';
 
 import 'package:dio/dio.dart';
 import 'package:listedin/app/data/model/file.dart';
@@ -7,7 +8,7 @@ import 'package:listedin/app/data/model/list.dart';
 import 'package:listedin/app/data/model/product.dart';
 
 class User {
-  int id;
+  int? id;
   String name;
   String? password;
   String email;
@@ -17,20 +18,20 @@ class User {
   bool? isDark;
   bool? isNotificationsActive;
 
-  User(this.id, this.name, this.email, {this.password, this.image, this.lists,
+  User( this.name, this.email, {this.id, this.password, this.image, this.lists,
       this.createdProducts, this.isDark, this.isNotificationsActive});
 
 
-  factory User.fromJson(Map<String, dynamic> map) {
+  factory User.fromJSON(Map<String, dynamic> map) {
     return User(
-        map["id"],
+        id: map.keys.contains("id") ? map["id"] : null,
         map["name"],
         password: map.keys.contains("password") ? map["password"] : "",
         map["email"],
-        image: map.keys.contains("image") ? File.fromJson(map["image"]) : null,
+        image: map.keys.contains("image") ? File.fromJSON(map["image"]) : null,
         lists:  map.keys.contains("lists") ? (map["lists"] as List<dynamic>).map((list) => ShopList.fromJSON(list)).toList() : null,
         createdProducts: map.keys.contains("createdProducts") ? (map["createdProducts"] as List<dynamic>)
-            .map((product) => Product.fromJson(product))
+            .map((product) => Product.fromJSON(product))
             .toList() 
             : null,
         isDark:  map.keys.contains("isDark") ? map["isDark"] : false,
@@ -39,16 +40,12 @@ class User {
   }
 
 
-  // static printar(Object o){
-  //   print(o)
+  //   factory User.getDTO(Map<String, dynamic> map) {
+  //   return User(
+  //       map["id"],
+  //       map["name"],
+  //       map["email"]);   
   // }
-
-    factory User.getDTO(Map<String, dynamic> map) {
-    return User(
-        map["id"],
-        map["name"],
-        map["email"]);   
-  }
 
   @override
   String toString(){

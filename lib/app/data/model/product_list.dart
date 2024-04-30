@@ -17,7 +17,7 @@ class ProductList {
         map['productId'],
         map['listId'],
         ShopList.fromJSON(map['list']),
-        Product.fromJson(map['product']),
+        Product.fromJSON(map['product']),
         map['quantity'],
         map['price']);
   }

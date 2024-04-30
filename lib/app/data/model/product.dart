@@ -10,7 +10,7 @@ class Product {
 
   Product(this.id, this.name, this.price, this.category);
 
-  factory Product.fromJson(Map<String, dynamic> map) {
+  factory Product.fromJSON(Map<String, dynamic> map) {
     return Product(map["id"], map["name"], map["price"],
         Category.fromJSON(map["category"]));
   }

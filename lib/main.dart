@@ -135,7 +135,7 @@ ListRepository listRepository = ListRepository(HttpClient());
         onPressed: () async => 
          {
           // list = await listRepository.patchSchedules(1, ShopList(1, "name", true, DateTime.now(), 0, [], [], List<Scheduling>.of([Scheduling(1, DateTime.now()),Scheduling(2, DateTime.now())]))),
-          user = User(1, "name", password: "password", "email2",image:  File(1, "", "", Uint8List(1)), lists: [],createdProducts: [], isDark:  false, isNotificationsActive:  true),
+          user = User(id:1, "name", password: "password", "email",image:  File(1, "", "", Uint8List(1)), lists: [],createdProducts: [], isDark:  false, isNotificationsActive:  true),
           userReq = await userRepository.create(user),
           // print(userReq)
           },
