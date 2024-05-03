@@ -8,10 +8,12 @@ class Button extends StatelessWidget {
   final bool isLogin;
   final Color color;
   final bool isGoogle;
+  final bool textBlack;
 
   const Button(
       {super.key,
       this.isGoogle = false,
+      this.textBlack = false,
       required this.onPressed,
       required this.content,
       required this.color,
@@ -67,7 +69,7 @@ class Button extends StatelessWidget {
                     child: Text(
                       content,
                       style: TextStyle(
-                        color: white,
+                        color: textBlack ? text : white,
                       ),
                     ),
                   ),
