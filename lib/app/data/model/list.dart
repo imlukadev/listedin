@@ -12,7 +12,7 @@ class ShopList {
   List<ProductList>? products;
   List<Scheduling> schedulings;
 
-  ShopList(this.id, this.name, this.isFavorited, this.lastAccess,
+  ShopList( this.id, this.name, this.isFavorited, this.lastAccess,
       this.purchasedQuantity, this.categories, this.products, this.schedulings);
 
   factory ShopList.fromJSON(Map<String, dynamic> map) {

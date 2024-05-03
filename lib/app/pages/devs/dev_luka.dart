@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:listedin/app/components/button/button.dart';
 import 'package:listedin/app/styles/colors.dart';
-import 'package:listedin/app/styles/icons/arrow.dart';
 
 class DevLuka extends StatefulWidget {
   const DevLuka({super.key, required this.title});
@@ -15,19 +15,13 @@ class _DevLukaState extends State<DevLuka> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
-      body: Center(
-        child: Column(
-          children: [
-            ArrowIcon(
-              color: primary,
-              size: 24.0
-            )
-          ],
+        appBar: AppBar(
+          title: Text(widget.title),
         ),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
-    );
+        body: Column(
+          children: [
+
+          ],
+        ));
   }
 }
