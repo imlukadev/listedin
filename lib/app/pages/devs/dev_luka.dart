@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:listedin/app/components/button/button.dart';
+import 'package:listedin/app/components/header/header.dart';
 import 'package:listedin/app/styles/colors.dart';
 
 class DevLuka extends StatefulWidget {
@@ -15,9 +16,7 @@ class _DevLukaState extends State<DevLuka> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text(widget.title),
-        ),
+        appBar: const Header(),
         body: Button(
           color: primary,
           isLogin: true,
