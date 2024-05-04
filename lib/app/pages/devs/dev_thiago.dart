@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:listedin/app/components/week_day/week_day.dart';
 
 class DevThiago extends StatefulWidget {
   const DevThiago({super.key, required this.title});
@@ -17,9 +18,9 @@ class _DevThiagoState extends State<DevThiago> {
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: const Center(
+      body:  Center(
         child: Column(
-         children: [Placeholder()],
+         children: [WeekDay(date: DateTime.now(), darkModeOn: true,)],
         ),
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );

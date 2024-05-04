@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:listedin/app/pages/devs/dev_luka.dart';
 import 'package:listedin/app/pages/devs/dev_saymon.dart';
+import 'package:listedin/app/pages/devs/dev_thiago.dart';
 
 void main() {
   runApp(const MyApp());
@@ -70,7 +71,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => const DevLuka(title: "Opa thiago")),
+                      builder: (context) => const DevThiago(title: "Opa thiago")),
                 );
               },
               child: const Text('Vai lá thiago'),
