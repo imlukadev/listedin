@@ -33,59 +33,52 @@ class Button extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: MediaQuery.of(context).size.width,
-      child: Expanded(
-        child: ElevatedButton(
-          onPressed: onPressed,
-          style: ButtonStyle(
-            overlayColor: MaterialStateColor.resolveWith(getColor),
-            foregroundColor: MaterialStateProperty.resolveWith(getColor),
-            backgroundColor: MaterialStateProperty.resolveWith(getColor),
-            padding: const MaterialStatePropertyAll(
-                EdgeInsets.fromLTRB(32, 24, 32, 24)),
-            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-              RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(32.0),
+    return Expanded(
+      child: ElevatedButton(
+        onPressed: onPressed,
+        style: ButtonStyle(
+          overlayColor: MaterialStateColor.resolveWith(getColor),
+          foregroundColor: MaterialStateProperty.resolveWith(getColor),
+          backgroundColor: MaterialStateProperty.resolveWith(getColor),
+          padding: const MaterialStatePropertyAll(
+              EdgeInsets.fromLTRB(32, 24, 32, 24)),
+          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+            RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(32.0),
+            ),
+          ),
+        ),
+        child: Row(
+          children: [
+            isLogin
+                ? Image.asset(
+                    isGoogle ? 'assets/google.png' : 'assets/github.png',
+                    width: 24,
+                    height: 24,
+                  )
+                : const SizedBox(
+                    height: 0,
+                    width: 0,
+                  ),
+            Expanded(
+              child: Text(
+                content,
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: textBlack ? text : white,
+                ),
               ),
             ),
-          ),
-          child: Expanded(
-            child: Row(
-              children: [
-                isLogin
-                    ? Image.asset(
-                        isGoogle ? 'assets/google.png' : 'assets/github.png',
-                        width: 24,
-                        height: 24,
-                      )
-                    : const SizedBox(
-                        height: 0,
-                        width: 0,
-                      ),
-                Expanded(
-                  child: Container(
-                    alignment: Alignment.center,
-                    child: Text(
-                      content,
-                      style: TextStyle(
-                        color: textBlack ? text : white,
-                      ),
-                    ),
+            isLogin
+                ? RotatedBox(
+                    quarterTurns: 2,
+                    child: ArrowIcon(color: white, size: 24),
+                  )
+                : const SizedBox(
+                    height: 0,
+                    width: 0,
                   ),
-                ),
-                isLogin
-                    ? RotatedBox(
-                        quarterTurns: 2,
-                        child: ArrowIcon(color: white, size: 24),
-                      )
-                    : const SizedBox(
-                        height: 0,
-                        width: 0,
-                      ),
-              ],
-            ),
-          ),
+          ],
         ),
       ),
     );

@@ -18,10 +18,11 @@ class _DevLukaState extends State<DevLuka> {
         appBar: AppBar(
           title: Text(widget.title),
         ),
-        body: Column(
-          children: [
-
-          ],
+        body: Button(
+          color: primary,
+          isLogin: true,
+          content: "asd ad as",
+          onPressed: () => "",
         ));
   }
 }
