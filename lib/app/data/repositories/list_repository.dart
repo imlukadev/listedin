@@ -43,9 +43,12 @@ class ListRepository extends IListRepository {
   Future<List<ShopList>> findAll() async {
     try {
       Response response = await client.get("/list");
-      List<Map<String, dynamic>> lists = json.decode(response.data);
+      print("ALDSADAD");
+      List<dynamic> lists = response.data;
+      print(response.data);
       return lists.map((list) => ShopList.fromJSON(list)).toList();
     } catch (e) {
+      print("IM A FUCKING EXCEPTION");
       throw Exception(e);
     }
   }

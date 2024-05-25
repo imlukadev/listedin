@@ -11,7 +11,7 @@ class Header extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      minimum: const EdgeInsets.fromLTRB(24, 60, 24, 0), // Ajuste o mínimo aqui
+      minimum: const EdgeInsets.fromLTRB(24, 48, 24, 0), // Ajuste o mínimo aqui
       child: SizedBox(
         width: double.infinity,
         child: Column(
@@ -33,6 +33,7 @@ class Header extends StatelessWidget implements PreferredSizeWidget {
                     isDarkMode
                         ? LightModeIcon(color: white, size: 32)
                         : DarkModeIcon(color: primary, size: 32),
+                    const SizedBox(width: 16, height: 32),
                     ProfileIcon(color: isDarkMode ? white : primary, size: 32),
                   ],
                 ),
