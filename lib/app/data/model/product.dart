@@ -16,7 +16,7 @@ class Product {
     return Product(map['id'], map['name'], map['price'],
         Category.fromJSON(map['category']),
         user: map.keys.contains('user') ? User.fromJSON(map['user']) : null,
-        lists: map.keys.contains('lists') ?  (map['lists'] as List<dynamic>).map((list) => ProductList.fromJSON(list)).toList() : null 
+        lists: map.keys.contains('lists') ?  (map['lists'] as List<dynamic>).map((list) => ProductList.fromJSON(list)).toList() : []
         );
 
   }

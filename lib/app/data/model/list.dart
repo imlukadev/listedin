@@ -20,22 +20,29 @@ class ShopList {
         map['id'],
         map['name'] ?? "",
         map['isFavorited'] ?? false,
-        DateTime.now(),
-        // DateTime.parse(map['lastAccess']),
+        // DateTime.now(),
+        DateTime.parse(map['lastAccess']),
         map['purchasedQuantity'],
-        [],
-        [],
-        // (map['categories'] as List<dynamic>)
-        //     .map((category) =>
-        //         Category.fromJSON(category as Map<String, dynamic>))
-        //     .toList(),
-        // (map['products'] as List<dynamic>)
-        //     .map((products) => ProductList.fromJSON(products))
-        //     .toList(),
-        []);
-    //  map['schedules'] ? (map['schedules'] as List<dynamic>)
-    //       .map((scheduling) => Scheduling.fromJSON(scheduling))
-    //       .toList() : []);
+        // [],
+        // [],
+        map.keys.contains('categories')
+            ? (map['categories'] as List<dynamic>)
+                .map((category) =>
+                    Category.fromJSON(category as Map<String, dynamic>))
+                .toList()
+            : [],
+        map.keys.contains('products')
+            ? (map['products'] as List<dynamic>)
+                .map((products) => ProductList.fromJSON(products))
+                .toList()
+            : [],
+        // []);
+
+        map.keys.contains('schedulings')
+            ? (map['schedulings'] as List<dynamic>)
+                .map((scheduling) => Scheduling.fromJSON(scheduling))
+                .toList()
+            : []);
   }
   Map<String, dynamic> toJSON() {
     Map<String, dynamic> data = <String, dynamic>{};

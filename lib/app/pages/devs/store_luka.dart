@@ -1,9 +1,12 @@
+
+
 import 'package:flutter/material.dart';
 import 'package:listedin/app/data/model/list.dart';
 import 'package:listedin/app/data/repositories/list_repository.dart';
 
 class ListStore {
   final IListRepository repository;
+  List<ShopList> listBackup = [];
 
   final ValueNotifier<bool> isLoading = ValueNotifier<bool>(false);
   //Várivel reativa para o state
@@ -12,16 +15,41 @@ class ListStore {
   //Variável reativa para o erro
   final ValueNotifier<String> error = ValueNotifier("");
 
+  Future<dynamic> patchIsFavorited(ShopList list) async {
+    try {
+      final result =
+          await repository.patchIsFavorited(list.id, !list.isFavorited);
+
+      int listIndex =
+          state.value.indexWhere((element) => list.id == element.id);
+      state.value[listIndex] = result;
+      state.value = List.from(state.value);
+    } catch (e) {
+      error.value = e.toString();
+    }
+  }
+
+  void searchLists(String value) {
+    try {
+      if (value.isNotEmpty) {
+        List<ShopList> list = List.from(
+            state.value.where((element) => element.name.contains(value)));
+        state.value = List.from(list);
+      } else {
+        state.value = listBackup;
+      }
+    } catch (e) {
+      error.value = e.toString();
+    }
+  }
+
   Future getLists() async {
     isLoading.value = true;
     try {
-      print("object");
       final result = await repository.findAll();
-      print(result);
       state.value = result;
+      listBackup = result;
     } catch (e) {
-      print("CLARO LUKA");
-      print(e.toString());
       error.value = e.toString();
     }
 

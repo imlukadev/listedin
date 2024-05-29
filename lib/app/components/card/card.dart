@@ -1,9 +1,6 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:listedin/app/data/model/list.dart';
 import 'package:listedin/app/data/model/product.dart';
-
 import 'package:listedin/app/styles/colors.dart';
 
 class CardBuy extends StatelessWidget {
@@ -11,15 +8,35 @@ class CardBuy extends StatelessWidget {
   final bool isList;
   final ShopList? list;
   final Product? product;
+  final Function()? toggleFavorited;
 
   const CardBuy(
       {super.key,
       this.isDarkMode = false,
       this.isList = false,
       this.list,
+      this.toggleFavorited,
       this.product});
   @override
   Widget build(BuildContext context) {
+    String calcListPrice() {
+      double totalPrice = 0;
+      for (var element in list!.products!) {
+        totalPrice += element.price;
+      }
+      totalPrice.toStringAsFixed(2).replaceFirst('.', ',');
+      return totalPrice.toStringAsFixed(2).replaceFirst('.', ',');
+    }
+
+    String calcListQTD() {
+      double totalItens = 0;
+      for (var element in list!.products!) {
+        totalItens += element.quantity;
+      }
+      // totalItens.toStringAsFixed(2).replaceFirst('.', ',');
+      return totalItens.ceil().toString();
+    }
+
     return Container(
       // elevation: 2,
       decoration: BoxDecoration(
@@ -46,9 +63,18 @@ class CardBuy extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   isList
-                      ? const Icon(
-                          Icons.favorite,
-                          size: 20,
+                      ? InkWell(
+                          onTap: toggleFavorited,
+                          child: list!.isFavorited
+                              ? Icon(
+                                  Icons.favorite,
+                                  color: primary,
+                                  size: 20,
+                                )
+                              : const Icon(
+                                  Icons.favorite_outline_sharp,
+                                  size: 20,
+                                ),
                         )
                       : const SizedBox(),
                   isList ? const SizedBox(width: 16) : const SizedBox(),
@@ -56,7 +82,7 @@ class CardBuy extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text("Papel Higiênico",
+                        Text(isList ? list!.name : product!.name,
                             style: TextStyle(
                                 fontFamily: 'Montserrat',
                                 fontSize: 16,
@@ -72,12 +98,13 @@ class CardBuy extends StatelessWidget {
                                   SizedBox(width: 8, height: 8)
                                 ],
                               )
-                            : Text("Higiene",
+                            : Text(product!.category.name,
                                 style: TextStyle(
                                     fontFamily: 'Montserrat',
                                     fontSize: 10,
                                     fontWeight: FontWeight.bold,
-                                    color: Colors.pink[200])),
+                                    color: product!.category.color)
+                                    ),
                       ],
                     ),
                   ),
@@ -96,7 +123,9 @@ class CardBuy extends StatelessWidget {
                           ),
                           const SizedBox(width: 6),
                           Text(
-                            "39,99",
+                            isList
+                                ? calcListPrice()
+                                : product!.price.toString(),
                             style: TextStyle(
                                 fontFamily: 'Montserrat',
                                 fontSize: 16,
@@ -107,7 +136,7 @@ class CardBuy extends StatelessWidget {
                       ),
                       // const SizedBox(width: 4, height: 4),
                       Text(
-                        "QTD. 7",
+                        "QTD. ${calcListQTD()}",
                         style: TextStyle(
                             fontFamily: 'Montserrat',
                             fontSize: 8,
