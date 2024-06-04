@@ -1,19 +1,59 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:listedin/app/data/model/list.dart';
+import 'package:listedin/app/data/repositories/list_repository.dart';
 import 'package:listedin/app/styles/colors.dart';
 
-class WeekDay extends StatelessWidget {
+class WeekDay extends StatefulWidget {
   final DateTime date;
   final bool darkModeOn;
-  final List<ShopList> shopLists;
+  
+  final ListRepository listRepository;
 
   const WeekDay({
-    Key? key,
+    super.key,
     required this.date,
     required this.darkModeOn,
-    required this.shopLists,
-  }) : super(key: key);
+    required this.listRepository,
+  });
+
+  @override
+  State<WeekDay> createState() => _WeekDayState();
+}
+
+class _WeekDayState extends State<WeekDay> {
+
+ List<ShopList> allShopLists = [];
+  bool isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    fetchShopLists();
+  }
+
+  Future<void> fetchShopLists() async {
+    try {
+      print("opa estou pegando as listas mano");
+      print(await widget.listRepository.findAll());
+      allShopLists = await widget.listRepository.findAll();
+      print("opa peguei");
+      print(allShopLists);
+
+      // // Divida as listas de compras entre os dias da semana de forma fictícia
+      // for (int i = 0; i < allShopLists.length; i++) {
+      //   shopListsPerDay[i % 7].add(allShopLists[i]);
+      // }
+
+      setState(() {
+        isLoading = false;
+      });
+    } catch (e) {
+      // Trate o erro aqui
+      print("Erro ao buscar listas de compras: $e");
+    }
+  }
+
 
   bool isDateToday(DateTime date) {
     DateTime now = DateTime.now();
@@ -22,18 +62,18 @@ class WeekDay extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Color textColor = darkModeOn ? white : (isDateToday(date) ? white : Colors.black);
-    Color listCircleColor = darkModeOn ? white : (isDateToday(date) ? white : primary);
+    Color textColor = widget.darkModeOn ? white : (isDateToday(widget.date) ? white : Colors.black);
+    Color listCircleColor = widget.darkModeOn ? white : (isDateToday(widget.date) ? white : primary);
 
-    String dayName = DateFormat('EEE', 'pt_BR').format(date); // Nome do dia (abreviado)
-    String dayNumber = DateFormat('d').format(date); // Número do dia
+    String dayName = DateFormat('EEE', 'pt_BR').format(widget.date); // Nome do dia (abreviado)
+    String dayNumber = DateFormat('d').format(widget.date); // Número do dia
 
     return SizedBox(
       width: 56,
       height: 96,
       child: Card(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(32)),
-        color: isDateToday(date) ? primary : (darkModeOn ? darkModal : white),
+        color: isDateToday(widget.date) ? primary : (widget.darkModeOn ? darkModal : white),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           mainAxisSize: MainAxisSize.max,
@@ -52,7 +92,7 @@ class WeekDay extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 10),
-            ListCircleRow(circleSize: 4, color: listCircleColor, listCount: shopLists.length),
+            ListCircleRow(circleSize: 4, color: listCircleColor, listCount: allShopLists.length),
           ],
         ),
       ),
@@ -66,11 +106,11 @@ class ListCircleRow extends StatelessWidget {
   final int listCount; // Número de listas de compras
 
   const ListCircleRow({
-    Key? key,
+    super.key,
     required this.color,
     required this.circleSize,
     required this.listCount,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

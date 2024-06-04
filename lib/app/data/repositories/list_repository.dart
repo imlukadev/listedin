@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:math';
 import 'package:dio/dio.dart';
 import 'package:listedin/app/data/http/http_client.dart';
 import 'package:listedin/app/data/model/list.dart';
@@ -43,7 +44,7 @@ class ListRepository extends IListRepository {
   Future<List<ShopList>> findAll() async {
     try {
       Response response = await client.get("/list");
-      List<Map<String, dynamic>> lists = json.decode(response.data);
+      List<dynamic> lists = response.data;
       return lists.map((list) => ShopList.fromJSON(list)).toList();
     } catch (e) {
       throw Exception(e);
