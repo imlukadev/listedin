@@ -6,7 +6,7 @@ import '../model/file.dart';
 import 'package:listedin/app/data/http/http_client.dart';
 import 'package:listedin/app/data/model/user.dart';
 
-abstract class IUserRepository{
+abstract class IUserRepository {
   Future<User> findById(int userId);
   Future<List<User>> findAll();
   Future<User> create(User user);
@@ -16,55 +16,53 @@ abstract class IUserRepository{
   Future<User> patchEmail(int userId, String email);
   Future<User> patchImage(int userId, File image);
   Future<User> patchIsDark(int userId, bool isDark);
-  Future<User> patchIsNotificationsActive(int userId, bool isNotificationsActive);
+  Future<User> patchIsNotificationsActive(
+      int userId, bool isNotificationsActive);
   Future<User> login(String email, String password);
 }
 
-class UserRepository extends IUserRepository{
-
+class UserRepository extends IUserRepository {
   final HttpClient client;
   final String path = "/user";
   UserRepository(this.client);
 
-
-
   @override
   Future<User> create(User user) async {
-    try{
+    try {
       Map<String, dynamic> json = user.toJSON();
       Response response = await client.save(path, json);
       return User.fromJSON(response.data);
-    } catch (e){
+    } catch (e) {
       throw Exception(e);
     }
   }
 
   @override
   Future<void> delete(int userId) async {
-    try{
+    try {
       String uri = "/$userId";
-      await client.delete(path+uri);
-    } catch (e){
+      await client.delete(path + uri);
+    } catch (e) {
       throw Exception(e);
     }
   }
 
   @override
   Future<List<User>> findAll() async {
-    try{
+    try {
       Response response = await client.get(path);
-      List<Map<String, dynamic>> usersJson = json.decode(response.data); 
+      List<Map<String, dynamic>> usersJson = json.decode(response.data);
       return usersJson.map((user) => User.fromJSON(user)).toList();
-    } catch (e){
+    } catch (e) {
       throw Exception(e);
     }
   }
 
   @override
   Future<User> findById(int userId) async {
-    try{
+    try {
       String uri = "/$userId";
-      Response response = await client.get(path+uri);
+      Response response = await client.get(path + uri);
       return User.fromJSON(response.data);
     } catch (e) {
       throw Exception(e);
@@ -73,81 +71,86 @@ class UserRepository extends IUserRepository{
 
   @override
   Future<User> patchEmail(int userId, String email) async {
-    try{
+    try {
       String uri = "/$userId/email";
-      Response response = await client.patch(path+uri, <String, dynamic>{"email": email});
+      Response response =
+          await client.patch(path + uri, <String, dynamic>{"email": email});
       return User.fromJSON(response.data);
-    } catch (e){
+    } catch (e) {
       throw Exception(e);
     }
   }
 
   @override
   Future<User> patchImage(int userId, File image) async {
-    try{
+    try {
       String uri = "/$userId/image";
-      Response response = await client.patch(path+uri, <String, dynamic>{"image": image});
+      Response response =
+          await client.patch(path + uri, <String, dynamic>{"image": image});
       return User.fromJSON(response.data);
-    } catch (e){
+    } catch (e) {
       throw Exception(e);
     }
   }
 
   @override
   Future<User> patchIsDark(int userId, bool isDark) async {
-    try{
+    try {
       String uri = "/$userId/isDark";
-      Response response = await client.patch(path+uri, <String, dynamic>{"isDark": isDark});
+      Response response =
+          await client.patch(path + uri, <String, dynamic>{"isDark": isDark});
       return User.fromJSON(response.data);
-    } catch (e){
+    } catch (e) {
       throw Exception(e);
     }
   }
 
   @override
-  Future<User> patchIsNotificationsActive(int userId, bool isNotificationsActive) async {
-    try{
+  Future<User> patchIsNotificationsActive(
+      int userId, bool isNotificationsActive) async {
+    try {
       String uri = "/$userId/isNotificationsActive";
-      Response response = await client.patch(path+uri, <String, dynamic>{"isNotificationsActive": isNotificationsActive});
+      Response response = await client.patch(path + uri,
+          <String, dynamic>{"isNotificationsActive": isNotificationsActive});
       return User.fromJSON(response.data);
-    } catch (e){
+    } catch (e) {
       throw Exception(e);
     }
   }
 
   @override
   Future<User> patchName(int userId, String name) async {
-    try{
+    try {
       String uri = "/$userId/name";
-      Response response = await client.patch(path+uri, <String, dynamic>{"name": name});
+      Response response =
+          await client.patch(path + uri, <String, dynamic>{"name": name});
       return User.fromJSON(response.data);
-    } catch (e){
+    } catch (e) {
       throw Exception(e);
     }
   }
 
   @override
   Future<User> patchPassword(int userId, String password) async {
-    try{
+    try {
       String uri = "/$userId/password";
-      Response response = await client.patch(path+uri, <String, dynamic>{"password": password});
+      Response response = await client
+          .patch(path + uri, <String, dynamic>{"password": password});
       return User.fromJSON(response.data);
-    } catch (e){
+    } catch (e) {
       throw Exception(e);
     }
   }
-  
+
   @override
   Future<User> login(String email, String password) async {
-    try{
+    try {
       String uri = "/login";
-      Response response = await client.save(path+uri, <String, dynamic>{"email": email, "password":password});
+      Response response = await client.save(
+          path + uri, <String, dynamic>{"email": email, "password": password});
       return User.fromJSON(response.data);
-    } catch (e){
+    } catch (e) {
       throw Exception(e);
     }
   }
-
-
-
 }

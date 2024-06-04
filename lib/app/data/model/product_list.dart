@@ -13,6 +13,8 @@ class ProductList {
       this.quantity, this.price);
 
   factory ProductList.fromJSON(Map<String, dynamic> map) {
+    print(map);
+    print('object');
     return ProductList(
         map['productId'],
         map['listId'],
@@ -22,15 +24,14 @@ class ProductList {
         map['price']);
   }
 
-  Map<String, dynamic> toJSON(){
+  Map<String, dynamic> toJSON() {
     Map<String, dynamic> data = <String, dynamic>{};
-      data['productId'];
-      data['listId'];
-      data['list'] = list.toJSON();
-      data['product'] = product.toJSON();
-      data['quantity'] = quantity;
-      data['price'] = price;
-      return data;
+    data['productId'];
+    data['listId'];
+    data['list'] = list.toJSON();
+    data['product'] = product.toJSON();
+    data['quantity'] = quantity;
+    data['price'] = price;
+    return data;
   }
-
 }

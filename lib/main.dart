@@ -1,11 +1,19 @@
 import 'package:flutter/material.dart';
+
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:listedin/app/data/http/http_client.dart';
 import 'package:listedin/app/data/repositories/list_repository.dart';
 import 'package:listedin/app/pages/devs/dev_luka.dart';
 import 'package:listedin/app/pages/devs/dev_saymon.dart';
 import 'package:listedin/app/pages/devs/dev_thiago.dart';
-
+import 'package:listedin/app/data/http/http_client.dart';
+import 'package:listedin/app/data/repositories/list_repository.dart';
+import 'package:listedin/app/data/repositories/user_repository.dart';
+import 'package:listedin/app/pages/devs/dev_luka.dart';
+import 'package:listedin/app/pages/devs/dev_saymon.dart';
+import 'package:listedin/app/pages/devs/dev_thiago.dart';
+import 'package:listedin/app/pages/devs/store_luka.dart';
+import 'package:listedin/app/pages/lists/lists.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await initializeDateFormatting('pt_BR', null);
@@ -45,6 +53,19 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  final IListRepository listRepository = ListRepository(HttpClient());
+  final ListStore listStore = ListStore(
+    repository: UserRepository(
+      HttpClient(),
+    ),
+  );
+
+  @override
+  void initState() {
+    super.initState();
+    listStore.getUser();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -54,16 +75,17 @@ class _MyHomePageState extends State<MyHomePage> {
       body: Center(
         child: Column(
           children: [
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const DevLuka(title: "Opa luka")),
-                );
-              },
-              child: const Text('Vai lá luka'),
-            ),
+            // ElevatedButton(
+            //   onPressed: () {
+            //     // Navegar para a segunda página
+            //     Navigator.push(
+            //       context,
+            //       MaterialPageRoute(
+            //           builder: (context) => const DevLuka(title: "Opa luka")),
+            //     );
+            //   },
+            //   child: const Text('Vai lá luka'),
+            // ),
             ElevatedButton(
               onPressed: () {
                 Navigator.push(
@@ -80,10 +102,22 @@ class _MyHomePageState extends State<MyHomePage> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
+                      builder: (context) =>
+                          ListsPage(user: listStore.state.value)),
+                );
+              },
+              child: const Text('tela listas'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
                       builder: (context) => DevThiago(
                             title: "Opa thiago",
                             listRepository: widget.listRepository,
                           )),
+
                 );
               },
               child: const Text('Vai lá thiago'),
