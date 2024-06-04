@@ -7,6 +7,8 @@ import 'package:listedin/app/pages/devs/dev_saymon.dart';
 import 'package:listedin/app/pages/devs/dev_thiago.dart';
 import 'package:listedin/app/pages/devs/store_luka.dart';
 import 'package:listedin/app/pages/lists/lists.dart';
+import 'package:listedin/app/pages/login/login.dart';
+import 'package:listedin/app/styles/colors.dart';
 
 void main() {
   runApp(const MyApp());
@@ -21,6 +23,9 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        iconTheme: IconThemeData(
+          color: white, // Defina a cor que você deseja aqui
+        ),
         useMaterial3: true,
       ),
       home: const MyHomePage(title: 'Flutter Demo Home Page'),
@@ -60,17 +65,17 @@ class _MyHomePageState extends State<MyHomePage> {
       body: Center(
         child: Column(
           children: [
-            // ElevatedButton(
-            //   onPressed: () {
-            //     // Navegar para a segunda página
-            //     Navigator.push(
-            //       context,
-            //       MaterialPageRoute(
-            //           builder: (context) => const DevLuka(title: "Opa luka")),
-            //     );
-            //   },
-            //   child: const Text('Vai lá luka'),
-            // ),
+            ElevatedButton(
+              onPressed: () {
+                // Navegar para a segunda página
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const LoginPage(title: "Opa luka")),
+                );
+              },
+              child: const Text('Vai lá luka'),
+            ),
             ElevatedButton(
               onPressed: () {
                 // Navegar para a segunda página
@@ -101,7 +106,8 @@ class _MyHomePageState extends State<MyHomePage> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => const DevThiago(title: "Opa thiago")),
+                      builder: (context) =>
+                          const DevThiago(title: "Opa thiago")),
                 );
               },
               child: const Text('Vai lá thiago'),

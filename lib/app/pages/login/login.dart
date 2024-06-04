@@ -15,10 +15,13 @@ class _LoginPageState extends State<LoginPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
-      ),
+      ),  
       body: const Center(
         child: Column(
-          children: [Placeholder()],
+          children: [
+            
+            Placeholder()
+            ],
         ),
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
