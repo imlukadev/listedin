@@ -10,15 +10,18 @@ class Product {
   User? user;
   List<ProductList>? lists;
 
-  Product(this.id, this.name, this.price, this.category, {this.user, this.lists});
+  Product(this.id, this.name, this.price, this.category,
+      {this.user, this.lists});
 
   factory Product.fromJSON(Map<String, dynamic> map) {
     return Product(map['id'], map['name'], map['price'],
         Category.fromJSON(map['category']),
         user: map.keys.contains('user') ? User.fromJSON(map['user']) : null,
-        lists: map.keys.contains('lists') ?  (map['lists'] as List<dynamic>).map((list) => ProductList.fromJSON(list)).toList() : []
-        );
-
+        lists: map['lists'] != null
+            ? (map['lists'] as List<dynamic>)
+                .map((list) => ProductList.fromJSON(list))
+                .toList()
+            : []);
   }
 
   Map<String, dynamic> toJSON() {
