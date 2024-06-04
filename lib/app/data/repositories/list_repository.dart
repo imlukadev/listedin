@@ -43,9 +43,10 @@ class ListRepository extends IListRepository {
   Future<List<ShopList>> findAll() async {
     try {
       Response response = await client.get("/list");
-      List<Map<String, dynamic>> lists = json.decode(response.data);
+      List<dynamic> lists = response.data;
       return lists.map((list) => ShopList.fromJSON(list)).toList();
     } catch (e) {
+
       throw Exception(e);
     }
   }
@@ -65,8 +66,8 @@ class ListRepository extends IListRepository {
   Future<ShopList> patchIsFavorited(int listId, bool isFavorited) async {
     try {
       Response response = await client.patch(
-          "/list/$listId", <String, dynamic>{"isFavorited": isFavorited});
-      Map<String, dynamic> list = json.decode(response.data);
+          "/list/$listId/isfavorited", <String, dynamic>{"isFavorited": isFavorited});
+      Map<String, dynamic> list = response.data;
       return ShopList.fromJSON(list);
     } catch (e) {
       throw Exception(e);
