@@ -1,6 +1,4 @@
 import 'dart:convert';
-import 'dart:ffi';
-import 'dart:math';
 import 'package:dio/dio.dart';
 import 'package:listedin/app/data/http/http_client.dart';
 import 'package:listedin/app/data/model/list.dart';
