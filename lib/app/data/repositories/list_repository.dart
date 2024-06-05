@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:ffi';
 import 'dart:math';
 import 'package:dio/dio.dart';
 import 'package:listedin/app/data/http/http_client.dart';
@@ -44,6 +45,18 @@ class ListRepository extends IListRepository {
   Future<List<ShopList>> findAll() async {
     try {
       Response response = await client.get("/list");
+      List<dynamic> lists = response.data;
+      return lists.map((list) => ShopList.fromJSON(list)).toList();
+    } catch (e) {
+
+      throw Exception(e);
+    }
+  }
+
+  Future<List<ShopList>> findAllBySchedulingDate(DateTime date) async {
+    try {
+      List dateSplitted = date.toString().split(" ");
+      Response response = await client.get("/list/date/${dateSplitted[0]}T00:00:00");
       List<dynamic> lists = response.data;
       return lists.map((list) => ShopList.fromJSON(list)).toList();
     } catch (e) {

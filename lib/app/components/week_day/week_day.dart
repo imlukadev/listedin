@@ -23,7 +23,7 @@ class WeekDay extends StatefulWidget {
 
 class _WeekDayState extends State<WeekDay> {
 
- List<ShopList> allShopLists = [];
+ List<ShopList> dayShopLists = [];
   bool isLoading = true;
 
   @override
@@ -34,16 +34,8 @@ class _WeekDayState extends State<WeekDay> {
 
   Future<void> fetchShopLists() async {
     try {
-      print("opa estou pegando as listas mano");
-      print(await widget.listRepository.findAll());
-      allShopLists = await widget.listRepository.findAll();
-      print("opa peguei");
-      print(allShopLists);
 
-      // // Divida as listas de compras entre os dias da semana de forma fictícia
-      // for (int i = 0; i < allShopLists.length; i++) {
-      //   shopListsPerDay[i % 7].add(allShopLists[i]);
-      // }
+      dayShopLists = await widget.listRepository.findAllBySchedulingDate(widget.date);
 
       setState(() {
         isLoading = false;
@@ -92,7 +84,7 @@ class _WeekDayState extends State<WeekDay> {
               ),
             ),
             const SizedBox(height: 10),
-            ListCircleRow(circleSize: 4, color: listCircleColor, listCount: allShopLists.length),
+            ListCircleRow(circleSize: 4, color: listCircleColor, listCount: dayShopLists.length),
           ],
         ),
       ),
@@ -114,8 +106,10 @@ class ListCircleRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    int firstRowCount = listCount > 4 ? 4 : listCount;
-    int secondRowCount = listCount > 4 ? listCount - 4 : 0;
+    int maxFirstRow = 4;
+    int maxSecondRow = 3;
+    int firstRowCount = listCount > maxFirstRow ? maxFirstRow : listCount;
+    int secondRowCount = listCount > maxFirstRow ? (listCount - maxFirstRow > maxSecondRow ? maxSecondRow : listCount - maxFirstRow) : 0;
 
     return Column(
       children: [

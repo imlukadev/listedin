@@ -3,15 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:listedin/app/data/http/http_client.dart';
 import 'package:listedin/app/data/repositories/list_repository.dart';
-import 'package:listedin/app/pages/devs/dev_luka.dart';
 import 'package:listedin/app/pages/devs/dev_saymon.dart';
 import 'package:listedin/app/pages/devs/dev_thiago.dart';
-import 'package:listedin/app/data/http/http_client.dart';
-import 'package:listedin/app/data/repositories/list_repository.dart';
 import 'package:listedin/app/data/repositories/user_repository.dart';
-import 'package:listedin/app/pages/devs/dev_luka.dart';
-import 'package:listedin/app/pages/devs/dev_saymon.dart';
-import 'package:listedin/app/pages/devs/dev_thiago.dart';
 import 'package:listedin/app/pages/devs/store_luka.dart';
 import 'package:listedin/app/pages/lists/lists.dart';
 void main() async {
