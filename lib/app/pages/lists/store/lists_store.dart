@@ -48,7 +48,7 @@ class ListsStore {
 
   getLists() {
     isLoading.value = true;
-    final result = user.lists!;
+    final result = user.lists ?? [];
     state.value = result;
     listBackup = result;
     isLoading.value = false;

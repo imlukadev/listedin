@@ -6,6 +6,6 @@ class DarkModeIcon extends StatelessWidget {
   const DarkModeIcon({super.key, required this.color, required this.size});
   @override
   Widget build(BuildContext context) {
-    return Icon(Icons.dark_mode, color: color);
+    return Icon(Icons.dark_mode, color: color, size: size,);
   }
 }

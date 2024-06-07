@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:intl/date_symbol_data_local.dart';
+import 'package:listedin/app/components/footer/footer.dart';
 import 'package:listedin/app/data/http/http_client.dart';
 import 'package:listedin/app/data/repositories/list_repository.dart';
 import 'package:listedin/app/pages/devs/dev_saymon.dart';
@@ -119,6 +120,7 @@ class _MyHomePageState extends State<MyHomePage> {
           ],
         ),
       ),
+      bottomNavigationBar: Footer(listRepository: widget.listRepository, isDark: false,),
     );
   }
 }
