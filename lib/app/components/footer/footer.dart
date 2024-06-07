@@ -32,8 +32,8 @@ class Footer extends StatelessWidget{
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           const SizedBox(height: 80,),
-          StatsRedirect(isDark: isDark,),
-          HomeRedirect(isDark: isDark,),
+          StatsRedirect(isDark: isDark, listRepository: listRepository,),
+          HomeRedirect(isDark: isDark, listRepository:  listRepository,),
           ListsRedirect(isDark: isDark,),
           Productsredirect(isDark: isDark)
         ],
@@ -115,8 +115,9 @@ class HomeRedirect extends StatelessWidget{
 
   final bool isDark;
   final bool isSelected = false;
+  final ListRepository listRepository;
   
-  const HomeRedirect({super.key, required this.isDark});
+  const HomeRedirect({super.key, required this.isDark, required this.listRepository});
 
   @override
   Widget build(BuildContext context) {
@@ -132,6 +133,8 @@ class HomeRedirect extends StatelessWidget{
               MaterialPageRoute(
                 builder: (context) => HomePage(
                   title: "Home Button",
+                  listRepository: listRepository,
+                  darkModeOn: isDark,
                   key: key,
               )),
             );
@@ -148,8 +151,9 @@ class StatsRedirect extends StatelessWidget{
 
   final bool isDark;
   final bool isSelected = false;
-
-  const StatsRedirect({super.key, required this.isDark});
+  final ListRepository listRepository;
+  
+  const StatsRedirect({super.key, required this.isDark, required this.listRepository});
 
   @override
   Widget build(BuildContext context) {
@@ -165,6 +169,8 @@ class StatsRedirect extends StatelessWidget{
               MaterialPageRoute(
                 builder: (context) => HomePage(
                   title: "Stats Button",
+                  listRepository: listRepository,
+                  darkModeOn: isDark,
                   key: key,
               )),
             );
