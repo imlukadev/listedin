@@ -120,7 +120,7 @@ class _MyHomePageState extends State<MyHomePage> {
           ],
         ),
       ),
-      bottomNavigationBar: Footer(),
+      bottomNavigationBar: Footer(listRepository: widget.listRepository, isDark: false,),
     );
   }
 }
