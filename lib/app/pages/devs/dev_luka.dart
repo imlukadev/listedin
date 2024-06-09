@@ -19,7 +19,6 @@ class DevLuka extends StatefulWidget {
 }
 
 class _DevLukaState extends State<DevLuka> {
-
   @override
   void initState() {
     super.initState();
@@ -28,11 +27,32 @@ class _DevLukaState extends State<DevLuka> {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      appBar: Header(),
+    return Scaffold(
+      appBar: const Header(),
       body: Column(
         children: [
-          
+          TextField(
+            onChanged: (value) {},
+            keyboardType: TextInputType.name,
+            style: const TextStyle(
+              color: Color(0xFFA8A8A8),
+              fontFamily: 'Montserrat',
+              fontWeight: FontWeight.w600, // Semibold
+              fontSize: 10,
+            ),
+            decoration: getInputDecoration('Digite seu nome!'),
+          ),
+          TextField(
+            onChanged: (value) {},
+            keyboardType: TextInputType.name,
+            style: const TextStyle(
+              color: Color(0xFF343434),
+              fontFamily: 'Montserrat',
+              fontWeight: FontWeight.w600, // Semibold
+              fontSize: 16,
+            ),
+            decoration: getInputDecoration('Digite sua senha!'),
+          ),
         ],
       ),
     );

@@ -3,7 +3,7 @@ import 'package:listedin/app/styles/colors.dart';
 import 'package:listedin/app/styles/icons/arrow.dart';
 
 class Button extends StatelessWidget {
-  final String Function() onPressed;
+  final dynamic Function() onPressed;
   final String content;
   final bool isLogin;
   final Color color;
