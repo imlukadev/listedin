@@ -1,37 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:listedin/app/data/model/list.dart';
-import 'package:listedin/app/data/repositories/list_repository.dart';
+import 'package:listedin/app/data/model/product.dart';
+import 'package:listedin/app/data/repositories/product_repository.dart';
 
 import '../../../data/model/user.dart';
 
-class ListsStore {
-  final IListRepository repository;
+class ProductsStore {
+  final IProductRepository repository;
   final User user;
-  List<ShopList> listBackup = [];
+  List<Product> listBackup = [];
 
 // loading
   final ValueNotifier<bool> isLoading = ValueNotifier<bool>(false);
   //Várivel reativa para o state
-  final ValueNotifier<List<ShopList>> state = ValueNotifier<List<ShopList>>([]);
+  final ValueNotifier<List<Product>> state = ValueNotifier<List<Product>>([]);
 
   //Variável reativa para o erro
   final ValueNotifier<String> error = ValueNotifier("");
 
-  Future<dynamic> patchIsFavorited(ShopList list) async {
-    try {
-      final result =
-          await repository.patchIsFavorited(list.id, !list.isFavorited);
-
-      int listIndex =
-          state.value.indexWhere((element) => list.id == element.id);
-      state.value[listIndex] = result;
-      state.value = List.from(state.value);
-    } catch (e) {
-      error.value = e.toString();
-    }
-  }
-
-  void searchLists(String value) {
+  void searchProducts(String value) {
     try {
       if (value.isNotEmpty) {
         List<ShopList> list = List.from(
@@ -45,13 +32,13 @@ class ListsStore {
     }
   }
 
-  getLists() {
+  getProducts() {
     isLoading.value = true;
-    final result = user.lists ?? [];
+    final result = user.createdProducts!;
     state.value = result;
     listBackup = result;
     isLoading.value = false;
   }
 
-  ListsStore({required this.repository, required this.user});
+  ProductsStore({required this.repository, required this.user});
 }

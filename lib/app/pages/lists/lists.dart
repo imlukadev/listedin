@@ -4,6 +4,7 @@ import 'package:listedin/app/components/header/header.dart';
 import 'package:listedin/app/components/input/input.dart';
 import 'package:listedin/app/data/http/http_client.dart';
 import 'package:listedin/app/data/repositories/list_repository.dart';
+import 'package:listedin/app/pages/list/list.dart';
 import 'package:listedin/app/pages/lists/store/lists_store.dart';
 import 'package:listedin/app/styles/colors.dart';
 
@@ -19,7 +20,6 @@ class ListsPage extends StatefulWidget {
 }
 
 class _ListsPageState extends State<ListsPage> {
-  final IListRepository listRepository = ListRepository(HttpClient());
   late ListsStore store;
 
   @override
@@ -94,12 +94,25 @@ class _ListsPageState extends State<ListsPage> {
                         final item = store.state.value[index];
                         return Column(
                           children: [
-                            CardBuy(
-                              isList: true,
-                              list: item,
-                              toggleFavorited: () {
-                                store.patchIsFavorited(item);
+                            InkWell(
+                              onTap: () {
+                                // Navegar para a segunda página
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => ListPage(
+                                      list: item,
+                                    ),
+                                  ),
+                                );
                               },
+                              child: CardBuy(
+                                isList: true,
+                                list: item,
+                                toggleFavorited: () {
+                                  store.patchIsFavorited(item);
+                                },
+                              ),
                             ),
                             const SizedBox(height: 16),
                           ],

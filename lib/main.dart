@@ -9,12 +9,17 @@ import 'package:listedin/app/pages/devs/dev_thiago.dart';
 import 'package:listedin/app/data/repositories/user_repository.dart';
 import 'package:listedin/app/pages/devs/store_luka.dart';
 import 'package:listedin/app/pages/lists/lists.dart';
+
+import 'package:listedin/app/pages/login/login.dart';
+import 'package:listedin/app/styles/colors.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await initializeDateFormatting('pt_BR', null);
   
   final httpClient = HttpClient();
   final listRepository = ListRepository(httpClient);
+
 
   runApp(MyApp(listRepository: listRepository));
 }
@@ -30,6 +35,9 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        iconTheme: IconThemeData(
+          color: white, // Defina a cor que você deseja aqui
+        ),
         useMaterial3: true,
       ),
       home: MyHomePage(title: 'Flutter Demo Home Page', listRepository: listRepository),
@@ -70,17 +78,17 @@ class _MyHomePageState extends State<MyHomePage> {
       body: Center(
         child: Column(
           children: [
-            // ElevatedButton(
-            //   onPressed: () {
-            //     // Navegar para a segunda página
-            //     Navigator.push(
-            //       context,
-            //       MaterialPageRoute(
-            //           builder: (context) => const DevLuka(title: "Opa luka")),
-            //     );
-            //   },
-            //   child: const Text('Vai lá luka'),
-            // ),
+            ElevatedButton(
+              onPressed: () {
+                // Navegar para a segunda página
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const LoginPage(title: "Opa luka")),
+                );
+              },
+              child: const Text('Vai lá luka'),
+            ),
             ElevatedButton(
               onPressed: () {
                 Navigator.push(
