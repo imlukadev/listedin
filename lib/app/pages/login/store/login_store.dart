@@ -17,12 +17,11 @@ class LoginInfo {
 class LoginStore {
   final IUserRepository repository;
 
-// loading
+  // loading
   final ValueNotifier<bool> isLoading = ValueNotifier<bool>(false);
   //Várivel reativa para o state
   final ValueNotifier<LoginInfo> state = ValueNotifier<LoginInfo>(LoginInfo());
-  final ValueNotifier<User? > userLogged = ValueNotifier<User?>(null);
-
+  final ValueNotifier<User?> userLogged = ValueNotifier<User?>(null);
   //Variável reativa para o erro
   final ValueNotifier<String> error = ValueNotifier('');
 

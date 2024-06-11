@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:listedin/app/data/model/list.dart';
 import 'package:listedin/app/data/model/product.dart';
+import 'package:listedin/app/data/model/product_list.dart';
 import 'package:listedin/app/styles/colors.dart';
 
 class CardBuy extends StatelessWidget {
@@ -8,6 +9,7 @@ class CardBuy extends StatelessWidget {
   final bool isList;
   final ShopList? list;
   final Product? product;
+  final ProductList? productList;
   final Function()? toggleFavorited;
 
   const CardBuy(
@@ -15,23 +17,43 @@ class CardBuy extends StatelessWidget {
       this.isDarkMode = false,
       this.isList = false,
       this.list,
+      this.productList,
       this.toggleFavorited,
       this.product});
   @override
   Widget build(BuildContext context) {
     String calcListPrice() {
       double totalPrice = 0;
-      for (var element in list!.products!) {
-        totalPrice += element.price;
+      if (list != null) {
+        for (var element in list!.products!) {
+          totalPrice += element.price;
+        }
       }
+
+      totalPrice.toStringAsFixed(2).replaceFirst('.', ',');
+      return totalPrice.toStringAsFixed(2).replaceFirst('.', ',');
+    }
+
+    String calcProductListPrice() {
+      double totalPrice = 0;
+      if (productList != null) {
+        totalPrice = productList!.price;
+      } else {
+        totalPrice = product!.price;
+      }
+
       totalPrice.toStringAsFixed(2).replaceFirst('.', ',');
       return totalPrice.toStringAsFixed(2).replaceFirst('.', ',');
     }
 
     String calcListQTD() {
       double totalItens = 0;
-      for (var element in list!.products!) {
-        totalItens += element.quantity;
+      if (list != null) {
+        for (var element in list!.products!) {
+          totalItens += element.quantity;
+        }
+      } else if (productList != null) {
+        totalItens = productList!.quantity;
       }
       // totalItens.toStringAsFixed(2).replaceFirst('.', ',');
       return totalItens.ceil().toString();
@@ -71,8 +93,9 @@ class CardBuy extends StatelessWidget {
                                   color: primary,
                                   size: 20,
                                 )
-                              : const Icon(
+                              : Icon(
                                   Icons.favorite_outline_sharp,
+                                  color: text,
                                   size: 20,
                                 ),
                         )
@@ -103,8 +126,7 @@ class CardBuy extends StatelessWidget {
                                     fontFamily: 'Montserrat',
                                     fontSize: 10,
                                     fontWeight: FontWeight.bold,
-                                    color: product!.category.color)
-                                    ),
+                                    color: product!.category.color)),
                       ],
                     ),
                   ),
@@ -125,7 +147,7 @@ class CardBuy extends StatelessWidget {
                           Text(
                             isList
                                 ? calcListPrice()
-                                : product!.price.toString(),
+                                : calcProductListPrice(),
                             style: TextStyle(
                                 fontFamily: 'Montserrat',
                                 fontSize: 16,
@@ -135,14 +157,16 @@ class CardBuy extends StatelessWidget {
                         ],
                       ),
                       // const SizedBox(width: 4, height: 4),
-                      Text(
-                        "QTD. ${calcListQTD()}",
-                        style: TextStyle(
-                            fontFamily: 'Montserrat',
-                            fontSize: 8,
-                            fontWeight: FontWeight.bold,
-                            color: primary),
-                      )
+                      isList || productList != null
+                          ? Text(
+                              "QTD. ${calcListQTD()}",
+                              style: TextStyle(
+                                  fontFamily: 'Montserrat',
+                                  fontSize: 8,
+                                  fontWeight: FontWeight.bold,
+                                  color: primary),
+                            )
+                          : SizedBox()
                     ],
                   ),
                 ],
