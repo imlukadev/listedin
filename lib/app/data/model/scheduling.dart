@@ -5,7 +5,7 @@ class Scheduling {
   Scheduling(this.date, {this.id});
 
   factory Scheduling.fromJSON(Map<String, dynamic> map) {
-    return Scheduling(id: map['id'], DateTime.parse(map['date']));
+    return Scheduling( DateTime.parse(map['date']), id: map['id'],);
   }
 
   Map<String, dynamic> toJSON() {

@@ -50,6 +50,18 @@ class ListRepository extends IListRepository {
     }
   }
 
+  Future<List<ShopList>> findAllBySchedulingDate(DateTime date) async {
+    try {
+      List dateSplitted = date.toString().split(" ");
+      Response response = await client.get("/list/date/${dateSplitted[0]}T00:00:00");
+      List<dynamic> lists = response.data;
+      return lists.map((list) => ShopList.fromJSON(list)).toList();
+    } catch (e) {
+
+      throw Exception(e);
+    }
+  }
+
   @override
   Future<ShopList> findById(int id) async {
     try {
