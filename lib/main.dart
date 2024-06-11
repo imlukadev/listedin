@@ -1,13 +1,33 @@
 import 'package:flutter/material.dart';
-import 'package:listedin/app/pages/devs/dev_luka.dart';
-import 'package:listedin/app/pages/devs/dev_saymon.dart';
 
-void main() {
-  runApp(const MyApp());
+import 'package:intl/date_symbol_data_local.dart';
+import 'package:listedin/app/components/footer/footer.dart';
+import 'package:listedin/app/data/http/http_client.dart';
+import 'package:listedin/app/data/repositories/list_repository.dart';
+import 'package:listedin/app/pages/devs/dev_saymon.dart';
+import 'package:listedin/app/pages/devs/dev_thiago.dart';
+import 'package:listedin/app/data/repositories/user_repository.dart';
+import 'package:listedin/app/pages/devs/store_luka.dart';
+import 'package:listedin/app/pages/lists/lists.dart';
+
+import 'package:listedin/app/pages/login/login.dart';
+import 'package:listedin/app/styles/colors.dart';
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await initializeDateFormatting('pt_BR', null);
+  
+  final httpClient = HttpClient();
+  final listRepository = ListRepository(httpClient);
+
+
+  runApp(MyApp(listRepository: listRepository));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  final ListRepository listRepository;
+
+  const MyApp({super.key, required this.listRepository});
 
   @override
   Widget build(BuildContext context) {
@@ -15,23 +35,40 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        iconTheme: IconThemeData(
+          color: white, // Defina a cor que você deseja aqui
+        ),
         useMaterial3: true,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: MyHomePage(title: 'Flutter Demo Home Page', listRepository: listRepository),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
   final String title;
+  final ListRepository listRepository;
+
+  const MyHomePage({super.key, required this.title, required this.listRepository});
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  final IListRepository listRepository = ListRepository(HttpClient());
+  final ListStore listStore = ListStore(
+    repository: UserRepository(
+      HttpClient(),
+    ),
+  );
+
+  @override
+  void initState() {
+    super.initState();
+    listStore.getUser();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -47,14 +84,13 @@ class _MyHomePageState extends State<MyHomePage> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => const DevLuka(title: "Opa luka")),
+                      builder: (context) => const LoginPage(title: "Opa luka")),
                 );
               },
               child: const Text('Vai lá luka'),
             ),
             ElevatedButton(
               onPressed: () {
-                // Navegar para a segunda página
                 Navigator.push(
                   context,
                   MaterialPageRoute(
@@ -66,18 +102,33 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             ElevatedButton(
               onPressed: () {
-                // Navegar para a segunda página
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => const DevLuka(title: "Opa thiago")),
+                      builder: (context) =>
+                          ListsPage(user: listStore.state.value)),
+                );
+              },
+              child: const Text('tela listas'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => DevThiago(
+                            title: "Opa thiago",
+                            listRepository: widget.listRepository,
+                          )),
+
                 );
               },
               child: const Text('Vai lá thiago'),
-            )
+            ),
           ],
         ),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+      ),
+      bottomNavigationBar: Footer(listRepository: widget.listRepository, isDark: false,),
     );
   }
 }

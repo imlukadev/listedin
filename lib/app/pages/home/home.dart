@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:listedin/app/components/week_day/week_list.dart';
+import 'package:listedin/app/data/repositories/list_repository.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({super.key, required this.title});
+
+  final ListRepository listRepository;
+  final bool darkModeOn;
+  const HomePage({super.key, required this.title, required this.listRepository, required this.darkModeOn});
 
   final String title;
 
@@ -16,10 +21,10 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: const Center(
+      body: Center(
         child: Column(
           children: [
-            Placeholder()
+            WeekList(darkModeOn: widget.darkModeOn, listRepository: widget.listRepository)
           ],
         ),
       ), // This trailing comma makes auto-formatting nicer for build methods.

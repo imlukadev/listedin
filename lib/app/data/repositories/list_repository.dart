@@ -23,7 +23,7 @@ class ListRepository extends IListRepository {
   Future<ShopList> create(int userId) async {
     try {
       Response response = await client.save("/list/user/$userId", {});
-      Map<String, dynamic> list = json.decode(response.data);
+      Map<String, dynamic> list = response.data;
       return ShopList.fromJSON(list);
     } catch (e) {
       throw Exception(e);
@@ -43,9 +43,21 @@ class ListRepository extends IListRepository {
   Future<List<ShopList>> findAll() async {
     try {
       Response response = await client.get("/list");
-      List<Map<String, dynamic>> lists = json.decode(response.data);
+      List<dynamic> lists = response.data;
       return lists.map((list) => ShopList.fromJSON(list)).toList();
     } catch (e) {
+      throw Exception(e);
+    }
+  }
+
+  Future<List<ShopList>> findAllBySchedulingDate(DateTime date) async {
+    try {
+      List dateSplitted = date.toString().split(" ");
+      Response response = await client.get("/list/date/${dateSplitted[0]}T00:00:00");
+      List<dynamic> lists = response.data;
+      return lists.map((list) => ShopList.fromJSON(list)).toList();
+    } catch (e) {
+
       throw Exception(e);
     }
   }
@@ -54,7 +66,7 @@ class ListRepository extends IListRepository {
   Future<ShopList> findById(int id) async {
     try {
       Response response = await client.get("/list/$id");
-      Map<String, dynamic> list = json.decode(response.data);
+      Map<String, dynamic> list = response.data;
       return ShopList.fromJSON(list);
     } catch (e) {
       throw Exception(e);
@@ -64,9 +76,9 @@ class ListRepository extends IListRepository {
   @override
   Future<ShopList> patchIsFavorited(int listId, bool isFavorited) async {
     try {
-      Response response = await client.patch(
-          "/list/$listId", <String, dynamic>{"isFavorited": isFavorited});
-      Map<String, dynamic> list = json.decode(response.data);
+      Response response = await client.patch("/list/$listId/isfavorited",
+          <String, dynamic>{"isFavorited": isFavorited});
+      Map<String, dynamic> list = response.data;
       return ShopList.fromJSON(list);
     } catch (e) {
       throw Exception(e);
@@ -76,9 +88,9 @@ class ListRepository extends IListRepository {
   @override
   Future<ShopList> patchLastAccess(int listId, DateTime lastAccess) async {
     try {
-      Response response = await client.patch("/list/$listId",
+      Response response = await client.patch("/list/$listId/lastAccess",
           <String, dynamic>{"lastAccess": lastAccess.toString()});
-      Map<String, dynamic> list = json.decode(response.data);
+      Map<String, dynamic> list = response.data;
       return ShopList.fromJSON(list);
     } catch (e) {
       throw Exception(e);
@@ -90,7 +102,7 @@ class ListRepository extends IListRepository {
     try {
       Response response =
           await client.patch("/list/$listId", <String, dynamic>{"name": name});
-      Map<String, dynamic> list = json.decode(response.data);
+      Map<String, dynamic> list = response.data;
       return ShopList.fromJSON(list);
     } catch (e) {
       throw Exception(e);
@@ -101,9 +113,10 @@ class ListRepository extends IListRepository {
   Future<ShopList> patchPurchasedQuantity(
       int listId, int purchasedQuantity) async {
     try {
-      Response response = await client.patch("/list/$listId",
+      Response response = await client.patch("/list/$listId/purchasedQuantity",
           <String, dynamic>{"purchasedQuantity": purchasedQuantity});
-      Map<String, dynamic> list = json.decode(response.data);
+
+      Map<String, dynamic> list = response.data;
       return ShopList.fromJSON(list);
     } catch (e) {
       throw Exception(e);
@@ -116,7 +129,7 @@ class ListRepository extends IListRepository {
     try {
       Response response =
           await client.patchLists("/list/$listId", listJSON['schedulings']);
-      Map<String, dynamic> list = json.decode(response.data);
+      Map<String, dynamic> list = response.data;
       return ShopList.fromJSON(list);
     } catch (e) {
       throw Exception(e);

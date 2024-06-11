@@ -12,4 +12,4 @@ class StatsIcon extends StatelessWidget{
     return Icon(Icons.query_stats, color: color, size: size);
   }
 
-}git 
+}

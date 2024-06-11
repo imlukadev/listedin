@@ -1,27 +1,31 @@
 import 'package:flutter/material.dart';
+import 'package:listedin/app/components/week_day/week_list.dart';
+import 'package:listedin/app/data/repositories/list_repository.dart';
 
 class DevThiago extends StatefulWidget {
-  const DevThiago({super.key, required this.title});
-
   final String title;
+  final ListRepository listRepository;
+
+  const DevThiago({super.key, required this.title, required this.listRepository});
 
   @override
   State<DevThiago> createState() => _DevThiagoState();
 }
 
 class _DevThiagoState extends State<DevThiago> {
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: const Center(
+      body: Center(
         child: Column(
-         children: [Placeholder()],
+          children: [
+            WeekList(darkModeOn: true, listRepository: widget.listRepository),
+          ],
         ),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+      ),
     );
   }
 }

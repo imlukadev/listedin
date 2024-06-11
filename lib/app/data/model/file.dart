@@ -10,7 +10,7 @@ class File {
   File(this.name, this.type, this.data, {this.id});
   factory File.fromJSON(Map<String, dynamic> map) {
     return File(
-        id: map["id"], map["name"], map["type"], dataStringToByte(map["data"]));
+        map["name"], map["type"], dataStringToByte(map["data"]), id: map["id"],);
   }
 
   static dataStringToByte(String data) {
