@@ -64,8 +64,7 @@ class Productsredirect extends StatelessWidget{
                 context,
                 MaterialPageRoute(
                   builder: (context) => ProductsPage(
-                    title: "Products Button",
-                    key: key,
+                    key: key, user: User('name', 'email'),
                 )),
               );
             }, 
