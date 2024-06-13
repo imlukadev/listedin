@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:listedin/app/data/model/list.dart';
+import 'package:listedin/app/data/model/product.dart';
+import 'package:listedin/app/data/model/product_list.dart';
 import 'package:listedin/app/data/repositories/list_repository.dart';
 
 class ListStore {
   final IListRepository repository;
+  List<ProductList> listBackup = [];
   ShopList list;
 
 // loading
@@ -12,8 +15,8 @@ class ListStore {
   final ValueNotifier<ShopList?> state = ValueNotifier<ShopList?>(null);
 
   setState() {
-    print(list.products![0].toJSON());
     state.value = list;
+    listBackup = list.products!;
   }
 
   //Variável reativa para o erro
@@ -25,6 +28,28 @@ class ListStore {
           list.id, list.purchasedQuantity + 1);
       list = result;
       state.value = result;
+    } catch (e) {
+      error.value = e.toString();
+    }
+  }
+
+  Future searchProducts(String value) async {
+    try {
+      ShopList listK = state.value!;
+      if (value.isNotEmpty) {
+        List<ProductList> list = List.from(listBackup.where(
+            (element) => element.product.name
+                .toLowerCase()
+                .contains(value.toLowerCase())));
+        listK.products = list;
+        state.value = listK;
+        state.notifyListeners();
+        // state.value = List.from(list);
+      } else {
+        listK.products = listBackup;
+        state.value = listK;
+        state.notifyListeners();
+      }
     } catch (e) {
       error.value = e.toString();
     }
