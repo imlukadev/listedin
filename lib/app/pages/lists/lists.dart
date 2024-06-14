@@ -3,6 +3,7 @@ import 'package:listedin/app/components/card/card.dart';
 import 'package:listedin/app/components/header/header.dart';
 import 'package:listedin/app/components/input/input.dart';
 import 'package:listedin/app/data/http/http_client.dart';
+import 'package:listedin/app/data/model/list.dart';
 import 'package:listedin/app/data/repositories/list_repository.dart';
 import 'package:listedin/app/pages/list/list.dart';
 import 'package:listedin/app/pages/lists/store/lists_store.dart';
@@ -20,6 +21,7 @@ class ListsPage extends StatefulWidget {
 }
 
 class _ListsPageState extends State<ListsPage> {
+  final TextEditingController _searchController = TextEditingController();
   late ListsStore store;
 
   @override
@@ -39,6 +41,28 @@ class _ListsPageState extends State<ListsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const Header(),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () async {
+          ShopList list = await store.createList();
+          _searchController.clear();
+          store.searchLists('');
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => ListPage(
+                list: list,
+              ),
+            ),
+          );
+        },
+        tooltip: 'Criar lista',
+        backgroundColor: primary,
+        shape: const CircleBorder(),
+        child: Icon(
+          Icons.add,
+          color: white,
+        ),
+      ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -60,6 +84,7 @@ class _ListsPageState extends State<ListsPage> {
               children: [
                 Expanded(
                   child: TextField(
+                    controller: _searchController,
                     onChanged: (value) {
                       store.searchLists(value);
                     },

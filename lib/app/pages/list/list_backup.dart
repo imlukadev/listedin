@@ -4,17 +4,13 @@ import 'package:listedin/app/components/card/card.dart';
 import 'package:listedin/app/components/footer/footer.dart';
 import 'package:listedin/app/components/header/header.dart';
 import 'package:listedin/app/components/input/input.dart';
-import 'package:listedin/app/components/listStats/list_stats.dart';
-import 'package:listedin/app/components/overlay/overlay.dart';
 import 'package:listedin/app/data/http/http_client.dart';
 import 'package:listedin/app/data/model/list.dart';
 import 'package:listedin/app/data/repositories/list_repository.dart';
 import 'package:listedin/app/pages/list/store/list_store.dart';
-import 'package:listedin/app/pages/market_mode/market_mode.dart';
 import 'package:listedin/app/styles/colors.dart';
 import 'package:listedin/app/styles/icons/delete_icon.dart';
 import 'package:listedin/app/styles/icons/edit_icon.dart';
-import 'package:listedin/app/styles/texts.dart';
 
 class ListPage extends StatefulWidget {
   const ListPage({super.key, required this.list});
@@ -26,7 +22,6 @@ class ListPage extends StatefulWidget {
 }
 
 class _ListPageState extends State<ListPage> {
-  final TextEditingController _searchController = TextEditingController();
   late ListStore store;
   bool isEditing = false;
 
@@ -62,18 +57,18 @@ class _ListPageState extends State<ListPage> {
     }
 
     String calcListQTD() {
-      double totalQuantity = 0;
+      double totalPrice = 0;
       for (var product in store.state.value!.products!) {
-        totalQuantity += product.quantity;
+        totalPrice += product.quantity;
       }
 
-      return totalQuantity
+      return totalPrice
                   .toStringAsFixed(1)
                   .replaceFirst('.', ',')
                   .split(',')[1] ==
               '0'
-          ? totalQuantity.ceil().toString()
-          : totalQuantity.toStringAsFixed(1).replaceFirst('.', ',');
+          ? totalPrice.ceil().toString()
+          : totalPrice.toStringAsFixed(1).replaceFirst('.', ',');
     }
 
     return Scaffold(
@@ -161,24 +156,8 @@ class _ListPageState extends State<ListPage> {
                 ),
                 IconButton(
                     onPressed: () {
-                      showModal(
-                          context,
-                          loadModal(
-                              Text(
-                                "Deseja mesmo deletar essa lista?",
-                                style: titleModal,
-                              ),
-                              Text(
-                                "A lista não será recuperável uma vez que você deletar, tome cuidado!",
-                                style: bodyModal,
-                              ),
-                              ButtonModalProps("Cancelar",
-                                  function: () => Navigator.pop(context)),
-                              ButtonModalProps("Deletar", function: () async {
-                                await store.deleteList();
-                                Navigator.pop(context);
-                                Navigator.pop(context);
-                              })));
+                      store.deleteList();
+                      // Navigator.pop(context);
                     },
                     icon: DeleteIcon(color: primary, size: 28))
               ],
@@ -190,7 +169,6 @@ class _ListPageState extends State<ListPage> {
           Padding(
             padding: const EdgeInsetsDirectional.symmetric(horizontal: 24),
             child: TextField(
-              controller: _searchController,
               onChanged: (value) {
                 store.searchProducts(value);
               },
@@ -232,12 +210,49 @@ class _ListPageState extends State<ListPage> {
                     ),
                   );
                 } else {
-                  return const SizedBox();
+                  return SizedBox();
                 }
               },
             ),
           ),
-          ListStats(price: calcListPrice(), quantity: calcListQTD()),
+          Padding(
+            padding: const EdgeInsetsDirectional.symmetric(horizontal: 24),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text(
+                  "Total:",
+                  style: TextStyle(
+                      fontFamily: 'Montserrat',
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                      color: primary),
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Text(
+                      "RS ${calcListPrice()}",
+                      style: TextStyle(
+                          fontFamily: 'Montserrat',
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          color: primary),
+                    ),
+                    Text(
+                      "QTD. ${calcListQTD()}",
+                      style: TextStyle(
+                          fontFamily: 'Montserrat',
+                          fontSize: 12,
+                          fontWeight: FontWeight.w600,
+                          color: primary),
+                    )
+                  ],
+                )
+              ],
+            ),
+          ),
           const SizedBox(
             height: 16,
           ),
@@ -246,44 +261,80 @@ class _ListPageState extends State<ListPage> {
             child: Row(
               children: [
                 Button(
-                    onPressed: () {},
-                    content: 'Agendar Compra',
+                    onPressed: () {
+                      showModalBottomSheet(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return Container(
+                              color: Colors
+                                  .transparent, // Adiciona transparência para o espaço fora do modal
+                              child: Wrap(
+                                children: [
+                                  Container(
+                                    padding: const EdgeInsets.all(24),
+                                    decoration: const BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.only(
+                                        topLeft: Radius.circular(32),
+                                        topRight: Radius.circular(32),
+                                      ),
+                                    ),
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize
+                                          .min, // Adiciona isso para o column ocupar apenas o espaço necessário
+                                      children: [
+                                        Text(
+                                          "Deseja comprar ou entrar em modo mercado?",
+                                          style: TextStyle(
+                                              fontFamily: 'Montserrat',
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.w600,
+                                              color: text),
+                                        ),
+                                        const SizedBox(height: 16),
+                                        Text(
+                                          "No modo mercado você começa suas compras, podendo utilizar a lista como checagem para tudo que já foi pego e o que ainda falta.",
+                                          style: TextStyle(
+                                              fontFamily: 'Montserrat',
+                                              fontSize: 12,
+                                              fontWeight: FontWeight.w400,
+                                              color: text),
+                                        ),
+                                        const SizedBox(height: 32),
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Button(
+                                              onPressed: () async {
+                                                await store
+                                                    .patchPurchasedQuantity();
+                                              },
+                                              content: "Comprar ",
+                                              color: primary,
+                                            ),
+                                            const SizedBox(width: 16),
+                                            Button(
+                                              onPressed: () {},
+                                              content: "Modo Mercado",
+                                              color: red,
+                                            ),
+                                          ],
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            );
+                          });
+                    },
+                    content: 'Comprar',
                     color: primary),
                 const SizedBox(
                   width: 16,
                 ),
-                Button(
-                    onPressed: () {
-                      showModal(
-                          context,
-                          loadModal(
-                              Text(
-                                "Deseja comprar ou entrar em modo mercado?",
-                                style: titleModal,
-                              ),
-                              Text(
-                                  "No modo mercado você começa suas compras, podendo utilizar a lista como checagem para tudo que já foi pego e o que ainda falta além de ver o preço em tempo real.",
-                                  style: bodyModal),
-                              ButtonModalProps("Modo mercado", function: () {
-                                Navigator.pop(context);
-                                store.searchProducts("");
-                                _searchController.clear();
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => MarketMode(
-                                      store: store,
-                                    ),
-                                  ),
-                                );
-                              }),
-                              ButtonModalProps("Comprar", function: () async {
-                                await store.patchPurchasedQuantity();
-                                Navigator.pop(context);
-                              })));
-                    },
-                    content: 'Comprar',
-                    color: primary),
+                Button(onPressed: () {}, content: 'Fazer Login', color: primary)
               ],
             ),
           ),

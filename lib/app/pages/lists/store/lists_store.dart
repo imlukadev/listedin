@@ -31,6 +31,19 @@ class ListsStore {
     }
   }
 
+  Future<dynamic> createList() async {
+    try {
+      List<ShopList> list = state.value;
+      ShopList result = await repository.create(user.id!);
+      list.add(result);
+      listBackup.add(result);
+      state.value = List.from(listBackup);
+      return result;
+    } catch (e) {
+      error.value = e.toString();
+    }
+  }
+
   void searchLists(String value) {
     try {
       if (value.isNotEmpty) {
