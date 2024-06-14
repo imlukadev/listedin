@@ -26,6 +26,19 @@ class UserRepository extends IUserRepository {
   final String path = "/user";
   UserRepository(this.client);
 
+  Future<User> createUser(String name, String email, String password) async {
+    try {
+      Map<String, dynamic> data = <String, dynamic>{};
+      data["name"] = name;
+      data["password"] = password;
+      data["email"] = email;
+      Response response = await client.save(path, data);
+      return User.fromJSON(response.data);
+    } catch (e) {
+      throw Exception(e);
+    }
+  }
+
   @override
   Future<User> create(User user) async {
     try {

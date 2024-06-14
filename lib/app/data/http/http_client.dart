@@ -1,7 +1,8 @@
 import 'package:dio/dio.dart';
 
 class HttpClient {
-  final Dio _dio = Dio(BaseOptions(baseUrl: "http://10.0.2.2:9696"));
+  // final Dio _dio = Dio(BaseOptions(baseUrl: "http://10.0.2.2:9696"));
+    final Dio _dio = Dio(BaseOptions(baseUrl: "http://127.0.0.1:9696"));
 
   Future<Response> get(String url) async {
     try {
@@ -45,7 +46,8 @@ class HttpClient {
 
   Future<Response> save(String url, Map<String, dynamic> data) async {
     try {
-      return await _dio.post(url, data: data);
+      Response response = await _dio.post(url, data: data);
+      return response;
     } catch (e) {
       throw Exception('Erro ao enviar os dados: $e');
     }

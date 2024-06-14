@@ -12,6 +12,7 @@ import 'package:listedin/app/pages/lists/lists.dart';
 
 import 'package:listedin/app/pages/login/login.dart';
 import 'package:listedin/app/pages/products/products.dart';
+import 'package:listedin/app/pages/register/register.dart';
 import 'package:listedin/app/styles/colors.dart';
 
 void main() async {
@@ -22,13 +23,12 @@ void main() async {
   final listRepository = ListRepository(httpClient);
 
 
-  runApp(MyApp(listRepository: listRepository));
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  final ListRepository listRepository;
 
-  const MyApp({super.key, required this.listRepository});
+  const MyApp({super.key,});
 
   @override
   Widget build(BuildContext context) {
@@ -41,16 +41,15 @@ class MyApp extends StatelessWidget {
         ),
         useMaterial3: true,
       ),
-      home: MyHomePage(title: 'Flutter Demo Home Page', listRepository: listRepository),
+      home: MyHomePage(title: 'Flutter Demo Home Page',),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
   final String title;
-  final ListRepository listRepository;
 
-  const MyHomePage({super.key, required this.title, required this.listRepository});
+  const MyHomePage({super.key, required this.title,});
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
@@ -117,9 +116,8 @@ class _MyHomePageState extends State<MyHomePage> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => DevThiago(
-                            title: "Opa thiago",
-                            listRepository: widget.listRepository,
+                      builder: (context) => const RegisterPage(
+                            title: "Cadastre-se",
                           )),
 
                 );
@@ -129,7 +127,7 @@ class _MyHomePageState extends State<MyHomePage> {
           ],
         ),
       ),
-      bottomNavigationBar: Footer(listRepository: widget.listRepository, isDark: false,),
+      bottomNavigationBar: Footer( isDark: false,),
     );
   }
 }
