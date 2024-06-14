@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:listedin/app/components/card/card.dart';
 import 'package:listedin/app/components/combobox/combobox.dart';
+import 'package:listedin/app/components/footer/footer.dart';
 import 'package:listedin/app/components/header/header.dart';
 import 'package:listedin/app/components/input/input.dart';
 import 'package:listedin/app/components/overlay/overlay.dart';
 import 'package:listedin/app/data/http/http_client.dart';
 import 'package:listedin/app/data/model/user.dart';
+import 'package:listedin/app/data/repositories/list_repository.dart';
 import 'package:listedin/app/data/repositories/product_repository.dart';
 import 'package:listedin/app/pages/products/store/products_store.dart';
 import 'package:listedin/app/styles/colors.dart';
+import 'package:listedin/app/styles/texts.dart';
 
 class ProductsPage extends StatefulWidget {
   const ProductsPage({super.key, required this.user});
@@ -30,7 +33,6 @@ class _ProductsPageState extends State<ProductsPage> {
     );
     store.getProducts();
     store.getCategories();
-    // print();
   }
 
   @override
@@ -42,10 +44,29 @@ class _ProductsPageState extends State<ProductsPage> {
           showModal(
               context,
               loadModal(
-                   Row(
+                  Row(
                     children: [
-                      Expanded(child: Text("Novo Produto")),
-                      Icon(Icons.edit)
+                      Expanded(
+                      //     child: Text(
+                      //   "Nome do Produto",
+                      //   style: titleModal,
+                      // ))
+                      child:  TextField(
+             
+              onChanged: (value) => store.updateName(value),
+              decoration: InputDecoration(
+                hintText: "Nome do Produto",
+                hintStyle: titleModal.copyWith(color: Colors.grey),
+              )
+                      ),
+                       ),
+                      InkWell(
+                        onTap: () {},
+                        child: Icon(
+                          Icons.edit,
+                          color: primary,
+                        ),
+                      )
                     ],
                   ),
                   Row(
@@ -59,7 +80,9 @@ class _ProductsPageState extends State<ProductsPage> {
                               height: 8,
                             ),
                             TextField(
-                              onChanged: (value) {},
+                              onChanged: (value) {
+                                store.updatePrice(value);
+                              },
                               decoration: getInputDecoration("Preço"),
                             )
                           ],
@@ -76,7 +99,12 @@ class _ProductsPageState extends State<ProductsPage> {
                             SizedBox(
                               height: 8,
                             ),
-                            MyCombobox(categories:  store.categoryState.value)
+                            Combobox(
+                              categories: store.categoryState.value,
+                              fnCategory: (category) {
+                                store.uppdateCategory(category);
+                              },
+                            )
                           ],
                         ),
                       ),
@@ -85,7 +113,10 @@ class _ProductsPageState extends State<ProductsPage> {
                   ButtonModalProps("Cancelar", function: () {
                     Navigator.pop(context);
                   }),
-                  ButtonModalProps("Criar", function: () {})));
+                  ButtonModalProps("Criar", function: () async {
+                    await store.createProduct();
+                    Navigator.pop(context);
+                  })));
         },
         tooltip: 'Criar produto!',
         backgroundColor: primary,
@@ -150,10 +181,91 @@ class _ProductsPageState extends State<ProductsPage> {
                         final item = store.state.value[index];
                         return Column(
                           children: [
-                            CardBuy(
+                            InkWell(child:  CardBuy(
                               isList: false,
                               product: item,
                             ),
+                            
+                           onTap: (){
+              //               showModal(
+              // context,
+              // loadModal(
+              //     Row(
+              //       children: [
+              //         Expanded(
+              //         //     child: Text(
+              //         //   "Nome do Produto",
+              //         //   style: titleModal,
+              //         // ))
+              //         child:  TextField(
+             
+              // onChanged: (value) => store.updateName(value),
+              // decoration: InputDecoration(
+              //   hintText: "Nome do Produto",
+              //   hintStyle: titleModal.copyWith(color: Colors.grey),
+              // )
+              //         ),
+              //          ),
+              //         InkWell(
+              //           onTap: () {},
+              //           child: Icon(
+              //             Icons.edit,
+              //             color: primary,
+              //           ),
+              //         )
+              //       ],
+              //     ),
+              //     Row(
+              //       children: [
+              //         Expanded(
+              //           child: Column(
+              //             crossAxisAlignment: CrossAxisAlignment.start,
+              //             children: [
+              //               Text("Preço"),
+              //               SizedBox(
+              //                 height: 8,
+              //               ),
+              //               TextField(
+              //                 onChanged: (value) {
+              //                   store.updatePrice(value);
+              //                 },
+              //                 decoration: getInputDecoration("Preço"),
+              //               )
+              //             ],
+              //           ),
+              //         ),
+              //         SizedBox(
+              //           width: 32,
+              //         ),
+              //         Expanded(
+              //           child: Column(
+              //             crossAxisAlignment: CrossAxisAlignment.start,
+              //             children: [
+              //               Text("Categoria"),
+              //               SizedBox(
+              //                 height: 8,
+              //               ),
+              //               Combobox(
+              //                 categories: store.categoryState.value,
+              //                 fnCategory: (category) {
+              //                   store.uppdateCategory(category);
+              //                 },
+              //               )
+              //             ],
+              //           ),
+              //         ),
+              //       ],
+              //     ),
+              //     ButtonModalProps("Cancelar", function: () {
+              //       Navigator.pop(context);
+              //     }),
+              //     ButtonModalProps("Criar", function: () async {
+              //       await store.createProduct();
+              //       Navigator.pop(context);
+              //     })));
+                           }, 
+                            ),
+                           
                             const SizedBox(height: 16),
                           ],
                         );
@@ -168,6 +280,7 @@ class _ProductsPageState extends State<ProductsPage> {
           )
         ],
       ),
+      bottomNavigationBar: Footer( isDark: false),
     );
   }
 }

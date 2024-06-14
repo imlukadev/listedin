@@ -26,8 +26,8 @@ class ProductList {
 
   Map<String, dynamic> toJSON() {
     Map<String, dynamic> data = <String, dynamic>{};
-    data['productId'];
-    data['listId'];
+    data['productId'] = product.id;
+    data['listId'] = list.id;
     data['list'] = list.toJSON();
     data['product'] = product.toJSON();
     data['quantity'] = quantity;

@@ -106,7 +106,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   context,
                   MaterialPageRoute(
                       builder: (context) =>
-                          ProductsPage(user: listStore.state.value)),
+                          ListsPage(user: listStore.state.value)),
                 );
               },
               child: const Text('tela listas'),
