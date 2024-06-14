@@ -90,6 +90,7 @@ class _LoginPageState extends State<LoginPage> {
                   fontSize: 10,
                 ),
                 decoration: getCustomInputDecoration('Senha'),
+                obscureText: true,
                 ),
               ),
 

@@ -96,6 +96,7 @@ class _RegisterPageState extends State<RegisterPage> {
               keyboardType: TextInputType.name,
               style: textStyle,
               decoration: getCustomInputDecoration('Senha'),
+              obscureText: true,
             ),
           ),
           
