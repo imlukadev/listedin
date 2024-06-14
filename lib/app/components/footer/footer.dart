@@ -12,9 +12,8 @@ import 'package:listedin/app/styles/icons/stats_icon.dart';
 
 class Footer extends StatelessWidget{
 
-  final ListRepository listRepository;
   final bool isDark;
-  const Footer({super.key, required this.listRepository, required this.isDark});
+  const Footer({super.key, required this.isDark});
 
   @override
   Widget build(BuildContext context) {
@@ -32,8 +31,8 @@ class Footer extends StatelessWidget{
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           const SizedBox(height: 80,),
-          StatsRedirect(isDark: isDark, listRepository: listRepository,),
-          HomeRedirect(isDark: isDark, listRepository:  listRepository,),
+          StatsRedirect(isDark: isDark, ),
+          HomeRedirect(isDark: isDark, ),
           ListsRedirect(isDark: isDark,),
           Productsredirect(isDark: isDark)
         ],
@@ -114,9 +113,8 @@ class HomeRedirect extends StatelessWidget{
 
   final bool isDark;
   final bool isSelected = false;
-  final ListRepository listRepository;
   
-  const HomeRedirect({super.key, required this.isDark, required this.listRepository});
+  const HomeRedirect({super.key, required this.isDark,});
 
   @override
   Widget build(BuildContext context) {
@@ -132,7 +130,6 @@ class HomeRedirect extends StatelessWidget{
               MaterialPageRoute(
                 builder: (context) => HomePage(
                   title: "Home Button",
-                  listRepository: listRepository,
                   darkModeOn: isDark,
                   key: key,
               )),
@@ -150,9 +147,8 @@ class StatsRedirect extends StatelessWidget{
 
   final bool isDark;
   final bool isSelected = false;
-  final ListRepository listRepository;
   
-  const StatsRedirect({super.key, required this.isDark, required this.listRepository});
+  const StatsRedirect({super.key, required this.isDark,});
 
   @override
   Widget build(BuildContext context) {
@@ -168,7 +164,6 @@ class StatsRedirect extends StatelessWidget{
               MaterialPageRoute(
                 builder: (context) => HomePage(
                   title: "Stats Button",
-                  listRepository: listRepository,
                   darkModeOn: isDark,
                   key: key,
               )),

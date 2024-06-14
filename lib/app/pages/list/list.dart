@@ -17,7 +17,7 @@ import 'package:listedin/app/styles/icons/edit_icon.dart';
 import 'package:listedin/app/styles/texts.dart';
 
 class ListPage extends StatefulWidget {
-  const ListPage({super.key, required this.list});
+  const ListPage({super.key, required this.list,});
 
   final ShopList list;
 
@@ -293,7 +293,7 @@ class _ListPageState extends State<ListPage> {
         ],
       ),
       bottomNavigationBar:
-          Footer(listRepository: ListRepository(HttpClient()), isDark: false),
+          Footer(isDark: false),
     ); // This trailing comma makes auto-formatting nicer for build methods.
   }
 }

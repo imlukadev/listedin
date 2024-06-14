@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:listedin/app/components/week_day/week_list.dart';
-import 'package:listedin/app/data/repositories/list_repository.dart';
+import 'package:listedin/app/pages/register/register.dart';
 
 class DevThiago extends StatefulWidget {
   final String title;
-  final ListRepository listRepository;
 
-  const DevThiago({super.key, required this.title, required this.listRepository});
+  const DevThiago({super.key, required this.title,});
 
   @override
   State<DevThiago> createState() => _DevThiagoState();
@@ -19,10 +17,10 @@ class _DevThiagoState extends State<DevThiago> {
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: Center(
+      body: const Center(
         child: Column(
           children: [
-            WeekList(darkModeOn: true, listRepository: widget.listRepository),
+            RegisterPage(title: "Cadastre-se")
           ],
         ),
       ),

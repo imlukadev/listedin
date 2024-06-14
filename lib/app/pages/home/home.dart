@@ -4,9 +4,8 @@ import 'package:listedin/app/data/repositories/list_repository.dart';
 
 class HomePage extends StatefulWidget {
 
-  final ListRepository listRepository;
   final bool darkModeOn;
-  const HomePage({super.key, required this.title, required this.listRepository, required this.darkModeOn});
+  const HomePage({super.key, required this.title, required this.darkModeOn});
 
   final String title;
 
@@ -24,7 +23,7 @@ class _HomePageState extends State<HomePage> {
       body: Center(
         child: Column(
           children: [
-            WeekList(darkModeOn: widget.darkModeOn, listRepository: widget.listRepository)
+            WeekList(darkModeOn: widget.darkModeOn,)
           ],
         ),
       ), // This trailing comma makes auto-formatting nicer for build methods.

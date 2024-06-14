@@ -35,51 +35,88 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const Header(),
-      body: Column(
-        children: [
-          TextField(
-            onChanged: (value) {
-              store.updateEmail(value);
-            },
-            keyboardType: TextInputType.name,
-            style: const TextStyle(
-              color: Color(0xFFA8A8A8),
-              fontFamily: 'Montserrat',
-              fontWeight: FontWeight.w600, // Semibold
-              fontSize: 10,
+      // appBar: const Header(),
+      body: Center(
+        child: Column(
+          mainAxisSize: MainAxisSize.max,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+
+            Text(
+              "Login",
+              style: TextStyle(
+                color: primary,
+                fontFamily: 'Montserrat',
+                fontWeight: FontWeight.w900, // Semibold
+                fontSize: 32,
+              ),
             ),
-            decoration: getCustomInputDecoration('Email'),
-          ),
-          TextField(
-            onChanged: (value) {
-              store.updatePassword(value);
-            },
-            keyboardType: TextInputType.name,
-            style: const TextStyle(
-              color: Color(0xFFA8A8A8),
-              fontFamily: 'Montserrat',
-              fontWeight: FontWeight.w600, // Semibold
-              fontSize: 10,
+          
+            const SizedBox(
+              height: 24,
             ),
-            decoration: getCustomInputDecoration('Senha'),
-          ),
-          Button(
-              onPressed: () async {
-                await store.login();
-                if (store.userLogged.value != null) {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => ListsPage(
-                              user: store.userLogged.value!,
-                            )),
-                  );
-                }
-              },
-              content: 'Fazer Login',
-              color: primary)
-        ],
+
+            SizedBox(
+              height: 64,
+              width: 350,
+              child: TextField(
+                onChanged: (value) {
+                  store.updateEmail(value);
+                },
+                keyboardType: TextInputType.name,
+                style: const TextStyle(
+                  color: Color(0xFFA8A8A8),
+                  fontFamily: 'Montserrat',
+                  fontWeight: FontWeight.w600, // Semibold
+                  fontSize: 10,
+                ),
+                decoration: getCustomInputDecoration('Email'),
+              ),
+            ),
+
+            SizedBox(
+              height: 64,
+              width: 350,
+              child:  TextField(
+                onChanged: (value) {
+                  store.updatePassword(value);
+                },
+                keyboardType: TextInputType.name,
+                style: const TextStyle(
+                  color: Color(0xFFA8A8A8),
+                  fontFamily: 'Montserrat',
+                  fontWeight: FontWeight.w600, // Semibold
+                  fontSize: 10,
+                ),
+                decoration: getCustomInputDecoration('Senha'),
+                ),
+              ),
+
+            const SizedBox(
+              height: 24,
+            ),
+           
+            SizedBox(
+              height: 64,
+              width: 350,
+              child: Button(
+                onPressed: () async {
+                  await store.login();
+                  if (store.userLogged.value != null) {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => ListsPage(
+                                user: store.userLogged.value!,
+                              )),
+                    );
+                  }
+                },
+                content: 'Fazer Login',
+                color: primary),
+            ),
+          ],
+        ),
       ),
     );
   }

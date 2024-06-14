@@ -344,7 +344,7 @@ class _ListPageState extends State<ListPage> {
         ],
       ),
       bottomNavigationBar:
-          Footer(listRepository: ListRepository(HttpClient()), isDark: false),
+          Footer(isDark: false),
     ); // This trailing comma makes auto-formatting nicer for build methods.
   }
 }
