@@ -1,30 +1,23 @@
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:listedin/app/data/model/category.dart';
+import 'package:listedin/app/data/model/product.dart';
 import 'package:listedin/app/styles/colors.dart';
 import 'package:listedin/app/styles/texts.dart';
 
-class MyCombobox extends StatelessWidget {
-  MyCombobox({super.key, required this.categories});
+class Combobox extends StatefulWidget {
+  const Combobox(
+      {super.key, required this.categories, required this.fnCategory});
   final List<Category> categories;
-  final List<String> items = [
-    'A_Item1',
-    'A_Item2',
-    'A_Item3',
-    'A_Item4',
-    'B_Item1',
-    'B_Item2',
-    'B_Item3',
-    'B_Item4',
-  ];
+  final dynamic Function(Category category) fnCategory;
+  @override
+  State<Combobox> createState() => _ComboboxState();
+}
 
+class _ComboboxState extends State<Combobox> {
   Category? selectedValue;
   final TextEditingController textEditingController = TextEditingController();
 
-  @override
-  void dispose() {
-    textEditingController.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +32,7 @@ class MyCombobox extends StatelessWidget {
         )),
         isExpanded: true,
         hint: Text('Selecione', style: textXsSemibold),
-        items: categories
+        items: widget.categories
             .map((item) => DropdownMenuItem(
                 value: item,
                 child: Container(
@@ -51,9 +44,12 @@ class MyCombobox extends StatelessWidget {
         value: selectedValue,
 
         onChanged: (value) {
-          // setState(() {
-          selectedValue = value;
-          // });
+          setState(() {
+            selectedValue = value;
+          });
+          if (value!=null) {
+            widget.fnCategory(value);
+          }
         },
         buttonStyleData: ButtonStyleData(
           padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -141,7 +137,136 @@ class MyCombobox extends StatelessWidget {
 }
 
 
+class ComboboxProduct extends StatefulWidget {
+  const ComboboxProduct(
+      {super.key, required this.products, required this.fnProduct});
+  final List<Product> products;
+  final dynamic Function(Product product) fnProduct;
+  @override
+  State<ComboboxProduct> createState() => _ComboboxProductState();
+}
 
+class _ComboboxProductState extends State<ComboboxProduct> {
+  Product? selectedValue;
+  final TextEditingController textEditingController = TextEditingController();
+
+
+  @override
+  Widget build(BuildContext context) {
+    return DropdownButtonHideUnderline(
+      child: DropdownButton2<Product>(
+        style: textXsSemibold,
+        iconStyleData: IconStyleData(
+            icon: Icon(
+          Icons.unfold_more,
+          size: 16,
+          color: text,
+        )),
+        isExpanded: true,
+        hint: Text('Selecione um produto', style: textXsSemibold),
+        items: widget.products
+            .map((item) => DropdownMenuItem(
+                value: item,
+                child: Container(
+                  decoration: const BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(8))),
+                  child: Text(item.name, style: textSmMedium),
+                )))
+            .toList(),
+        value: selectedValue,
+
+        onChanged: (value) {
+          setState(() {
+            selectedValue = value;
+          });
+          if (value!=null) {
+            widget.fnProduct(value);
+          }
+        },
+        buttonStyleData: ButtonStyleData(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(color: const Color(0xFFD8D8D8), width: 0.5),
+          ),
+          height: 48,
+          width: double.infinity,
+        ),
+        dropdownStyleData: DropdownStyleData(
+          maxHeight: 200,
+          offset: const Offset(0, 252),
+          padding: EdgeInsets.all(8),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(16),
+            border: const Border(
+              left: BorderSide(
+                color: Color(0xFFD8D8D8),
+              ),
+              right: BorderSide(
+                color: Color(0xFFD8D8D8),
+              ),
+              bottom: BorderSide(
+                color: Color(0xFFD8D8D8),
+              ),
+              top: BorderSide(
+                color: Color(0xFFD8D8D8),
+              ),
+            ),
+            boxShadow: [
+              BoxShadow(
+                color:
+                    Colors.black.withOpacity(0.05), // Sombra extremamente leve
+                spreadRadius: 1,
+                blurRadius: 5,
+                offset: const Offset(0, 3), // Deslocamento da sombra
+              ),
+            ],
+          ),
+        ),
+        menuItemStyleData: const MenuItemStyleData(
+          height: 40,
+        ),
+        dropdownSearchData: DropdownSearchData(
+          searchController: textEditingController,
+          searchInnerWidgetHeight: 50,
+          searchInnerWidget: Container(
+            alignment: Alignment.center,
+            height: 50,
+            padding: const EdgeInsets.fromLTRB(8, 8, 0, 0),
+            decoration: const BoxDecoration(
+                border: Border.fromBorderSide(BorderSide(
+              color: Color(0xFFD8D8D8),
+            ))),
+            child: TextFormField(
+              expands: true,
+              maxLines: null,
+              style: textSmMedium,
+              controller: textEditingController,
+              decoration: InputDecoration(
+                  contentPadding: const EdgeInsets.symmetric(
+                    horizontal: 10,
+                    vertical: 8,
+                  ),
+                  hintText: 'Busque aqui!',
+                  hintStyle: textSmMedium,
+                  border: InputBorder.none),
+            ),
+          ),
+          searchMatchFn: (item, searchValue) {
+            return item.value.toString().contains(searchValue);
+          },
+        ),
+        //This to clear the search value when you close the menu
+        onMenuStateChange: (isOpen) {
+          if (!isOpen) {
+            textEditingController.clear();
+          }
+        },
+      ),
+    );
+  }
+}
 
 
 

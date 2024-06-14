@@ -30,11 +30,12 @@ class Header extends StatelessWidget implements PreferredSizeWidget {
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    isDarkMode
-                        ? LightModeIcon(color: white, size: 32)
-                        : DarkModeIcon(color: primary, size: 32),
-                    const SizedBox(width: 16, height: 32),
-                    ProfileIcon(color: isDarkMode ? white : primary, size: 32),
+                    // isDarkMode
+                    //     ? LightModeIcon(color: white, size: 32)
+                    //     : DarkModeIcon(color: primary, size: 32),
+                    // const SizedBox(width: 16, height: 32),
+                    // ProfileIcon(color: isDarkMode ? white : primary, size: 32),
+                    Icon(Icons.logout_rounded, color: primary,)
                   ],
                 ),
               ],

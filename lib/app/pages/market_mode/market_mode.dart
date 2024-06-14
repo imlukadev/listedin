@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:listedin/app/components/button/button.dart';
 import 'package:listedin/app/components/card/card.dart';
+import 'package:listedin/app/components/combobox/combobox.dart';
 import 'package:listedin/app/components/header/header.dart';
 import 'package:listedin/app/components/input/input.dart';
 import 'package:listedin/app/components/listStats/list_stats.dart';
+import 'package:listedin/app/components/overlay/overlay.dart';
 import 'package:listedin/app/components/week_day/week_day.dart';
 import 'package:listedin/app/data/model/product_list.dart';
+import 'package:listedin/app/data/model/user.dart';
 import 'package:listedin/app/pages/focus_mode/focus_mode.dart';
 import 'package:listedin/app/pages/list/store/list_store.dart';
 import 'package:listedin/app/styles/colors.dart';
@@ -13,7 +16,7 @@ import 'package:listedin/app/styles/icons/arrow.dart';
 import 'package:listedin/app/styles/texts.dart';
 
 class ProductsBuy {
-  final ProductList product;
+   ProductList product;
   bool isBuy;
 
   ProductsBuy(this.product, this.isBuy);
@@ -21,8 +24,9 @@ class ProductsBuy {
 
 class MarketMode extends StatefulWidget {
   final ListStore store;
+  final User user;
 
-  const MarketMode({super.key, required this.store});
+  const MarketMode({super.key, required this.store, required this.user});
 
   @override
   State<MarketMode> createState() => _MarketModeState();
@@ -120,21 +124,23 @@ class _MarketModeState extends State<MarketMode> {
                             final item = productsState[index];
                             if (!item.isBuy) {
                               return Dismissible(
+                                direction: DismissDirection.startToEnd,
+                                // background: Container(
+                                //   padding:
+                                //       const EdgeInsets.fromLTRB(48, 16, 48, 16),
+                                //   color: red,
+                                //   alignment: Alignment.centerLeft,
+                                //   child: const Icon(
+                                //     Icons.delete,
+                                //     color: Colors.white,
+                                //   ),
+                                // ),
                                 background: Container(
-                                  padding:
-                                      const EdgeInsets.fromLTRB(48, 16, 48, 16),
-                                  color: red,
-                                  alignment: Alignment.centerLeft,
-                                  child: const Icon(
-                                    Icons.delete,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                                secondaryBackground: Container(
+                                  
                                   padding:
                                       const EdgeInsets.fromLTRB(48, 16, 48, 16),
                                   color: primary,
-                                  alignment: Alignment.centerRight,
+                                  alignment: Alignment.centerLeft,
                                   child: const Icon(
                                     Icons.shopping_bag,
                                     color: Colors.white,
@@ -176,26 +182,27 @@ class _MarketModeState extends State<MarketMode> {
                             final item = productsState[index];
                             if (item.isBuy) {
                               return Dismissible(
+                                direction: DismissDirection.endToStart,
                                 background: Container(
                                   padding:
                                       const EdgeInsets.fromLTRB(48, 16, 48, 16),
                                   color: red,
-                                  alignment: Alignment.centerLeft,
+                                  alignment: Alignment.centerRight,
                                   child: const Icon(
                                     Icons.delete,
                                     color: Colors.white,
                                   ),
                                 ),
-                                secondaryBackground: Container(
-                                  padding:
-                                      const EdgeInsets.fromLTRB(48, 16, 48, 16),
-                                  color: primary,
-                                  alignment: Alignment.centerRight,
-                                  child: const Icon(
-                                    Icons.shopping_bag,
-                                    color: Colors.white,
-                                  ),
-                                ),
+                                // background: Container(
+                                //   padding:
+                                //       const EdgeInsets.fromLTRB(48, 16, 48, 16),
+                                //   color: primary,
+                                //   alignment: Alignment.centerRight,
+                                //   child: const Icon(
+                                //     Icons.shopping_bag,
+                                //     color: Colors.white,
+                                //   ),
+                                // ),
                                 onDismissed: (direction) {
                                   widget.store.unBuyProduct(index);
                                 },
@@ -264,21 +271,46 @@ class _MarketModeState extends State<MarketMode> {
               child: Row(
                 children: [
                   Expanded(
-                    child: Text(
-                      "Adicionar Produto",
-                      textAlign: TextAlign.center,
-                      style: textMnSemibold,
+                    child: InkWell(
+                      child: Text(
+                        "Adicionar Produto",
+                        textAlign: TextAlign.center,
+                        style: textMnSemibold,
+                      ),
+                      onTap: () {
+                        showModal(
+                            context,
+                            loadModal(
+                                Text(
+                                  "Busque por um produto seu!",
+                                  style: titleModal,
+                                ),
+                                ComboboxProduct(
+                                    products: widget.user.createdProducts!,
+                                    fnProduct: (product) {
+                                      widget.store.addProductToList(product);
+                                    }),
+                                ButtonModalProps("Novo", function: () {
+
+                                }),
+                                ButtonModalProps("Adicionar",
+                                    function: () async {
+                                  await widget.store.confirmProductToList();
+                                  Navigator.pop(context);
+                                })));
+                      },
                     ),
                   ),
                   InkWell(
                     onTap: () {
                       widget.store.searchProductsBuy('');
                       _searchController.clear();
-                      
+
                       Navigator.push(
                         context,
                         MaterialPageRoute(
                           builder: (context) => FocusMode(
+                            user: widget.user,
                             store: widget.store,
                           ),
                         ),

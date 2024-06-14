@@ -5,7 +5,7 @@ import 'package:listedin/app/data/model/product_list.dart';
 abstract class IProductListRepository {
   Future<ProductList> create(ProductList productList);
   Future<void> delete(int productId, int listId);
-  Future<ProductList> patchProductQunatity(int productId, int listId, int quantity);
+  Future<ProductList> patchProductQunatity(int productId, int listId, double quantity);
 }
 
 class ProductListRepository extends IProductListRepository{
@@ -35,7 +35,7 @@ class ProductListRepository extends IProductListRepository{
   }
 
   @override
-  Future<ProductList> patchProductQunatity(int productId, int listId, int quantity) async {
+  Future<ProductList> patchProductQunatity(int productId, int listId, double quantity) async {
     try{
       String uri = "/product/$productId/list/$listId/quantity";
       Response response = await client.patch(root+uri, <String, dynamic>{"quantity":quantity});

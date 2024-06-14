@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:listedin/app/components/card/card.dart';
+import 'package:listedin/app/components/combobox/combobox.dart';
+import 'package:listedin/app/components/overlay/overlay.dart';
+import 'package:listedin/app/data/model/user.dart';
 import 'package:listedin/app/pages/list/store/list_store.dart';
 import 'package:listedin/app/pages/market_mode/market_mode.dart';
 import 'package:listedin/app/styles/colors.dart';
 import 'package:listedin/app/styles/texts.dart';
 
 class FocusMode extends StatefulWidget {
-  FocusMode({
-    super.key,
-    required this.store,
-  });
+  FocusMode({super.key, required this.store, required this.user});
 
   final ListStore store;
+  final User user;
 
   @override
   State<FocusMode> createState() => _FocusModeState();
@@ -152,11 +153,32 @@ class _FocusModeState extends State<FocusMode> {
             height: 60,
             child: Row(
               children: [
-                 Expanded(
-                  child: Text(
-                    "Adicionar Produto",
-                    textAlign: TextAlign.center,
-                    style: textMnSemibold,
+                Expanded(
+                  child: InkWell(
+                    child: Text(
+                      "Adicionar Produto",
+                      textAlign: TextAlign.center,
+                      style: textMnSemibold,
+                    ),
+                    onTap: () {
+                      showModal(
+                          context,
+                          loadModal(
+                              Text(
+                                "Busque por um produto seu!",
+                                style: titleModal,
+                              ),
+                              ComboboxProduct(
+                                  products: widget.user.createdProducts!,
+                                  fnProduct: (product) {
+                                    widget.store.addProductToList(product);
+                                  }),
+                              ButtonModalProps("Novo", function: () {}),
+                              ButtonModalProps("Adicionar", function: () async {
+                                await widget.store.confirmProductToList();
+                                Navigator.pop(context);
+                              })));
+                    },
                   ),
                 ),
                 InkWell(

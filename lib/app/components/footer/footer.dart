@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:listedin/app/data/model/user.dart';
 import 'package:listedin/app/data/repositories/list_repository.dart';
 import 'package:listedin/app/pages/home/home.dart';
@@ -88,7 +89,8 @@ class ListsRedirect extends StatelessWidget{
       crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisAlignment: MainAxisAlignment.center,
       mainAxisSize: MainAxisSize.min,
-      children: [ TextButton( 
+      children: [ 
+        TextButton( 
           onPressed: () {
             Navigator.push(
               context,
@@ -102,6 +104,10 @@ class ListsRedirect extends StatelessWidget{
           child:ListsIcon(color: isDark ? white : (isSelected ? primary : darkModal), key: key,size: 32,)
         ),
         Text("Listas", style: textStyle),
+        // Container(width: 27, height: 2, color: primary, ),
+        // SizedBox( height: 2,),
+        // SizedBox(width: 8, height: 2,),
+
       ]);
 
   }
