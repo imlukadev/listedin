@@ -35,6 +35,7 @@ class ListsStore {
     try {
       List<ShopList> list = state.value;
       ShopList result = await repository.create(user.id!);
+      print(result.toJSON());
       list.add(result);
       listBackup.add(result);
       state.value = List.from(listBackup);

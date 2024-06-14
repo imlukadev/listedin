@@ -280,7 +280,7 @@ class _ProductsPageState extends State<ProductsPage> {
           )
         ],
       ),
-      bottomNavigationBar: Footer(listRepository: ListRepository(HttpClient()), isDark: false),
+      bottomNavigationBar: Footer( isDark: false),
     );
   }
 }

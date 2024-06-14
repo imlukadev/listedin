@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:listedin/app/components/card/card.dart';
+import 'package:listedin/app/components/footer/footer.dart';
 import 'package:listedin/app/components/header/header.dart';
 import 'package:listedin/app/components/input/input.dart';
 import 'package:listedin/app/data/http/http_client.dart';
@@ -154,6 +155,9 @@ class _ListsPageState extends State<ListsPage> {
             ),
           )
         ],
+      ),
+      bottomNavigationBar: const Footer(
+        isDark: false,
       ),
     );
   }
