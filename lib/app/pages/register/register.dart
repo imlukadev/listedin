@@ -3,6 +3,7 @@ import 'package:listedin/app/components/button/button.dart';
 import 'package:listedin/app/components/header/header.dart';
 import 'package:listedin/app/components/input/input.dart';
 import 'package:listedin/app/pages/lists/lists.dart';
+import 'package:listedin/app/pages/login/login.dart';
 import 'package:listedin/app/pages/register/store/register_store.dart';
 import 'package:listedin/app/styles/colors.dart';
 
@@ -98,6 +99,36 @@ class _RegisterPageState extends State<RegisterPage> {
             ),
           ),
           
+              SizedBox(
+                width: 350,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.max,
+                  children: [
+                    TextButton(
+                      onPressed: () async {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const LoginPage(
+                                    title: "Login",
+                              )),
+                        );
+                      },
+                      child: Text(
+                        "Já possui uma conta? clique aqui e faça login!",
+                        style: TextStyle(
+                          color: primary,
+                          fontFamily: 'Montserrat',
+                          fontWeight: FontWeight.w600, // Semibold
+                          fontSize: 12,
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+              ),
+
           const SizedBox(
             height: 24,
           ),
