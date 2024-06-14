@@ -19,3 +19,15 @@ TextStyle textSmMedium = TextStyle(
     fontSize: 12,
     fontWeight: FontWeight.w500,
     color: text);
+
+TextStyle textMnSemibold = TextStyle(
+    fontFamily: 'Montserrat',
+    fontSize: 14,
+    fontWeight: FontWeight.w600,
+    color: white);
+
+    TextStyle textXsSemibold = TextStyle(
+    fontFamily: 'Montserrat',
+    fontSize: 10,
+    fontWeight: FontWeight.w600,
+    color: text);

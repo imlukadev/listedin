@@ -11,6 +11,7 @@ import 'package:listedin/app/pages/devs/store_luka.dart';
 import 'package:listedin/app/pages/lists/lists.dart';
 
 import 'package:listedin/app/pages/login/login.dart';
+import 'package:listedin/app/pages/products/products.dart';
 import 'package:listedin/app/styles/colors.dart';
 
 void main() async {
@@ -106,7 +107,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   context,
                   MaterialPageRoute(
                       builder: (context) =>
-                          ListsPage(user: listStore.state.value)),
+                          ProductsPage(user: listStore.state.value)),
                 );
               },
               child: const Text('tela listas'),
@@ -132,3 +133,26 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 }
+
+
+
+// import 'package:flutter/material.dart';
+// import 'package:listedin/app/components/combobox/combobox.dart';
+
+// void main() {
+//   runApp(const MyApp());
+// }
+
+// class MyApp extends StatelessWidget {
+//   const MyApp({super.key});
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return MaterialApp(
+//       home: Scaffold(
+//         appBar: AppBar(title: const Text("DropdownButton Example")),
+//         body:  MyCombobox(),
+//       ),
+//     );
+//   }
+// }

@@ -2,11 +2,13 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:listedin/app/data/http/http_client.dart';
+import 'package:listedin/app/data/model/category.dart';
 import 'package:listedin/app/data/model/product.dart';
 
 abstract class IProductRepository {
   Future<Product> findById(int id);
   Future<List<Product>> findAll();
+  Future<List<Category>> findCategories();
   Future<Product> create(Product product);
   Future<Product> update(Product product);
 }
@@ -27,8 +29,20 @@ class ProductRepository extends IProductRepository {
   Future<List<Product>> findAll() async {
     try {
       Response response = await client.get("/product");
-      List<Map<String, dynamic>> products = json.decode(response.data);
+      List<Map<String, dynamic>> products = response.data;
       return products.map((product) => Product.fromJSON(product)).toList();
+    } catch (e) {
+      throw Exception(e);
+    }
+  }
+
+  @override
+  Future<List<Category>> findCategories() async {
+    try {
+      Response response = await client.get("/product/categories");
+      List<dynamic> categories = response.data;
+
+      return categories.map((category) => Category.fromJSON(category)).toList();
     } catch (e) {
       throw Exception(e);
     }

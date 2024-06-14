@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:listedin/app/components/card/card.dart';
+import 'package:listedin/app/components/combobox/combobox.dart';
 import 'package:listedin/app/components/header/header.dart';
 import 'package:listedin/app/components/input/input.dart';
+import 'package:listedin/app/components/overlay/overlay.dart';
 import 'package:listedin/app/data/http/http_client.dart';
 import 'package:listedin/app/data/model/user.dart';
 import 'package:listedin/app/data/repositories/product_repository.dart';
@@ -27,6 +29,7 @@ class _ProductsPageState extends State<ProductsPage> {
       repository: ProductRepository(HttpClient()),
     );
     store.getProducts();
+    store.getCategories();
     // print();
   }
 
@@ -34,6 +37,64 @@ class _ProductsPageState extends State<ProductsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const Header(),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          showModal(
+              context,
+              loadModal(
+                   Row(
+                    children: [
+                      Expanded(child: Text("Novo Produto")),
+                      Icon(Icons.edit)
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text("Preço"),
+                            SizedBox(
+                              height: 8,
+                            ),
+                            TextField(
+                              onChanged: (value) {},
+                              decoration: getInputDecoration("Preço"),
+                            )
+                          ],
+                        ),
+                      ),
+                      SizedBox(
+                        width: 32,
+                      ),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text("Categoria"),
+                            SizedBox(
+                              height: 8,
+                            ),
+                            MyCombobox(categories:  store.categoryState.value)
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                  ButtonModalProps("Cancelar", function: () {
+                    Navigator.pop(context);
+                  }),
+                  ButtonModalProps("Criar", function: () {})));
+        },
+        tooltip: 'Criar produto!',
+        backgroundColor: primary,
+        shape: const CircleBorder(),
+        child: Icon(
+          Icons.add,
+          color: white,
+        ),
+      ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -41,7 +102,7 @@ class _ProductsPageState extends State<ProductsPage> {
           Padding(
             padding: const EdgeInsets.fromLTRB(24, 24, 24, 24),
             child: Text(
-              "Suas Listas!",
+              "Seus Produtos!",
               style: TextStyle(
                   fontFamily: 'Montserrat',
                   fontSize: 20,

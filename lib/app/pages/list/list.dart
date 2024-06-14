@@ -26,6 +26,7 @@ class ListPage extends StatefulWidget {
 }
 
 class _ListPageState extends State<ListPage> {
+  final TextEditingController _searchController = TextEditingController();
   late ListStore store;
   bool isEditing = false;
 
@@ -61,18 +62,18 @@ class _ListPageState extends State<ListPage> {
     }
 
     String calcListQTD() {
-      double totalPrice = 0;
+      double totalQuantity = 0;
       for (var product in store.state.value!.products!) {
-        totalPrice += product.quantity;
+        totalQuantity += product.quantity;
       }
 
-      return totalPrice
+      return totalQuantity
                   .toStringAsFixed(1)
                   .replaceFirst('.', ',')
                   .split(',')[1] ==
               '0'
-          ? totalPrice.ceil().toString()
-          : totalPrice.toStringAsFixed(1).replaceFirst('.', ',');
+          ? totalQuantity.ceil().toString()
+          : totalQuantity.toStringAsFixed(1).replaceFirst('.', ',');
     }
 
     return Scaffold(
@@ -189,6 +190,7 @@ class _ListPageState extends State<ListPage> {
           Padding(
             padding: const EdgeInsetsDirectional.symmetric(horizontal: 24),
             child: TextField(
+              controller: _searchController,
               onChanged: (value) {
                 store.searchProducts(value);
               },
@@ -236,7 +238,6 @@ class _ListPageState extends State<ListPage> {
             ),
           ),
           ListStats(price: calcListPrice(), quantity: calcListQTD()),
-          
           const SizedBox(
             height: 16,
           ),
@@ -245,7 +246,9 @@ class _ListPageState extends State<ListPage> {
             child: Row(
               children: [
                 Button(
-                    onPressed: () {}, content: 'Agendar Compra', color: primary),
+                    onPressed: () {},
+                    content: 'Agendar Compra',
+                    color: primary),
                 const SizedBox(
                   width: 16,
                 ),
@@ -263,6 +266,8 @@ class _ListPageState extends State<ListPage> {
                                   style: bodyModal),
                               ButtonModalProps("Modo mercado", function: () {
                                 Navigator.pop(context);
+                                store.searchProducts("");
+                                _searchController.clear();
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
