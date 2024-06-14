@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:dio/dio.dart';
 
 class HttpClient {
@@ -14,7 +16,8 @@ class HttpClient {
 
   Future<Response> delete(String url) async {
     try {
-      return await _dio.get(url);
+      Response response = await _dio.delete(url);
+      return response;
     } catch (e) {
       throw Exception('Erro ao carregar os dados: $e');
     }

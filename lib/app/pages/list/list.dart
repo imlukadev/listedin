@@ -10,6 +10,7 @@ import 'package:listedin/app/data/http/http_client.dart';
 import 'package:listedin/app/data/model/list.dart';
 import 'package:listedin/app/data/repositories/list_repository.dart';
 import 'package:listedin/app/pages/list/store/list_store.dart';
+import 'package:listedin/app/pages/lists/store/lists_store.dart';
 import 'package:listedin/app/pages/market_mode/market_mode.dart';
 import 'package:listedin/app/styles/colors.dart';
 import 'package:listedin/app/styles/icons/delete_icon.dart';
@@ -17,8 +18,9 @@ import 'package:listedin/app/styles/icons/edit_icon.dart';
 import 'package:listedin/app/styles/texts.dart';
 
 class ListPage extends StatefulWidget {
-  const ListPage({super.key, required this.list,});
+  ListPage({super.key, required this.list, required this.listsStore});
 
+  ListsStore listsStore;
   final ShopList list;
 
   @override
@@ -28,6 +30,7 @@ class ListPage extends StatefulWidget {
 class _ListPageState extends State<ListPage> {
   final TextEditingController _searchController = TextEditingController();
   late ListStore store;
+
   bool isEditing = false;
 
   @override
@@ -176,6 +179,8 @@ class _ListPageState extends State<ListPage> {
                                   function: () => Navigator.pop(context)),
                               ButtonModalProps("Deletar", function: () async {
                                 await store.deleteList();
+                                widget.listsStore.state.value.removeWhere((list) => list.id == widget.list.id);
+                                widget.listsStore.state.value = List.from(widget.listsStore.state.value);
                                 Navigator.pop(context);
                                 Navigator.pop(context);
                               })));

@@ -50,6 +50,7 @@ class _ListsPageState extends State<ListsPage> {
             context,
             MaterialPageRoute(
               builder: (context) => ListPage(
+                listsStore: store,
                 list: list,
               ),
             ),
@@ -126,6 +127,7 @@ class _ListsPageState extends State<ListsPage> {
                                   context,
                                   MaterialPageRoute(
                                     builder: (context) => ListPage(
+                                      listsStore: store,
                                       list: item,
                                     ),
                                   ),

@@ -3,6 +3,7 @@ import 'package:listedin/app/styles/colors.dart';
 import 'package:listedin/app/styles/icons/dark_mode_icon.dart';
 import 'package:listedin/app/styles/icons/light_mode_icon.dart';
 import 'package:listedin/app/styles/icons/profile_icon.dart';
+import 'package:listedin/main.dart';
 
 class Header extends StatelessWidget implements PreferredSizeWidget {
   final bool isDarkMode;
@@ -21,11 +22,21 @@ class Header extends StatelessWidget implements PreferredSizeWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Image.asset(
+                TextButton(onPressed: () {
+                                // Navegar para a segunda página
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => const MyApp( //mudar para home qnd tiver uma
+                                    ),
+                                  ),
+                                );
+                              }, child:                 Image.asset(
                   isDarkMode ? 'assets/whiteLogo.png' : 'assets/onelogo.png',
                   width: 32,
                   height: 32,
-                ),
+                ),),
+
                 Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -34,7 +45,16 @@ class Header extends StatelessWidget implements PreferredSizeWidget {
                         ? LightModeIcon(color: white, size: 32)
                         : DarkModeIcon(color: primary, size: 32),
                     const SizedBox(width: 16, height: 32),
-                    ProfileIcon(color: isDarkMode ? white : primary, size: 32),
+                    TextButton(onPressed: () {
+                                // Navegar para a segunda página
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => const MyApp(), //mudar para Config
+                                  ),
+                                );
+                              }, child: ProfileIcon(color: isDarkMode ? white : primary, size: 32),)
+                    
                   ],
                 ),
               ],
