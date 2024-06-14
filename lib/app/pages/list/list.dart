@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:listedin/app/components/button/button.dart';
 import 'package:listedin/app/components/card/card.dart';
+import 'package:listedin/app/components/combobox/combobox.dart';
 import 'package:listedin/app/components/footer/footer.dart';
 import 'package:listedin/app/components/header/header.dart';
 import 'package:listedin/app/components/input/input.dart';
@@ -8,6 +9,7 @@ import 'package:listedin/app/components/listStats/list_stats.dart';
 import 'package:listedin/app/components/overlay/overlay.dart';
 import 'package:listedin/app/data/http/http_client.dart';
 import 'package:listedin/app/data/model/list.dart';
+import 'package:listedin/app/data/model/user.dart';
 import 'package:listedin/app/data/repositories/list_repository.dart';
 import 'package:listedin/app/pages/list/store/list_store.dart';
 import 'package:listedin/app/pages/market_mode/market_mode.dart';
@@ -17,7 +19,8 @@ import 'package:listedin/app/styles/icons/edit_icon.dart';
 import 'package:listedin/app/styles/texts.dart';
 
 class ListPage extends StatefulWidget {
-  const ListPage({super.key, required this.list});
+  const ListPage({super.key, required this.list, required this.user});
+  final User user;
 
   final ShopList list;
 
@@ -219,7 +222,50 @@ class _ListPageState extends State<ListPage> {
                         return Column(
                           children: [
                             InkWell(
-                              onTap: () {},
+                              onTap: () {
+                                showModal(
+                                    context,
+                                    loadModal(
+                                        Text(
+                                          "Edite a quantidade do produto!",
+                                          style: titleModal,
+                                        ),
+                                        Row(
+                                          children: [
+                                            Expanded(
+                                              child: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Text("Quantidade"),
+                                                  SizedBox(
+                                                    height: 8,
+                                                  ),
+                                                  TextField(
+                                                    keyboardType:
+                                                        TextInputType.number,
+                                                    onChanged: (value) {
+                                                      store.quantityToPatch(
+                                                          value);
+                                                    },
+                                                    decoration:
+                                                        getInputDecoration(
+                                                            "Quantidade"),
+                                                  )
+                                                ],
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        ButtonModalProps("Remover",
+                                            function: () {}),
+                                        ButtonModalProps("Salvar",
+                                            function: () async {
+                                          await store.patchProductList(
+                                              item, index);
+                                          Navigator.pop(context);
+                                        })));
+                              },
                               child: CardBuy(
                                 productList: item,
                                 product: item.product,
@@ -237,55 +283,87 @@ class _ListPageState extends State<ListPage> {
               },
             ),
           ),
-          ListStats(price: calcListPrice(), quantity: calcListQTD()),
+          ValueListenableBuilder<ShopList?>(
+              valueListenable: store.state,
+              builder: (context, shopList, _) {
+                return ListStats(
+                    price: calcListPrice(), quantity: calcListQTD());
+              }),
           const SizedBox(
             height: 16,
           ),
           Padding(
             padding: const EdgeInsetsDirectional.symmetric(horizontal: 24),
-            child: Row(
-              children: [
-                Button(
-                    onPressed: () {},
-                    content: 'Agendar Compra',
-                    color: primary),
-                const SizedBox(
-                  width: 16,
-                ),
-                Button(
-                    onPressed: () {
-                      showModal(
-                          context,
-                          loadModal(
-                              Text(
-                                "Deseja comprar ou entrar em modo mercado?",
-                                style: titleModal,
-                              ),
-                              Text(
-                                  "No modo mercado você começa suas compras, podendo utilizar a lista como checagem para tudo que já foi pego e o que ainda falta além de ver o preço em tempo real.",
-                                  style: bodyModal),
-                              ButtonModalProps("Modo mercado", function: () {
-                                Navigator.pop(context);
-                                store.searchProducts("");
-                                _searchController.clear();
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => MarketMode(
-                                      store: store,
-                                    ),
+            child: SizedBox(
+                height: 48,
+                child: Row(
+                  children: [
+                    Button(
+                      onPressed: () {
+                        showModal(
+                            context,
+                            loadModal(
+                                Text(
+                                  "Busque por um produto seu!",
+                                  style: titleModal,
+                                ),
+                                ComboboxProduct(
+                                    products: widget.user.createdProducts!,
+                                    fnProduct: (product) {
+                                      store.addProductToList(product);
+                                    }),
+                                ButtonModalProps("Novo", function: () {}),
+                                ButtonModalProps("Adicionar",
+                                    function: () async {
+                                  await store.confirmProductToList();
+                                  Navigator.pop(context);
+                                })));
+                      },
+                      content: "Adicionar Produto",
+                      color: primary,
+                      small: true,
+                    ),
+                    const SizedBox(
+                      width: 16,
+                    ),
+                    Button(
+                        small: true,
+                        onPressed: () {
+                          showModal(
+                              context,
+                              loadModal(
+                                  Text(
+                                    "Deseja comprar ou entrar em modo mercado?",
+                                    style: titleModal,
                                   ),
-                                );
-                              }),
-                              ButtonModalProps("Comprar", function: () async {
-                                await store.patchPurchasedQuantity();
-                                Navigator.pop(context);
-                              })));
-                    },
-                    content: 'Comprar',
-                    color: primary),
-              ],
-            ),
+                                  Text(
+                                      "No modo mercado você começa suas compras, podendo utilizar a lista como checagem para tudo que já foi pego e o que ainda falta além de ver o preço em tempo real.",
+                                      style: bodyModal),
+                                  ButtonModalProps("Modo mercado",
+                                      function: () {
+                                    Navigator.pop(context);
+                                    store.searchProducts("");
+                                    _searchController.clear();
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => MarketMode(
+                                          user: widget.user,
+                                          store: store,
+                                        ),
+                                      ),
+                                    );
+                                  }),
+                                  ButtonModalProps("Comprar",
+                                      function: () async {
+                                    await store.patchPurchasedQuantity();
+                                    Navigator.pop(context);
+                                  })));
+                        },
+                        content: 'Comprar',
+                        color: primary),
+                  ],
+                )),
           ),
           const SizedBox(
             height: 16,

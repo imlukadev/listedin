@@ -57,6 +57,13 @@ class User {
     return "id: $id \n name: $name \n email: $email \n ";
   }
 
+  Map<String, dynamic> toSimpleJSON() {
+        Map<String, dynamic> data = <String, dynamic>{};
+    data["id"] = id;
+    data["name"] = name;
+    return data;
+  }
+
   Map<String, dynamic> toJSON() {
     Map<String, dynamic> data = <String, dynamic>{};
     data["id"] = id;
