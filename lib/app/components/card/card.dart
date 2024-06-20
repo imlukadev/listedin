@@ -113,13 +113,18 @@ class CardBuy extends StatelessWidget {
                                 color: text)),
                         // const SizedBox(width: 4, height: 4),
                         isList
-                            ? const Row(
-                                children: [
-                                  SizedBox(width: 8, height: 8),
-                                  SizedBox(width: 8, height: 8),
-                                  SizedBox(width: 8, height: 8),
-                                  SizedBox(width: 8, height: 8)
-                                ],
+                            ?  Row(
+children: list!.categories.map((category) {
+              return Container(
+                width: 8,
+                height: 8,
+                decoration: BoxDecoration(
+        shape: BoxShape.circle,
+       color: category.color
+      ),
+                margin: EdgeInsets.all(2), // Espaçamento entre os boxes
+              );
+            }).toList(),
                               )
                             : Text(product!.category.name,
                                 style: TextStyle(
