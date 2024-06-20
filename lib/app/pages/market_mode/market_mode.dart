@@ -11,6 +11,7 @@ import 'package:listedin/app/data/model/product_list.dart';
 import 'package:listedin/app/data/model/user.dart';
 import 'package:listedin/app/pages/focus_mode/focus_mode.dart';
 import 'package:listedin/app/pages/list/store/list_store.dart';
+import 'package:listedin/app/pages/user_store/user_store.dart';
 import 'package:listedin/app/styles/colors.dart';
 import 'package:listedin/app/styles/icons/arrow.dart';
 import 'package:listedin/app/styles/texts.dart';
@@ -24,7 +25,7 @@ class ProductsBuy {
 
 class MarketMode extends StatefulWidget {
   final ListStore store;
-  final User user;
+  final UserStore user;
 
   const MarketMode({super.key, required this.store, required this.user});
 
@@ -286,7 +287,7 @@ class _MarketModeState extends State<MarketMode> {
                                   style: titleModal,
                                 ),
                                 ComboboxProduct(
-                                    products: widget.user.createdProducts!,
+                                    products: widget.user.state.value!.createdProducts!,
                                     fnProduct: (product) {
                                       widget.store.addProductToList(product);
                                     }),

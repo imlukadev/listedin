@@ -13,16 +13,15 @@ import 'package:listedin/app/data/model/user.dart';
 import 'package:listedin/app/data/repositories/list_repository.dart';
 import 'package:listedin/app/pages/list/store/list_store.dart';
 import 'package:listedin/app/pages/market_mode/market_mode.dart';
+import 'package:listedin/app/pages/user_store/user_store.dart';
 import 'package:listedin/app/styles/colors.dart';
 import 'package:listedin/app/styles/icons/delete_icon.dart';
 import 'package:listedin/app/styles/icons/edit_icon.dart';
 import 'package:listedin/app/styles/texts.dart';
 
 class ListPage extends StatefulWidget {
-
-  const ListPage({super.key, required this.list, required this.user});
-  final User user;
-
+  const ListPage({super.key, required this.list, required this.userStore});
+  final UserStore userStore;
 
   final ShopList list;
 
@@ -95,6 +94,18 @@ class _ListPageState extends State<ListPage> {
                     children: [
                       Row(
                         children: [
+                          Expanded(
+                            child: TextField(
+                                onChanged: (value) {
+                                  store.patchName(value);
+                                },
+                                decoration: InputDecoration(
+                                  hintText: "Nome do Produto",
+                                  hintStyle:
+                                      titleModal.copyWith(color: Colors.grey),
+                                )),
+                          ),
+
                           // isEditing
                           //     ? TextField(
                           //         keyboardType: TextInputType.name,
@@ -310,7 +321,7 @@ class _ListPageState extends State<ListPage> {
                                   style: titleModal,
                                 ),
                                 ComboboxProduct(
-                                    products: widget.user.createdProducts!,
+                                    products: widget.userStore.state.value!.createdProducts!,
                                     fnProduct: (product) {
                                       store.addProductToList(product);
                                     }),
@@ -350,7 +361,7 @@ class _ListPageState extends State<ListPage> {
                                       context,
                                       MaterialPageRoute(
                                         builder: (context) => MarketMode(
-                                          user: widget.user,
+                                          user: widget.userStore,
                                           store: store,
                                         ),
                                       ),
@@ -372,8 +383,7 @@ class _ListPageState extends State<ListPage> {
           )
         ],
       ),
-      bottomNavigationBar:
-          Footer(isDark: false),
+      bottomNavigationBar: Footer(isDark: false, userStore: widget.userStore,),
     ); // This trailing comma makes auto-formatting nicer for build methods.
   }
 }

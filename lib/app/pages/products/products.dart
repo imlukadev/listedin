@@ -10,12 +10,13 @@ import 'package:listedin/app/data/model/user.dart';
 import 'package:listedin/app/data/repositories/list_repository.dart';
 import 'package:listedin/app/data/repositories/product_repository.dart';
 import 'package:listedin/app/pages/products/store/products_store.dart';
+import 'package:listedin/app/pages/user_store/user_store.dart';
 import 'package:listedin/app/styles/colors.dart';
 import 'package:listedin/app/styles/texts.dart';
 
 class ProductsPage extends StatefulWidget {
-  const ProductsPage({super.key, required this.user});
-  final User user;
+  const ProductsPage({super.key, required this.userStore});
+  final UserStore userStore;
 
   @override
   State<ProductsPage> createState() => _ProductsPageState();
@@ -28,7 +29,7 @@ class _ProductsPageState extends State<ProductsPage> {
   void initState() {
     super.initState();
     store = ProductsStore(
-      user: widget.user,
+      user: widget.userStore.state.value!,
       repository: ProductRepository(HttpClient()),
     );
     store.getProducts();
@@ -280,7 +281,7 @@ class _ProductsPageState extends State<ProductsPage> {
           )
         ],
       ),
-      bottomNavigationBar: Footer( isDark: false),
+      bottomNavigationBar: Footer( isDark: false, isProducts: true, userStore: widget.userStore,),
     );
   }
 }

@@ -24,6 +24,10 @@ class ListStore {
   final ValueNotifier<List<ProductsBuy>> productsState =
       ValueNotifier<List<ProductsBuy>>([]);
 
+
+patchName(value){
+  
+}
   setState() {
     state.value = list;
     listBackup = list.products!;

@@ -5,6 +5,7 @@ import 'package:listedin/app/components/overlay/overlay.dart';
 import 'package:listedin/app/data/model/user.dart';
 import 'package:listedin/app/pages/list/store/list_store.dart';
 import 'package:listedin/app/pages/market_mode/market_mode.dart';
+import 'package:listedin/app/pages/user_store/user_store.dart';
 import 'package:listedin/app/styles/colors.dart';
 import 'package:listedin/app/styles/texts.dart';
 
@@ -12,7 +13,7 @@ class FocusMode extends StatefulWidget {
   FocusMode({super.key, required this.store, required this.user});
 
   final ListStore store;
-  final User user;
+  final UserStore user;
 
   @override
   State<FocusMode> createState() => _FocusModeState();
@@ -169,7 +170,7 @@ class _FocusModeState extends State<FocusMode> {
                                 style: titleModal,
                               ),
                               ComboboxProduct(
-                                  products: widget.user.createdProducts!,
+                                  products: widget.user.state.value!.createdProducts!,
                                   fnProduct: (product) {
                                     widget.store.addProductToList(product);
                                   }),
