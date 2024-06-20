@@ -113,18 +113,18 @@ class CardBuy extends StatelessWidget {
                                 color: text)),
                         // const SizedBox(width: 4, height: 4),
                         isList
-                            ?  Row(
-children: list!.categories.map((category) {
-              return Container(
-                width: 8,
-                height: 8,
-                decoration: BoxDecoration(
-        shape: BoxShape.circle,
-       color: category.color
-      ),
-                margin: EdgeInsets.all(2), // Espaçamento entre os boxes
-              );
-            }).toList(),
+                            ? Row(
+                                children: list!.categories.map((category) {
+                                  return Container(
+                                    width: 8,
+                                    height: 8,
+                                    decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        color: category.color),
+                                    margin: const EdgeInsets.all(
+                                        2), // Espaçamento entre os boxes
+                                  );
+                                }).toList(),
                               )
                             : Text(product!.category.name,
                                 style: TextStyle(
@@ -150,9 +150,7 @@ children: list!.categories.map((category) {
                           ),
                           const SizedBox(width: 6),
                           Text(
-                            isList
-                                ? calcListPrice()
-                                : calcProductListPrice(),
+                            isList ? calcListPrice() : calcProductListPrice(),
                             style: TextStyle(
                                 fontFamily: 'Montserrat',
                                 fontSize: 16,

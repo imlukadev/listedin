@@ -104,6 +104,7 @@ void loadModalProducts(
                       onChanged: (value) {
                         store.updatePrice(value);
                       },
+                      keyboardType: TextInputType.number,
                       decoration: getInputDecoration("Preço"),
                     )
                   ],
