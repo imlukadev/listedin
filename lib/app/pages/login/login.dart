@@ -7,6 +7,7 @@ import 'package:listedin/app/data/repositories/user_repository.dart';
 import 'package:listedin/app/pages/lists/lists.dart';
 import 'package:listedin/app/pages/login/store/login_store.dart';
 import 'package:listedin/app/pages/register/register.dart';
+import 'package:listedin/app/pages/user_store/user_store.dart';
 import 'package:listedin/app/styles/colors.dart';
 
 class LoginPage extends StatefulWidget {
@@ -140,7 +141,7 @@ class _LoginPageState extends State<LoginPage> {
                       context,
                       MaterialPageRoute(
                           builder: (context) => ListsPage(
-                                user: store.userLogged.value!,
+                                userStore: UserStore(user: store.userLogged.value!),
                               )),
                     );
                   }

@@ -14,6 +14,7 @@ import 'package:listedin/app/data/repositories/list_repository.dart';
 import 'package:listedin/app/pages/list/store/list_store.dart';
 import 'package:listedin/app/pages/lists/store/lists_store.dart';
 import 'package:listedin/app/pages/market_mode/market_mode.dart';
+import 'package:listedin/app/pages/user_store/user_store.dart';
 import 'package:listedin/app/styles/colors.dart';
 import 'package:listedin/app/styles/icons/delete_icon.dart';
 import 'package:listedin/app/styles/icons/edit_icon.dart';
@@ -21,10 +22,10 @@ import 'package:listedin/app/styles/texts.dart';
 
 class ListPage extends StatefulWidget {
 
-  ListPage({super.key, required this.list, required this.listsStore, required this.user});
- 
-  final User user;
-  ListsStore listsStore;
+  const ListPage({super.key, required this.list, required this.userStore});
+  final UserStore userStore;
+
+
   final ShopList list;
 
   @override
@@ -37,6 +38,8 @@ class _ListPageState extends State<ListPage> {
 
   bool isEditing = false;
 
+  final TextEditingController controllerNameLists = TextEditingController();
+
   @override
   void initState() {
     super.initState();
@@ -47,6 +50,7 @@ class _ListPageState extends State<ListPage> {
       ),
     );
     store.setState();
+    controllerNameLists.text = store.state.value!.name;
     // print();
   }
 
@@ -97,42 +101,52 @@ class _ListPageState extends State<ListPage> {
                     children: [
                       Row(
                         children: [
-                          // isEditing
-                          //     ? TextField(
-                          //         keyboardType: TextInputType.name,
+                          isEditing
+                              ? Expanded(
+                                  child: TextField(
+                                  keyboardType: TextInputType.name,
+                                  autofocus: true,
+                                  controller: controllerNameLists,
 
-                          //         style: TextStyle(
-                          //             fontFamily: 'Montserrat',
-                          //             fontSize: 20,
-                          //             fontWeight: FontWeight.w600,
-                          //             color: text),
-                          //         decoration:  InputDecoration(
-                          //           border: InputBorder.none, // Reduzir a densidade para menos espaço
-                          //           hintText: store.state.value?.name ?? "Sem nome",
-                          //           contentPadding:
-                          //               EdgeInsets.zero, // Remover padding
-                          //         ),
-                          //         maxLines: null, // Permitir múltiplas linhas
-                          //       )
-                          //     : Text(
-                          //         store.state.value!.name.isNotEmpty
-                          //             ? store.state.value!.name
-                          //             : "Sem nome",
-                          //         style: TextStyle(
-                          //             fontFamily: 'Montserrat',
-                          //             fontSize: 20,
-                          //             fontWeight: FontWeight.w600,
-                          //             color: text),
-                          //       ),
+                                  style: TextStyle(
+                                      fontFamily: 'Montserrat',
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.w600,
+                                      color: text),
+                                  decoration: InputDecoration(
+                                    border: InputBorder
+                                        .none, // Reduzir a densidade para menos espaço
+                                    hintText:
+                                        store.state.value?.name ?? "Sem nome",
+                                    contentPadding:
+                                        EdgeInsets.zero, // Remover padding
+                                  ),
+                                  onChanged: (value) {
+                                    store.patchName(value);
+                                  },
+                                  maxLines: null, // Permitir múltiplas linhas
+                                ))
+                              : Expanded(
+                                  child: Text(
+                                    store.state.value!.name.isNotEmpty
+                                        ? store.state.value!.name
+                                        : "Sem nome",
+                                    style: TextStyle(
+                                        fontFamily: 'Montserrat',
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.w600,
+                                        color: text),
+                                  ),
+                                ),
                           const SizedBox(
                             width: 16,
                           ),
                           IconButton(
-                            icon: EditIcon(color: primary, size: 16),
-                            onPressed: () {
-                              toggleEditing();
-                            },
-                          )
+                              icon: EditIcon(color: primary, size: 16),
+                              onPressed: () {
+                                toggleEditing();
+                              },
+                            ),
                         ],
                       ),
                       ValueListenableBuilder<ShopList?>(
@@ -314,7 +328,8 @@ class _ListPageState extends State<ListPage> {
                                   style: titleModal,
                                 ),
                                 ComboboxProduct(
-                                    products: widget.user.createdProducts!,
+                                    products: widget.userStore.state.value!
+                                        .createdProducts!,
                                     fnProduct: (product) {
                                       store.addProductToList(product);
                                     }),
@@ -354,7 +369,7 @@ class _ListPageState extends State<ListPage> {
                                       context,
                                       MaterialPageRoute(
                                         builder: (context) => MarketMode(
-                                          user: widget.user,
+                                          user: widget.userStore,
                                           store: store,
                                         ),
                                       ),
@@ -376,8 +391,10 @@ class _ListPageState extends State<ListPage> {
           )
         ],
       ),
-      bottomNavigationBar:
-          Footer(isDark: false),
+      bottomNavigationBar: Footer(
+        isDark: false,
+        userStore: widget.userStore,
+      ),
     ); // This trailing comma makes auto-formatting nicer for build methods.
   }
 }

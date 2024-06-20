@@ -5,6 +5,7 @@ import 'package:listedin/app/components/input/input.dart';
 import 'package:listedin/app/pages/lists/lists.dart';
 import 'package:listedin/app/pages/login/login.dart';
 import 'package:listedin/app/pages/register/store/register_store.dart';
+import 'package:listedin/app/pages/user_store/user_store.dart';
 import 'package:listedin/app/styles/colors.dart';
 
 class RegisterPage extends StatefulWidget {
@@ -144,7 +145,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => ListsPage(user: store.userLogged.value!)),
+                        builder: (context) => ListsPage(userStore: UserStore(user: store.userLogged.value!),)),
                   );
                 }
               },

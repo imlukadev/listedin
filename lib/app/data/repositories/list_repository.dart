@@ -101,7 +101,7 @@ class ListRepository extends IListRepository {
   Future<ShopList> patchName(int listId, String name) async {
     try {
       Response response =
-          await client.patch("/list/$listId", <String, dynamic>{"name": name});
+          await client.patch("/list/$listId/name", <String, dynamic>{"name": name});
       Map<String, dynamic> list = response.data;
       return ShopList.fromJSON(list);
     } catch (e) {

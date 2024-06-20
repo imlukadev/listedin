@@ -7,6 +7,12 @@ TextStyle titleModal = TextStyle(
     fontWeight: FontWeight.w600,
     color: text);
 
+    TextStyle textFooter = TextStyle(
+    fontFamily: 'Montserrat',
+    fontSize: 10,
+    fontWeight: FontWeight.w600,
+    color: text);
+
 TextStyle bodyModal = TextStyle(
     fontFamily: 'Montserrat',
     fontSize: 12,

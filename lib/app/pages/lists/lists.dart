@@ -8,14 +8,15 @@ import 'package:listedin/app/data/model/list.dart';
 import 'package:listedin/app/data/repositories/list_repository.dart';
 import 'package:listedin/app/pages/list/list.dart';
 import 'package:listedin/app/pages/lists/store/lists_store.dart';
+import 'package:listedin/app/pages/user_store/user_store.dart';
 import 'package:listedin/app/styles/colors.dart';
 
 import '../../data/model/user.dart';
 
 class ListsPage extends StatefulWidget {
-  const ListsPage({super.key, required this.user});
+  const ListsPage({super.key, required this.userStore});
 
-  final User user;
+  final UserStore userStore;
 
   @override
   State<ListsPage> createState() => _ListsPageState();
@@ -29,7 +30,7 @@ class _ListsPageState extends State<ListsPage> {
   void initState() {
     super.initState();
     store = ListsStore(
-      user: widget.user,
+      user: widget.userStore.state.value!,
       repository: ListRepository(
         HttpClient(),
       ),
@@ -53,7 +54,7 @@ class _ListsPageState extends State<ListsPage> {
               builder: (context) => ListPage(
                 listsStore: store,
                 list: list,
-                user: store.user,
+                userStore: widget.userStore,
               ),
             ),
           );
@@ -131,7 +132,7 @@ class _ListsPageState extends State<ListsPage> {
                                     builder: (context) => ListPage(
                                       listsStore: store,
                                       list: item,
-                                      user: store.user,
+                                      userStore: widget.userStore,
                                     ),
                                   ),
                                 );
@@ -158,7 +159,9 @@ class _ListsPageState extends State<ListsPage> {
           )
         ],
       ),
-      bottomNavigationBar: const Footer(
+      bottomNavigationBar: Footer(
+        isLists: true,
+        userStore: widget.userStore,
         isDark: false,
       ),
     );

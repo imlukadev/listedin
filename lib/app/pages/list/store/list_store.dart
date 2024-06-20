@@ -24,6 +24,16 @@ class ListStore {
   final ValueNotifier<List<ProductsBuy>> productsState =
       ValueNotifier<List<ProductsBuy>>([]);
 
+  patchName(value) async {
+    try {
+      await repository.patchName(state.value!.id, value);
+      ShopList list = state.value!;
+      list.name = value;
+    } catch (e) {
+      error.value = e.toString();
+    }
+  }
+
   setState() {
     state.value = list;
     listBackup = list.products!;
@@ -50,7 +60,7 @@ class ListStore {
     List<ProductsBuy> listBuy = productsState.value;
     listBuy.add(ProductsBuy(result, false));
     productsState.value = List.from(listBuy);
-          productsState.notifyListeners();
+    productsState.notifyListeners();
     state.notifyListeners();
   }
 

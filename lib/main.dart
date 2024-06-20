@@ -41,96 +41,96 @@ class MyApp extends StatelessWidget {
         ),
         useMaterial3: true,
       ),
-      home: MyHomePage(title: 'Flutter Demo Home Page',),
+      home: const LoginPage(title: 'Flutter Demo Home Page',),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  final String title;
+// class MyHomePage extends StatefulWidget {
+//   final String title;
 
-  const MyHomePage({super.key, required this.title,});
+//   const MyHomePage({super.key, required this.title,});
 
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
+//   @override
+//   State<MyHomePage> createState() => _MyHomePageState();
+// }
 
-class _MyHomePageState extends State<MyHomePage> {
-  final IListRepository listRepository = ListRepository(HttpClient());
-  final ListStore listStore = ListStore(
-    repository: UserRepository(
-      HttpClient(),
-    ),
-  );
+// class _MyHomePageState extends State<MyHomePage> {
+//   final IListRepository listRepository = ListRepository(HttpClient());
+//   final ListStore listStore = ListStore(
+//     repository: UserRepository(
+//       HttpClient(),
+//     ),
+//   );
 
-  @override
-  void initState() {
-    super.initState();
-    listStore.getUser();
-  }
+//   @override
+//   void initState() {
+//     super.initState();
+//     listStore.getUser();
+//   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
-      body: Center(
-        child: Column(
-          children: [
-            ElevatedButton(
-              onPressed: () {
-                // Navegar para a segunda página
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const LoginPage(title: "Opa luka")),
-                );
-              },
-              child: const Text('Vai lá luka'),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) =>
-                          const DevSaymon(title: "Opa saymon")),
-                );
-              },
-              child: const Text('Vai lá saymon'),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) =>
-                          ListsPage(user: listStore.state.value)),
-                );
-              },
-              child: const Text('tela listas'),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const RegisterPage(
-                            title: "Cadastre-se",
-                          )),
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       appBar: AppBar(
+//         title: Text(widget.title),
+//       ),
+//       body: Center(
+//         child: Column(
+//           children: [
+//             ElevatedButton(
+//               onPressed: () {
+//                 // Navegar para a segunda página
+//                 Navigator.push(
+//                   context,
+//                   MaterialPageRoute(
+//                       builder: (context) => const LoginPage(title: "Opa luka")),
+//                 );
+//               },
+//               child: const Text('Vai lá luka'),
+//             ),
+//             ElevatedButton(
+//               onPressed: () {
+//                 Navigator.push(
+//                   context,
+//                   MaterialPageRoute(
+//                       builder: (context) =>
+//                           const DevSaymon(title: "Opa saymon")),
+//                 );
+//               },
+//               child: const Text('Vai lá saymon'),
+//             ),
+//             ElevatedButton(
+//               onPressed: () {
+//                 Navigator.push(
+//                   context,
+//                   MaterialPageRoute(
+//                       builder: (context) =>
+//                           ListsPage(user: listStore.state.value)),
+//                 );
+//               },
+//               child: const Text('tela listas'),
+//             ),
+//             ElevatedButton(
+//               onPressed: () {
+//                 Navigator.push(
+//                   context,
+//                   MaterialPageRoute(
+//                       builder: (context) => const RegisterPage(
+//                             title: "Cadastre-se",
+//                           )),
 
-                );
-              },
-              child: const Text('Vai lá thiago'),
-            ),
-          ],
-        ),
-      ),
-      bottomNavigationBar: Footer( isDark: false,),
-    );
-  }
-}
+//                 );
+//               },
+//               child: const Text('Vai lá thiago'),
+//             ),
+//           ],
+//         ),
+//       ),
+//       bottomNavigationBar: Footer( isDark: false,),
+//     );
+//   }
+// }
 
 
 
