@@ -21,10 +21,13 @@ import 'package:listedin/app/styles/icons/edit_icon.dart';
 import 'package:listedin/app/styles/texts.dart';
 
 class ListPage extends StatefulWidget {
-
-  const ListPage({super.key, required this.list, required this.userStore});
+  const ListPage(
+      {super.key,
+      required this.list,
+      required this.userStore,
+      required this.listsStore});
   final UserStore userStore;
-
+  final ListsStore listsStore;
 
   final ShopList list;
 
@@ -142,11 +145,11 @@ class _ListPageState extends State<ListPage> {
                             width: 16,
                           ),
                           IconButton(
-                              icon: EditIcon(color: primary, size: 16),
-                              onPressed: () {
-                                toggleEditing();
-                              },
-                            ),
+                            icon: EditIcon(color: primary, size: 16),
+                            onPressed: () {
+                              toggleEditing();
+                            },
+                          ),
                         ],
                       ),
                       ValueListenableBuilder<ShopList?>(
@@ -197,8 +200,10 @@ class _ListPageState extends State<ListPage> {
                                   function: () => Navigator.pop(context)),
                               ButtonModalProps("Deletar", function: () async {
                                 await store.deleteList();
-                                widget.listsStore.state.value.removeWhere((list) => list.id == widget.list.id);
-                                widget.listsStore.state.value = List.from(widget.listsStore.state.value);
+                                widget.listsStore.state.value.removeWhere(
+                                    (list) => list.id == widget.list.id);
+                                widget.listsStore.state.value =
+                                    List.from(widget.listsStore.state.value);
                                 Navigator.pop(context);
                                 Navigator.pop(context);
                               })));
