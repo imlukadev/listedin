@@ -34,6 +34,8 @@ class _ListPageState extends State<ListPage> {
   late ListStore store;
   bool isEditing = false;
 
+  final TextEditingController controllerNameLists = TextEditingController();
+
   @override
   void initState() {
     super.initState();
@@ -44,6 +46,7 @@ class _ListPageState extends State<ListPage> {
       ),
     );
     store.setState();
+    controllerNameLists.text = store.state.value!.name;
     // print();
   }
 
@@ -94,54 +97,52 @@ class _ListPageState extends State<ListPage> {
                     children: [
                       Row(
                         children: [
-                          Expanded(
-                            child: TextField(
-                                onChanged: (value) {
-                                  store.patchName(value);
-                                },
-                                decoration: InputDecoration(
-                                  hintText: "Nome do Produto",
-                                  hintStyle:
-                                      titleModal.copyWith(color: Colors.grey),
-                                )),
-                          ),
+                          isEditing
+                              ? Expanded(
+                                  child: TextField(
+                                  keyboardType: TextInputType.name,
+                                  autofocus: true,
+                                  controller: controllerNameLists,
 
-                          // isEditing
-                          //     ? TextField(
-                          //         keyboardType: TextInputType.name,
-
-                          //         style: TextStyle(
-                          //             fontFamily: 'Montserrat',
-                          //             fontSize: 20,
-                          //             fontWeight: FontWeight.w600,
-                          //             color: text),
-                          //         decoration:  InputDecoration(
-                          //           border: InputBorder.none, // Reduzir a densidade para menos espaço
-                          //           hintText: store.state.value?.name ?? "Sem nome",
-                          //           contentPadding:
-                          //               EdgeInsets.zero, // Remover padding
-                          //         ),
-                          //         maxLines: null, // Permitir múltiplas linhas
-                          //       )
-                          //     : Text(
-                          //         store.state.value!.name.isNotEmpty
-                          //             ? store.state.value!.name
-                          //             : "Sem nome",
-                          //         style: TextStyle(
-                          //             fontFamily: 'Montserrat',
-                          //             fontSize: 20,
-                          //             fontWeight: FontWeight.w600,
-                          //             color: text),
-                          //       ),
+                                  style: TextStyle(
+                                      fontFamily: 'Montserrat',
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.w600,
+                                      color: text),
+                                  decoration: InputDecoration(
+                                    border: InputBorder
+                                        .none, // Reduzir a densidade para menos espaço
+                                    hintText:
+                                        store.state.value?.name ?? "Sem nome",
+                                    contentPadding:
+                                        EdgeInsets.zero, // Remover padding
+                                  ),
+                                  onChanged: (value) {
+                                    store.patchName(value);
+                                  },
+                                  maxLines: null, // Permitir múltiplas linhas
+                                ))
+                              : Expanded(
+                                  child: Text(
+                                    store.state.value!.name.isNotEmpty
+                                        ? store.state.value!.name
+                                        : "Sem nome",
+                                    style: TextStyle(
+                                        fontFamily: 'Montserrat',
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.w600,
+                                        color: text),
+                                  ),
+                                ),
                           const SizedBox(
                             width: 16,
                           ),
                           IconButton(
-                            icon: EditIcon(color: primary, size: 16),
-                            onPressed: () {
-                              toggleEditing();
-                            },
-                          )
+                              icon: EditIcon(color: primary, size: 16),
+                              onPressed: () {
+                                toggleEditing();
+                              },
+                            ),
                         ],
                       ),
                       ValueListenableBuilder<ShopList?>(
@@ -321,7 +322,8 @@ class _ListPageState extends State<ListPage> {
                                   style: titleModal,
                                 ),
                                 ComboboxProduct(
-                                    products: widget.userStore.state.value!.createdProducts!,
+                                    products: widget.userStore.state.value!
+                                        .createdProducts!,
                                     fnProduct: (product) {
                                       store.addProductToList(product);
                                     }),
@@ -383,7 +385,10 @@ class _ListPageState extends State<ListPage> {
           )
         ],
       ),
-      bottomNavigationBar: Footer(isDark: false, userStore: widget.userStore,),
+      bottomNavigationBar: Footer(
+        isDark: false,
+        userStore: widget.userStore,
+      ),
     ); // This trailing comma makes auto-formatting nicer for build methods.
   }
 }

@@ -14,7 +14,7 @@ class HttpClient {
 
   Future<Response> delete(String url) async {
     try {
-      return await _dio.get(url);
+      return await _dio.delete(url);
     } catch (e) {
       throw Exception('Erro ao carregar os dados: $e');
     }

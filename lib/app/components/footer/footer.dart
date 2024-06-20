@@ -28,34 +28,35 @@ class Footer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-        color: isDark ? darkModal : white,
-        surfaceTintColor: isDark ? darkModal : white,
-        // shadowColor: darkModal,
-        elevation: 8,
-        margin: EdgeInsets.zero,
-        shape: const Border(),
-        child: Padding(
-          padding: EdgeInsetsDirectional.fromSTEB(0, 16, 0, 20),
-          child: Row(
-            mainAxisSize: MainAxisSize.max,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              // StatsRedirect(isDark: isDark, ),
-              // HomeRedirect(isDark: isDark, ),
-              ListsRedirect(
-                isSelected: isLists,
-                userStore: userStore,
-                isDark: isDark,
-              ),
-              Productsredirect(
-                userStore: userStore,
-                isDark: isDark,
-                isSelected: isProducts,
-              )
-            ],
-          ),
-        ));
+      color: isDark ? darkModal : white,
+      surfaceTintColor: isDark ? darkModal : white,
+      // shadowColor: darkModal,
+      elevation: 8,
+      margin: EdgeInsets.zero,
+      shape: const Border(),
+      child: Padding(
+        padding: EdgeInsetsDirectional.fromSTEB(0, 16, 0, 20),
+        child: Row(
+          mainAxisSize: MainAxisSize.max,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            // StatsRedirect(isDark: isDark, ),
+            // HomeRedirect(isDark: isDark, ),
+            ListsRedirect(
+              isSelected: isLists,
+              userStore: userStore,
+              isDark: isDark,
+            ),
+            Productsredirect(
+              userStore: userStore,
+              isDark: isDark,
+              isSelected: isProducts,
+            )
+          ],
+        ),
+      ),
+    );
   }
 }
 
@@ -65,7 +66,10 @@ class Productsredirect extends StatelessWidget {
   final UserStore userStore;
 
   const Productsredirect(
-      {super.key, required this.isDark, required this.isSelected, required this.userStore});
+      {super.key,
+      required this.isDark,
+      required this.isSelected,
+      required this.userStore});
 
   @override
   Widget build(BuildContext context) {
@@ -123,11 +127,14 @@ class Productsredirect extends StatelessWidget {
 
 class ListsRedirect extends StatelessWidget {
   final bool isDark;
-    final UserStore userStore;
+  final UserStore userStore;
   final bool isSelected;
 
   const ListsRedirect(
-      {super.key, required this.isDark, required this.isSelected, required this.userStore});
+      {super.key,
+      required this.isDark,
+      required this.isSelected,
+      required this.userStore});
 
   @override
   Widget build(BuildContext context) {
