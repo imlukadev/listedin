@@ -204,7 +204,7 @@ class _ListPageState extends State<ListPage> {
                         valueListenable: store.state,
                         builder: (context, shopList, _) {
                           return Text(
-                            "Lista comprada ${store.state.value?.purchasedQuantity ?? 0} vezes.",
+                            "Lista comprada ${store.state.value?.purchasedQuantity ?? 0} vez(es).",
                             textAlign: TextAlign.left,
                             style: TextStyle(
                                 fontFamily: 'Montserrat',
