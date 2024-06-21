@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:listedin/app/data/model/user.dart';
-import 'package:listedin/app/data/repositories/list_repository.dart';
 import 'package:listedin/app/pages/home/home.dart';
 import 'package:listedin/app/pages/lists/lists.dart';
 import 'package:listedin/app/pages/products/products.dart';
+import 'package:listedin/app/pages/stats/stats.dart';
 import 'package:listedin/app/pages/user_store/user_store.dart';
 import 'package:listedin/app/styles/colors.dart';
 import 'package:listedin/app/styles/icons/home_icon.dart';
@@ -17,13 +16,15 @@ class Footer extends StatelessWidget {
   final bool isDark;
   final bool isLists;
   final bool isProducts;
+  final bool isStats;
   final UserStore userStore;
   const Footer(
       {super.key,
       required this.isDark,
       required this.userStore,
       this.isLists = false,
-      this.isProducts = false});
+      this.isProducts = false,
+      this.isStats = false});
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +42,7 @@ class Footer extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            // StatsRedirect(isDark: isDark, ),
+            StatsRedirect(isDark: isDark, isSelected: isStats, userStore: userStore),
             // HomeRedirect(isDark: isDark, ),
             ListsRedirect(
               isSelected: isLists,
@@ -235,11 +236,14 @@ class HomeRedirect extends StatelessWidget {
 
 class StatsRedirect extends StatelessWidget {
   final bool isDark;
-  final bool isSelected = false;
+  final bool isSelected;
+  final UserStore userStore;
 
   const StatsRedirect({
     super.key,
     required this.isDark,
+    required this.userStore, 
+    required this.isSelected
   });
 
   @override
@@ -256,9 +260,9 @@ class StatsRedirect extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => HomePage(
-                            title: "Stats Button",
-                            darkModeOn: isDark,
+                      builder: (context) => StatsPage(
+                            userStore: userStore,
+                            isDark: isDark,
                             key: key,
                           )),
                 );
@@ -272,6 +276,27 @@ class StatsRedirect extends StatelessWidget {
             "Estatísticas",
             style: textStyle,
           ),
+          isSelected
+              ? Container(
+                  width: 27,
+                  height: 2,
+                  color: primary,
+                )
+              : const SizedBox(
+                  height: 2,
+                ),
+          const SizedBox(
+            height: 2,
+          ),
+          isSelected
+              ? Container(
+                  width: 8,
+                  height: 2,
+                  color: primary,
+                )
+              : const SizedBox(
+                  height: 2,
+                ),
         ]);
   }
 }

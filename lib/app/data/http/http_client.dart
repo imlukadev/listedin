@@ -3,8 +3,8 @@
 import 'package:dio/dio.dart';
 
 class HttpClient {
-  final Dio _dio = Dio(BaseOptions(baseUrl: "http://10.0.2.2:9696"));
-    // final Dio _dio = Dio(BaseOptions(baseUrl: "http://127.0.0.1:9696"));
+  // final Dio _dio = Dio(BaseOptions(baseUrl: "http://10.0.2.2:9696"));
+    final Dio _dio = Dio(BaseOptions(baseUrl: "http://127.0.0.1:9696"));
 
   Future<Response> get(String url) async {
     try {

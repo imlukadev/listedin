@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:listedin/app/components/button/button.dart';
 import 'package:listedin/app/components/card/card.dart';
@@ -79,6 +77,18 @@ class _ListPageState extends State<ListPage> {
         totalPrice += product.price;
       }
 
+      totalPrice.toStringAsFixed(2).replaceFirst('.', ',');
+      return totalPrice.toStringAsFixed(2).replaceFirst('.', ',');
+    }
+
+    String calcTotalSpent() {
+      double totalPrice = 0;
+      for (var product in store.state.value!.products!) {
+        totalPrice += product.price;
+      }
+
+      totalPrice = totalPrice * (store.state.value?.purchasedQuantity ?? 0);
+      
       totalPrice.toStringAsFixed(2).replaceFirst('.', ',');
       return totalPrice.toStringAsFixed(2).replaceFirst('.', ',');
     }
@@ -164,7 +174,7 @@ class _ListPageState extends State<ListPage> {
                         valueListenable: store.state,
                         builder: (context, shopList, _) {
                           return Text(
-                            "Próximo agendamento para aquele dia.",
+                            "Total gasto: RS ${calcTotalSpent()} ",
                             textAlign: TextAlign.left,
                             style: TextStyle(
                                 fontFamily: 'Montserrat',
@@ -174,6 +184,20 @@ class _ListPageState extends State<ListPage> {
                           );
                         },
                       ),
+                      // ValueListenableBuilder<ShopList?>(
+                      //   valueListenable: store.state,
+                      //   builder: (context, shopList, _) {
+                      //     return Text(
+                      //       "Próximo agendamento para aquele dia.",
+                      //       textAlign: TextAlign.left,
+                      //       style: TextStyle(
+                      //           fontFamily: 'Montserrat',
+                      //           fontSize: 12,
+                      //           fontWeight: FontWeight.w500,
+                      //           color: text),
+                      //     );
+                      //   },
+                      // ),
                       ValueListenableBuilder<ShopList?>(
                         valueListenable: store.state,
                         builder: (context, shopList, _) {
