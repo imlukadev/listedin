@@ -11,7 +11,6 @@ import 'package:listedin/app/pages/lists/store/lists_store.dart';
 import 'package:listedin/app/pages/user_store/user_store.dart';
 import 'package:listedin/app/styles/colors.dart';
 
-import '../../data/model/user.dart';
 
 class ListsPage extends StatefulWidget {
   const ListsPage({super.key, required this.userStore});

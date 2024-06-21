@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:listedin/app/data/http/http_client.dart';
+import 'package:listedin/app/data/model/category.dart';
 import 'package:listedin/app/data/model/list.dart';
 import 'package:listedin/app/data/model/product.dart';
 import 'package:listedin/app/data/model/product_list.dart';
@@ -62,6 +63,44 @@ class ListStore {
     productsState.value = List.from(listBuy);
     productsState.notifyListeners();
     state.notifyListeners();
+  }
+
+  Future<ShopList> getList() async {
+
+      return await repository.findById(state.value!.id);
+    
+  }
+
+  Future removeProductList(ProductList item, index) async {
+    ProductListRepository productListRepository =
+        ProductListRepository(HttpClient());
+    try {
+      await productListRepository.delete(item.productId, item.listId);
+      List<ProductList> list = state.value!.products!;
+      list.removeWhere((element) =>
+          element.listId == item.listId && element.productId == item.productId);
+      state.value!.products = List.from(list);
+      List<ProductsBuy> listBuy = productsState.value;
+      int ind = listBuy.indexWhere((element) =>
+          element.product.productId == item.productId &&
+          element.product.listId == item.listId);
+      listBuy.remove(listBuy[ind]);
+      productsState.value = List.from(listBuy);
+
+      // Category category = item.product.category;
+      // List<ProductList> listProdutsWithCategory = state.value!.products!
+      //     .where((element) => element.product.category.id == category.id)
+      //     .toList();
+      // if (listProdutsWithCategory.isEmpty) {
+      //   state.value!.categories
+      //       .removeWhere((element) => element.id == category.id);
+      // }
+
+      productsState.notifyListeners();
+      state.notifyListeners();
+    } catch (e) {
+      error.value = e.toString();
+    }
   }
 
   Future patchProductList(ProductList item, index) async {

@@ -7,6 +7,7 @@ import 'package:listedin/app/data/model/product.dart';
 
 abstract class IProductRepository {
   Future<Product> findById(int id);
+  Future delete(int id);
   Future<List<Product>> findAll();
   Future<List<Category>> findCategories();
   Future<Product> create(Product product);
@@ -59,11 +60,20 @@ class ProductRepository extends IProductRepository {
     }
   }
 
+    @override
+  Future delete(int id) async {
+    try {
+      Response response = await client.delete("/product/$id");
+    } catch (e) {
+      throw Exception(e);
+    }
+  }
+
   @override
   Future<Product> update(Product product) async {
     Map<String, dynamic> jsonObject = product.toJSON();
-    Response response = await client.save("/product", jsonObject);
-    Map<String, dynamic> productReturned = json.decode(response.data);
+    Response response = await client.put("/product", jsonObject);
+    Map<String, dynamic> productReturned = response.data;
     return Product.fromJSON(productReturned);
   }
 }

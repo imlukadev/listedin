@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:listedin/app/data/http/http_client.dart';
 import 'package:listedin/app/data/model/list.dart';
 import 'package:listedin/app/data/repositories/list_repository.dart';
+import 'package:listedin/app/data/repositories/user_repository.dart';
 
 import '../../../data/model/user.dart';
 
@@ -59,9 +61,11 @@ class ListsStore {
     }
   }
 
-  getLists() {
+  getLists() async  {
     isLoading.value = true;
-    final result = user.lists ?? [];
+    UserRepository userRepository = UserRepository(HttpClient());
+    final response = await userRepository.findById(user.id!);
+    final result = response.lists ?? [];
     state.value = result;
     listBackup = result;
     isLoading.value = false;

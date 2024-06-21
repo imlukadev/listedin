@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:listedin/app/components/button/button.dart';
 import 'package:listedin/app/components/card/card.dart';
@@ -9,11 +11,12 @@ import 'package:listedin/app/components/listStats/list_stats.dart';
 import 'package:listedin/app/components/overlay/overlay.dart';
 import 'package:listedin/app/data/http/http_client.dart';
 import 'package:listedin/app/data/model/list.dart';
-import 'package:listedin/app/data/model/user.dart';
 import 'package:listedin/app/data/repositories/list_repository.dart';
+import 'package:listedin/app/data/repositories/product_repository.dart';
 import 'package:listedin/app/pages/list/store/list_store.dart';
 import 'package:listedin/app/pages/lists/store/lists_store.dart';
 import 'package:listedin/app/pages/market_mode/market_mode.dart';
+import 'package:listedin/app/pages/products/store/products_store.dart';
 import 'package:listedin/app/pages/user_store/user_store.dart';
 import 'package:listedin/app/styles/colors.dart';
 import 'package:listedin/app/styles/icons/delete_icon.dart';
@@ -38,6 +41,9 @@ class ListPage extends StatefulWidget {
 class _ListPageState extends State<ListPage> {
   final TextEditingController _searchController = TextEditingController();
   late ListStore store;
+  late ProductsStore storeProducts = ProductsStore(
+      repository: ProductRepository(HttpClient()),
+      user: widget.userStore.state.value!);
 
   bool isEditing = false;
 
@@ -46,6 +52,8 @@ class _ListPageState extends State<ListPage> {
   @override
   void initState() {
     super.initState();
+    storeProducts.getProducts();
+    storeProducts.getCategories();
     store = ListStore(
       list: widget.list,
       repository: ListRepository(
@@ -262,8 +270,8 @@ class _ListPageState extends State<ListPage> {
                                                 crossAxisAlignment:
                                                     CrossAxisAlignment.start,
                                                 children: [
-                                                  Text("Quantidade"),
-                                                  SizedBox(
+                                                  const Text("Quantidade"),
+                                                  const SizedBox(
                                                     height: 8,
                                                   ),
                                                   TextField(
@@ -283,7 +291,44 @@ class _ListPageState extends State<ListPage> {
                                           ],
                                         ),
                                         ButtonModalProps("Remover",
-                                            function: () {}),
+                                            function: () {
+                                          Navigator.pop(context);
+                                          showModal(
+                                              context,
+                                              loadModal(
+                                                  Text(
+                                                    "Você deseja remover o produto ${item.product.name} da lista?",
+                                                    style: titleModal,
+                                                  ),
+                                                  const Text(
+                                                      "É importante lembrar que pode ficar tranquilo, o produto continuará na sua listas de produtos, apenas não estará mais nessa lista!"),
+                                                  ButtonModalProps("Não",
+                                                      function: () {
+                                                    Navigator.pop(context);
+                                                  }),
+                                                  ButtonModalProps("Sim",
+                                                      function: () async {
+                                                    await store
+                                                        .removeProductList(
+                                                            item, index);
+                                                    List<ShopList> list = widget
+                                                        .listsStore
+                                                        .state
+                                                        .value!;
+                                                    int indexL = widget
+                                                        .listsStore.state.value
+                                                        .indexWhere((element) =>
+                                                            element.id ==
+                                                            store.state.value!
+                                                                .id);
+                                                    list[index] =
+                                                        await store.getList();
+                                                    widget.listsStore.state
+                                                            .value =
+                                                        List.from(list);
+                                                    Navigator.pop(context);
+                                                  })));
+                                        }),
                                         ButtonModalProps("Salvar",
                                             function: () async {
                                           await store.patchProductList(
@@ -338,7 +383,14 @@ class _ListPageState extends State<ListPage> {
                                     fnProduct: (product) {
                                       store.addProductToList(product);
                                     }),
-                                ButtonModalProps("Novo", function: () {}),
+                                ButtonModalProps("Novo", function: () {
+                                  loadModalProducts(
+                                      storeProducts, context, false, () {},
+                                      (product) async {
+                                    store.productToAdd = product;
+                                    store.confirmProductToList();
+                                  });
+                                }),
                                 ButtonModalProps("Adicionar",
                                     function: () async {
                                   await store.confirmProductToList();
@@ -374,6 +426,7 @@ class _ListPageState extends State<ListPage> {
                                       context,
                                       MaterialPageRoute(
                                         builder: (context) => MarketMode(
+                                          productsStore: storeProducts,
                                           user: widget.userStore,
                                           store: store,
                                         ),

@@ -1,18 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:listedin/app/components/card/card.dart';
-import 'package:listedin/app/components/combobox/combobox.dart';
 import 'package:listedin/app/components/footer/footer.dart';
 import 'package:listedin/app/components/header/header.dart';
 import 'package:listedin/app/components/input/input.dart';
 import 'package:listedin/app/components/overlay/overlay.dart';
 import 'package:listedin/app/data/http/http_client.dart';
-import 'package:listedin/app/data/model/user.dart';
-import 'package:listedin/app/data/repositories/list_repository.dart';
 import 'package:listedin/app/data/repositories/product_repository.dart';
 import 'package:listedin/app/pages/products/store/products_store.dart';
 import 'package:listedin/app/pages/user_store/user_store.dart';
 import 'package:listedin/app/styles/colors.dart';
-import 'package:listedin/app/styles/texts.dart';
 
 class ProductsPage extends StatefulWidget {
   const ProductsPage({super.key, required this.userStore});
@@ -49,7 +45,7 @@ class _ProductsPageState extends State<ProductsPage> {
       appBar: const Header(),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          loadModalProducts(store, context, isEditing, toggleEditing);
+          loadModalProducts(store, context, isEditing, toggleEditing, () {});
         },
         tooltip: 'Criar produto!',
         backgroundColor: primary,
@@ -120,6 +116,8 @@ class _ProductsPageState extends State<ProductsPage> {
                                 product: item,
                               ),
                               onTap: () {
+                                loadModalProductsUpdate(store, context,
+                                    isEditing, toggleEditing, () {}, item);
                                 //               showModal(
                                 // context,
                                 // loadModal(
