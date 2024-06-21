@@ -42,7 +42,7 @@ class _ProductsPageState extends State<ProductsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const Header(),
+      appBar:  Header(userStore: widget.userStore,),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           loadModalProducts(store, context, isEditing, toggleEditing, () {});

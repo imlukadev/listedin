@@ -30,7 +30,7 @@ class _StatsPageState extends State<StatsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const Header(),
+      appBar:  Header(userStore: widget.userStore,),
       body: ValueListenableBuilder(
           valueListenable: store.state,
           builder: (context, value, _) {

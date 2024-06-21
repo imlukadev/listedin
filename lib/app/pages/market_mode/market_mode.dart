@@ -55,7 +55,7 @@ class _MarketModeState extends State<MarketMode> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const Header(),
+      appBar:  Header(userStore: widget.user,),
       body: Center(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

@@ -40,7 +40,7 @@ class _ListsPageState extends State<ListsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const Header(),
+      appBar:  Header(userStore: widget.userStore,),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
           ShopList list = await store.createList();
