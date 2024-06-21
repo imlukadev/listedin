@@ -88,7 +88,7 @@ class _ListPageState extends State<ListPage> {
       }
 
       totalPrice = totalPrice * (store.state.value?.purchasedQuantity ?? 0);
-      
+
       totalPrice.toStringAsFixed(2).replaceFirst('.', ',');
       return totalPrice.toStringAsFixed(2).replaceFirst('.', ',');
     }
@@ -408,7 +408,7 @@ class _ListPageState extends State<ListPage> {
                                       store.addProductToList(product);
                                     }),
                                 ButtonModalProps("Novo", function: () {
-                                   Navigator.pop(context);
+                                  Navigator.pop(context);
                                   loadModalProducts(
                                       storeProducts, context, false, () {},
                                       (product) async {

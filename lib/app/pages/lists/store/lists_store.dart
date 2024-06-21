@@ -51,7 +51,7 @@ class ListsStore {
     try {
       if (value.isNotEmpty) {
         List<ShopList> list = List.from(
-            state.value.where((element) => element.name.contains(value)));
+            listBackup.where((element) => element.name.contains(value)));
         state.value = List.from(list);
       } else {
         state.value = listBackup;
