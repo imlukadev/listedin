@@ -274,7 +274,7 @@ class StatsRedirect extends StatelessWidget {
               )),
           Text(
             "Estatísticas",
-            style: textStyle,
+            style: textFooter,
           ),
           isSelected
               ? Container(

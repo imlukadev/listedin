@@ -4,6 +4,7 @@ import 'package:listedin/app/components/header/header.dart';
 import 'package:listedin/app/pages/stats/stats_store.dart';
 import 'package:listedin/app/pages/user_store/user_store.dart';
 import 'package:listedin/app/styles/colors.dart';
+import 'package:listedin/app/styles/texts.dart';
 
 class StatsPage extends StatefulWidget {
   const StatsPage({super.key, required this.userStore, required this.isDark});
@@ -21,11 +22,9 @@ class _StatsPageState extends State<StatsPage> {
   @override
   void initState() {
     super.initState();
-
     store = StatsStore(widget.userStore.state.value!);
     store.getReport();
     print(store.state.value);
-    print("store.state.value");
   }
 
   @override
@@ -37,108 +36,295 @@ class _StatsPageState extends State<StatsPage> {
           builder: (context, value, _) {
             return Column(
               mainAxisSize: MainAxisSize.max,
-              crossAxisAlignment: CrossAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                    "Preço médio do produto: ${value?.averagePurchasedProductPrice}"),
-                Text(
-                    "Media de produtos por lista: ${value?.averagePurchasedProductsPerList}"),
-                Text(
-                    "Total de listas compradas: ${value?.totalListsPurchased}"),
-                Text(
-                    "Total de produtos comprados: ${value?.totalProductsPurchased}"),
-                Text("Gastos totais: ${value?.totalSpent}"),
-                Text("Gastos do mês: ${value?.totalSpentCurrentMonth}"),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(24, 24, 24, 16),
+                  child: Text(
+                    "Dados Gerais!",
+                    style: TextStyle(
+                        fontFamily: 'Montserrat',
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: primary),
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.fromLTRB(24, 0, 24, 0),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: white,
+                            border: Border.all(color: primary, width: 1),
+                            borderRadius: BorderRadius.circular(16),
+                            // boxShadow: [
+                            //   BoxShadow(
+                            //     color: Colors.black.withOpacity(0.15),
+                            //     // spreadRadius: 5,
+                            //     blurRadius: 4,
+                            //     offset: const Offset(
+                            //         0, 0), // changes position of shadow
+                            //   ),
+                            // ],
+                          ),
+                          child: Padding(
+                            padding: EdgeInsets.fromLTRB(8, 16, 8, 16),
+                            child: Column(
+                              children: [
+                                Text(
+                                  "Produtos Comprados",
+                                  style: textPrimaryStats,
+                                ),
+                                SizedBox(
+                                  height: 8,
+                                ),
+                                Text(
+                                  "${value?.totalProductsPurchased}",
+                                  style: boldPrimaryTextStats,
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(
+                        width: 16,
+                      ),
+                      Expanded(
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: primary,
+                            borderRadius: BorderRadius.circular(16),
+                            // boxShadow: [
+                            //   BoxShadow(
+                            //     color: Colors.black.withOpacity(0.15),
+                            //     // spreadRadius: 5,
+                            //     blurRadius: 4,
+                            //     offset: const Offset(
+                            //         0, 0), // changes position of shadow
+                            //   ),
+                            // ],
+                          ),
+                          child: Padding(
+                            padding: EdgeInsets.fromLTRB(8, 16, 8, 16),
+                            child: Column(
+                              children: [
+                                Text(
+                                  "Listas Compradas",
+                                  style: textStats,
+                                ),
+                                const SizedBox(
+                                  height: 8,
+                                ),
+                                Text(
+                                  "${value?.totalListsPurchased}",
+                                  style: boldTextStats,
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
                 const SizedBox(
                   height: 8,
                 ),
+                Padding(
+                  padding: EdgeInsets.fromLTRB(24, 0, 24, 0),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: primary,
+                            borderRadius: BorderRadius.circular(16),
+                            // boxShadow: [
+                            //   BoxShadow(
+                            //     color: Colors.black.withOpacity(0.15),
+                            //     // spreadRadius: 5,
+                            //     blurRadius: 4,
+                            //     offset: const Offset(
+                            //         0, 0), // changes position of shadow
+                            //   ),
+                            // ],
+                          ),
+                          child: Padding(
+                            padding: EdgeInsets.fromLTRB(8, 16, 8, 16),
+                            child: Column(
+                              children: [
+                                Text(
+                                  "Gastos do Mês",
+                                  style: textStats,
+                                ),
+                                const SizedBox(
+                                  height: 8,
+                                ),
+                                Text(
+                                  "R\$${value?.totalSpentCurrentMonth.toStringAsFixed(2).replaceFirst('.', ',')}",
+                                  style: boldTextStats,
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(
+                        width: 16,
+                      ),
+                      Expanded(
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: white,
+                            border: Border.all(color: primary, width: 1),
+                            borderRadius: BorderRadius.circular(16),
+                            // boxShadow: [
+                            //   BoxShadow(
+                            //     color: Colors.black.withOpacity(0.15),
+                            //     // spreadRadius: 5,
+                            //     blurRadius: 4,
+                            //     offset: const Offset(
+                            //         0, 0), // changes position of shadow
+                            //   ),
+                            // ],
+                          ),
+                          child: Padding(
+                            padding: EdgeInsets.fromLTRB(8, 16, 8, 16),
+                            child: Column(
+                              children: [
+                                Text(
+                                  "Gastos Totais",
+                                  style: textPrimaryStats,
+                                ),
+                                const SizedBox(
+                                  height: 8,
+                                ),
+                                Text(
+                                  "R\$${value?.totalSpent.toStringAsFixed(2).replaceFirst('.', ',')}",
+                                  style: boldPrimaryTextStats,
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(
+                  height: 24,
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(24, 0, 24, 16),
+                  child: Text(
+                    "Dados por Categorias!",
+                    style: TextStyle(
+                        fontFamily: 'Montserrat',
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: primary),
+                  ),
+                ),
                 Expanded(
+                    child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 24),
                   child: ListView.builder(
                       itemCount: value?.categoryReports.length,
                       itemBuilder: (context, index) {
                         return Column(
                           children: [
-                            const SizedBox(height: 16,),
                             SizedBox(
-                              height: 80,
-                              width: 340,
+                              height: 96,
+                              width: double.infinity,
                               child: Card(
-                                elevation: 4,
-                                shadowColor: darkModal,
-                                color: value
-                                    ?.categoryReports[index].category.color,
-                                // surfaceTintColor: value?.categoryReports[index].category.color,
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceAround,
-                                  mainAxisSize: MainAxisSize.max,
-                                  children: [
-                                    Column(
+                                  elevation: 1,
+                                  shadowColor: darkModal,
+                                  color: value
+                                      ?.categoryReports[index].category.color,
+                                  // surfaceTintColor: value?.categoryReports[index].category.color,
+                                  child: Padding(
+                                    padding:
+                                        EdgeInsets.symmetric(horizontal: 16,),
+                                    child: Row(
                                       mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
+                                          MainAxisAlignment.spaceBetween,
+                                      mainAxisSize: MainAxisSize.max,
                                       children: [
-                                        Text(
-                                            "${value?.categoryReports[index].category.name}",
-                                            style: TextStyle(
-                                                fontFamily: "Montserrat",
-                                                fontSize: 20,
-                                                fontWeight: FontWeight.w600,
-                                                color: white)),
-                                        const SizedBox(
-                                          height: 8,
-                                        ),
-                                        Row(
+                                        Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
                                           children: [
                                             Text(
-                                                "${value?.categoryReports[index].totalPurchasedQuantity}",
+                                                "${value?.categoryReports[index].category.name}",
                                                 style: TextStyle(
                                                     fontFamily: "Montserrat",
-                                                    fontSize: 14,
+                                                    fontSize: 20,
                                                     fontWeight: FontWeight.w600,
                                                     color: white)),
-                                            Text(" Produtos Comprados",
+                                            const SizedBox(
+                                              height: 8,
+                                            ),
+                                            Row(
+                                              children: [
+                                                Text(
+                                                    "${value?.categoryReports[index].totalPurchasedQuantity}",
+                                                    style: TextStyle(
+                                                        fontFamily:
+                                                            "Montserrat",
+                                                        fontSize: 14,
+                                                        fontWeight:
+                                                            FontWeight.w600,
+                                                        color: white)),
+                                                Text(" Produtos Comprados",
+                                                    style: TextStyle(
+                                                        fontFamily:
+                                                            "Montserrat",
+                                                        fontSize: 12,
+                                                        color: white)),
+                                              ],
+                                            )
+                                          ],
+                                        ),
+                                        Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          mainAxisSize: MainAxisSize.max,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: [
+                                            Text("Gasto total",
                                                 style: TextStyle(
                                                     fontFamily: "Montserrat",
                                                     fontSize: 12,
                                                     color: white)),
+                                            const SizedBox(
+                                              height: 8,
+                                            ),
+                                            Text(
+                                                "R\$${value?.categoryReports[index].totalSpent.toStringAsFixed(2).replaceFirst('.', ',')}",
+                                                style: TextStyle(
+                                                    fontFamily: "Montserrat",
+                                                    fontWeight: FontWeight.w600,
+                                                    fontSize: 14,
+                                                    color: white))
                                           ],
-                                        )
-                                      ],
-                                    ),
-                                    Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      mainAxisSize: MainAxisSize.max,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      children: [
-                                        Text("Gasto total",
-                                            style: TextStyle(
-                                                fontFamily: "Montserrat",
-                                                fontSize: 12,
-                                                color: white)),
-                                        const SizedBox(
-                                          height: 8,
                                         ),
-                                        Text(
-                                            "R\$${value?.categoryReports[index].totalSpent}",
-                                            style: TextStyle(
-                                                fontFamily: "Montserrat",
-                                                fontWeight: FontWeight.w600,
-                                                fontSize: 14,
-                                                color: white))
                                       ],
                                     ),
-                                  ],
-                                ),
-                              ),
+                                  )),
+                            ),
+                            const SizedBox(
+                              height: 16,
                             ),
                           ],
                         );
                       }),
-                )
+                ))
               ],
             );
           }),

@@ -29,7 +29,11 @@ class MarketMode extends StatefulWidget {
   final UserStore user;
   final ProductsStore productsStore;
 
-  const MarketMode({super.key, required this.store, required this.productsStore, required this.user});
+  const MarketMode(
+      {super.key,
+      required this.store,
+      required this.productsStore,
+      required this.user});
 
   @override
   State<MarketMode> createState() => _MarketModeState();
@@ -127,7 +131,9 @@ class _MarketModeState extends State<MarketMode> {
                             final item = productsState[index];
                             if (!item.isBuy) {
                               return InkWell(
-                                child: Dismissible(
+                                child: Column(
+                                  children: [
+                                  Dismissible(
                                   direction: DismissDirection.startToEnd,
                                   // background: Container(
                                   //   padding:
@@ -158,6 +164,11 @@ class _MarketModeState extends State<MarketMode> {
                                     product: item.product.product,
                                   ),
                                 ),
+                                    SizedBox(height: 16,)
+                                  ],
+                                ),
+                                
+                                
                                 onTap: () {
                                   showModal(
                                       context,
@@ -254,7 +265,9 @@ class _MarketModeState extends State<MarketMode> {
                             final item = productsState[index];
                             if (item.isBuy) {
                               return InkWell(
-                                child: Dismissible(
+                                child: Column(
+                                  children: [
+                                     Dismissible(
                                   direction: DismissDirection.endToStart,
                                   background: Container(
                                     padding: const EdgeInsets.fromLTRB(
@@ -285,6 +298,10 @@ class _MarketModeState extends State<MarketMode> {
                                     product: item.product.product,
                                   ),
                                 ),
+                                    SizedBox(height: 16,)
+                                  ],
+                                ),
+                               
                                 onTap: () {
                                   showModal(
                                       context,
@@ -434,6 +451,7 @@ class _MarketModeState extends State<MarketMode> {
                                       widget.store.addProductToList(product);
                                     }),
                                 ButtonModalProps("Novo", function: () {
+                                   Navigator.pop(context);
                                   loadModalProducts(widget.productsStore,
                                       context, false, () {}, (product) async {
                                     widget.store.productToAdd = product;

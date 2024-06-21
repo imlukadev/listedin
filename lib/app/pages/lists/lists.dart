@@ -11,7 +11,6 @@ import 'package:listedin/app/pages/lists/store/lists_store.dart';
 import 'package:listedin/app/pages/user_store/user_store.dart';
 import 'package:listedin/app/styles/colors.dart';
 
-
 class ListsPage extends StatefulWidget {
   const ListsPage({super.key, required this.userStore});
 
@@ -110,7 +109,7 @@ class _ListsPageState extends State<ListsPage> {
                   Listenable.merge([store.isLoading, store.state, store.error]),
               builder: (context, child) {
                 if (store.isLoading.value) {
-                  return const CircularProgressIndicator();
+                  return  Container(alignment: Alignment.center, width: double.infinity, child: const CircularProgressIndicator());
                 }
 
                 if (store.state.value.isNotEmpty) {

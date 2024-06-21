@@ -408,6 +408,7 @@ class _ListPageState extends State<ListPage> {
                                       store.addProductToList(product);
                                     }),
                                 ButtonModalProps("Novo", function: () {
+                                   Navigator.pop(context);
                                   loadModalProducts(
                                       storeProducts, context, false, () {},
                                       (product) async {

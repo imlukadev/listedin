@@ -7,7 +7,7 @@ TextStyle titleModal = TextStyle(
     fontWeight: FontWeight.w600,
     color: text);
 
-    TextStyle textFooter = TextStyle(
+TextStyle textFooter = TextStyle(
     fontFamily: 'Montserrat',
     fontSize: 10,
     fontWeight: FontWeight.w600,
@@ -18,7 +18,6 @@ TextStyle bodyModal = TextStyle(
     fontSize: 12,
     fontWeight: FontWeight.w400,
     color: text);
-
 
 TextStyle textSmMedium = TextStyle(
     fontFamily: 'Montserrat',
@@ -32,8 +31,32 @@ TextStyle textMnSemibold = TextStyle(
     fontWeight: FontWeight.w600,
     color: white);
 
-    TextStyle textXsSemibold = TextStyle(
+TextStyle textXsSemibold = TextStyle(
     fontFamily: 'Montserrat',
     fontSize: 10,
     fontWeight: FontWeight.w600,
     color: text);
+
+TextStyle textStats = TextStyle(
+    fontFamily: 'Montserrat',
+    fontSize: 12,
+    fontWeight: FontWeight.w500,
+    color: white);
+
+TextStyle textPrimaryStats = TextStyle(
+    fontFamily: 'Montserrat',
+    fontSize: 12,
+    fontWeight: FontWeight.w500,
+    color: primary);
+
+TextStyle boldTextStats = TextStyle(
+    fontFamily: 'Montserrat',
+    fontSize: 14,
+    fontWeight: FontWeight.w600,
+    color: white);
+
+TextStyle boldPrimaryTextStats = TextStyle(
+    fontFamily: 'Montserrat',
+    fontSize: 14,
+    fontWeight: FontWeight.w600,
+    color: primary);

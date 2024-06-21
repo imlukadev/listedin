@@ -12,7 +12,11 @@ import 'package:listedin/app/styles/colors.dart';
 import 'package:listedin/app/styles/texts.dart';
 
 class FocusMode extends StatefulWidget {
-  FocusMode({super.key, required this.store, required this.user, required this.productsStore});
+  FocusMode(
+      {super.key,
+      required this.store,
+      required this.user,
+      required this.productsStore});
 
   final ListStore store;
   final UserStore user;
@@ -55,36 +59,43 @@ class _FocusModeState extends State<FocusMode> {
                           final item = productsState[index];
                           if (!item.isBuy) {
                             return InkWell(
-                              child: Dismissible(
-                                direction: DismissDirection.startToEnd,
-                                // background: Container(
-                                //   padding:
-                                //       const EdgeInsets.fromLTRB(48, 16, 48, 16),
-                                //   color: red,
-                                //   alignment: Alignment.centerLeft,
-                                //   child: const Icon(
-                                //     Icons.delete,
-                                //     color: Colors.white,
-                                //   ),
-                                // ),
-                                background: Container(
-                                  padding:
-                                      const EdgeInsets.fromLTRB(48, 16, 48, 16),
-                                  color: primary,
-                                  alignment: Alignment.centerLeft,
-                                  child: const Icon(
-                                    Icons.shopping_bag,
-                                    color: Colors.white,
+                              child: Column(
+                                children: [
+                                  Dismissible(
+                                    direction: DismissDirection.startToEnd,
+                                    // background: Container(
+                                    //   padding:
+                                    //       const EdgeInsets.fromLTRB(48, 16, 48, 16),
+                                    //   color: red,
+                                    //   alignment: Alignment.centerLeft,
+                                    //   child: const Icon(
+                                    //     Icons.delete,
+                                    //     color: Colors.white,
+                                    //   ),
+                                    // ),
+                                    background: Container(
+                                      padding: const EdgeInsets.fromLTRB(
+                                          48, 16, 48, 16),
+                                      color: primary,
+                                      alignment: Alignment.centerLeft,
+                                      child: const Icon(
+                                        Icons.shopping_bag,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                    onDismissed: (direction) {
+                                      widget.store.buyProduct(index);
+                                    },
+                                    key: Key(index.toString()),
+                                    child: CardBuy(
+                                      productList: item.product,
+                                      product: item.product.product,
+                                    ),
                                   ),
-                                ),
-                                onDismissed: (direction) {
-                                  widget.store.buyProduct(index);
-                                },
-                                key: Key(index.toString()),
-                                child: CardBuy(
-                                  productList: item.product,
-                                  product: item.product.product,
-                                ),
+                                  SizedBox(
+                                    height: 16,
+                                  )
+                                ],
                               ),
                               onTap: () {
                                 showModal(
@@ -182,36 +193,43 @@ class _FocusModeState extends State<FocusMode> {
                           final item = productsState[index];
                           if (item.isBuy) {
                             return InkWell(
-                              child: Dismissible(
-                                direction: DismissDirection.endToStart,
-                                background: Container(
-                                  padding:
-                                      const EdgeInsets.fromLTRB(48, 16, 48, 16),
-                                  color: red,
-                                  alignment: Alignment.centerRight,
-                                  child: const Icon(
-                                    Icons.delete,
-                                    color: Colors.white,
+                              child: Column(
+                                children: [
+                                  Dismissible(
+                                    direction: DismissDirection.endToStart,
+                                    background: Container(
+                                      padding: const EdgeInsets.fromLTRB(
+                                          48, 16, 48, 16),
+                                      color: red,
+                                      alignment: Alignment.centerRight,
+                                      child: const Icon(
+                                        Icons.delete,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                    // background: Container(
+                                    //   padding:
+                                    //       const EdgeInsets.fromLTRB(48, 16, 48, 16),
+                                    //   color: primary,
+                                    //   alignment: Alignment.centerRight,
+                                    //   child: const Icon(
+                                    //     Icons.shopping_bag,
+                                    //     color: Colors.white,
+                                    //   ),
+                                    // ),
+                                    onDismissed: (direction) {
+                                      widget.store.unBuyProduct(index);
+                                    },
+                                    key: Key(index.toString()),
+                                    child: CardBuy(
+                                      productList: item.product,
+                                      product: item.product.product,
+                                    ),
                                   ),
-                                ),
-                                // background: Container(
-                                //   padding:
-                                //       const EdgeInsets.fromLTRB(48, 16, 48, 16),
-                                //   color: primary,
-                                //   alignment: Alignment.centerRight,
-                                //   child: const Icon(
-                                //     Icons.shopping_bag,
-                                //     color: Colors.white,
-                                //   ),
-                                // ),
-                                onDismissed: (direction) {
-                                  widget.store.unBuyProduct(index);
-                                },
-                                key: Key(index.toString()),
-                                child: CardBuy(
-                                  productList: item.product,
-                                  product: item.product.product,
-                                ),
+                                  SizedBox(
+                                    height: 16,
+                                  )
+                                ],
                               ),
                               onTap: () {
                                 showModal(
@@ -321,6 +339,7 @@ class _FocusModeState extends State<FocusMode> {
                                     widget.store.addProductToList(product);
                                   }),
                               ButtonModalProps("Novo", function: () {
+                                Navigator.pop(context);
                                 loadModalProducts(
                                     widget.productsStore, context, false, () {},
                                     (product) async {
