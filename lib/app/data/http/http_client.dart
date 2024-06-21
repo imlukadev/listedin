@@ -1,4 +1,4 @@
-import 'dart:developer';
+
 
 import 'package:dio/dio.dart';
 
@@ -52,6 +52,15 @@ class HttpClient {
   Future<Response> save(String url, Map<String, dynamic> data) async {
     try {
       Response response = await _dio.post(url, data: data);
+      return response;
+    } catch (e) {
+      throw Exception('Erro ao enviar os dados: $e');
+    }
+  }
+
+    Future<Response> put(String url, Map<String, dynamic> data) async {
+    try {
+      Response response = await _dio.put(url, data: data);
       return response;
     } catch (e) {
       throw Exception('Erro ao enviar os dados: $e');

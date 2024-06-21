@@ -7,13 +7,12 @@ import 'package:listedin/app/data/repositories/product_repository.dart';
 import '../../../data/model/user.dart';
 
 class CreateProduct {
-  String name;
-  double price;
+  String? name;
+  double? price;
   User? user;
   Category? category;
 
-  CreateProduct(
-      {required this.name, this.user, required this.price, this.category});
+  CreateProduct({this.name, this.user, this.price, this.category});
 }
 
 class ProductsStore {
@@ -26,7 +25,7 @@ class ProductsStore {
   //Várivel reativa para o state
   final ValueNotifier<List<Product>> state = ValueNotifier<List<Product>>([]);
   final ValueNotifier<CreateProduct> signProduct =
-      ValueNotifier<CreateProduct>(CreateProduct(name: '', price: 0.0));
+      ValueNotifier<CreateProduct>(CreateProduct());
   final ValueNotifier<List<Category>> categoryState =
       ValueNotifier<List<Category>>([]);
 
@@ -37,13 +36,48 @@ class ProductsStore {
     signProduct.value.price = double.parse(value);
   }
 
-  Future createProduct() async {
+  Future deleteProduct(Product product) async {
+    try {
+      await repository.delete(product.id!);
+      print("Deletamo");
+      print(product.id!);
+      List<Product> list = state.value;
+      list.removeWhere((element) => element.id == product.id!);
+      state.value = List.from(list);
+      state.notifyListeners();
+    } catch (e) {}
+  }
+
+  Future<Product> updateProduct(Product item) async {
+    print("object");
+    print(user.id);
+    Product result = await repository.update(Product(
+      signProduct.value.name ?? item.name,
+      signProduct.value.price ?? item.price,
+      signProduct.value.category ?? item.category,
+      id: item.id,
+      user: user,
+    ));
+    print(result.price);
+    List<Product> list = state.value;
+    int index = list.indexWhere((element) => element.id == item.id);
+    list[index] = result;
+    state.value = List.from(list);
+    return result;
+  }
+
+  Future<Product> createProduct() async {
     print(user);
-    Product result = await repository.create(Product(signProduct.value.name,
-        signProduct.value.price, signProduct.value.category!, user: user));
+    Product result = await repository.create(Product(signProduct.value.name!,
+        signProduct.value.price!, signProduct.value.category!,
+        user: user));
     List<Product> list = state.value;
     list.add(result);
     state.value = List.from(list);
+    signProduct.value.category = null;
+    signProduct.value.price = null;
+    signProduct.value.name = null;
+    return result;
   }
 
   void updateName(value) {

@@ -11,13 +11,14 @@ import 'package:listedin/app/data/model/product_list.dart';
 import 'package:listedin/app/data/model/user.dart';
 import 'package:listedin/app/pages/focus_mode/focus_mode.dart';
 import 'package:listedin/app/pages/list/store/list_store.dart';
+import 'package:listedin/app/pages/products/store/products_store.dart';
 import 'package:listedin/app/pages/user_store/user_store.dart';
 import 'package:listedin/app/styles/colors.dart';
 import 'package:listedin/app/styles/icons/arrow.dart';
 import 'package:listedin/app/styles/texts.dart';
 
 class ProductsBuy {
-   ProductList product;
+  ProductList product;
   bool isBuy;
 
   ProductsBuy(this.product, this.isBuy);
@@ -26,8 +27,9 @@ class ProductsBuy {
 class MarketMode extends StatefulWidget {
   final ListStore store;
   final UserStore user;
+  final ProductsStore productsStore;
 
-  const MarketMode({super.key, required this.store, required this.user});
+  const MarketMode({super.key, required this.store, required this.productsStore, required this.user});
 
   @override
   State<MarketMode> createState() => _MarketModeState();
@@ -124,37 +126,106 @@ class _MarketModeState extends State<MarketMode> {
                           itemBuilder: (context, index) {
                             final item = productsState[index];
                             if (!item.isBuy) {
-                              return Dismissible(
-                                direction: DismissDirection.startToEnd,
-                                // background: Container(
-                                //   padding:
-                                //       const EdgeInsets.fromLTRB(48, 16, 48, 16),
-                                //   color: red,
-                                //   alignment: Alignment.centerLeft,
-                                //   child: const Icon(
-                                //     Icons.delete,
-                                //     color: Colors.white,
-                                //   ),
-                                // ),
-                                background: Container(
-                                  
-                                  padding:
-                                      const EdgeInsets.fromLTRB(48, 16, 48, 16),
-                                  color: primary,
-                                  alignment: Alignment.centerLeft,
-                                  child: const Icon(
-                                    Icons.shopping_bag,
-                                    color: Colors.white,
+                              return InkWell(
+                                child: Dismissible(
+                                  direction: DismissDirection.startToEnd,
+                                  // background: Container(
+                                  //   padding:
+                                  //       const EdgeInsets.fromLTRB(48, 16, 48, 16),
+                                  //   color: red,
+                                  //   alignment: Alignment.centerLeft,
+                                  //   child: const Icon(
+                                  //     Icons.delete,
+                                  //     color: Colors.white,
+                                  //   ),
+                                  // ),
+                                  background: Container(
+                                    padding: const EdgeInsets.fromLTRB(
+                                        48, 16, 48, 16),
+                                    color: primary,
+                                    alignment: Alignment.centerLeft,
+                                    child: const Icon(
+                                      Icons.shopping_bag,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                  onDismissed: (direction) {
+                                    widget.store.buyProduct(index);
+                                  },
+                                  key: Key(index.toString()),
+                                  child: CardBuy(
+                                    productList: item.product,
+                                    product: item.product.product,
                                   ),
                                 ),
-                                onDismissed: (direction) {
-                                  widget.store.buyProduct(index);
+                                onTap: () {
+                                  showModal(
+                                      context,
+                                      loadModal(
+                                          Text(
+                                            "Edite a quantidade do produto!",
+                                            style: titleModal,
+                                          ),
+                                          Row(
+                                            children: [
+                                              Expanded(
+                                                child: Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    const Text("Quantidade"),
+                                                    const SizedBox(
+                                                      height: 8,
+                                                    ),
+                                                    TextField(
+                                                      keyboardType:
+                                                          TextInputType.number,
+                                                      onChanged: (value) {
+                                                        widget.store
+                                                            .quantityToPatch(
+                                                                value);
+                                                      },
+                                                      decoration:
+                                                          getInputDecoration(
+                                                              "Quantidade"),
+                                                    )
+                                                  ],
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          ButtonModalProps("Remover",
+                                              function: () {
+                                            Navigator.pop(context);
+                                            showModal(
+                                                context,
+                                                loadModal(
+                                                    Text(
+                                                      "Você deseja remover o produto ${item.product.product.name} da lista?",
+                                                      style: titleModal,
+                                                    ),
+                                                    Text(
+                                                        "É importante lembrar que pode ficar tranquilo, o produto continuará na sua listas de produtos, apenas não estará mais nessa lista!"),
+                                                    ButtonModalProps("Não",
+                                                        function: () {
+                                                      Navigator.pop(context);
+                                                    }),
+                                                    ButtonModalProps("Sim",
+                                                        function: () async {
+                                                      await widget.store
+                                                          .removeProductList(
+                                                              item.product,
+                                                              index);
+                                                      Navigator.pop(context);
+                                                    })));
+                                          }),
+                                          ButtonModalProps("Salvar",
+                                              function: () async {
+                                            await widget.store.patchProductList(
+                                                item.product, index);
+                                            Navigator.pop(context);
+                                          })));
                                 },
-                                key: Key(index.toString()),
-                                child: CardBuy(
-                                  productList: item.product,
-                                  product: item.product.product,
-                                ),
                               );
                             } else {
                               return const SizedBox.shrink();
@@ -182,36 +253,106 @@ class _MarketModeState extends State<MarketMode> {
                           itemBuilder: (context, index) {
                             final item = productsState[index];
                             if (item.isBuy) {
-                              return Dismissible(
-                                direction: DismissDirection.endToStart,
-                                background: Container(
-                                  padding:
-                                      const EdgeInsets.fromLTRB(48, 16, 48, 16),
-                                  color: red,
-                                  alignment: Alignment.centerRight,
-                                  child: const Icon(
-                                    Icons.delete,
-                                    color: Colors.white,
+                              return InkWell(
+                                child: Dismissible(
+                                  direction: DismissDirection.endToStart,
+                                  background: Container(
+                                    padding: const EdgeInsets.fromLTRB(
+                                        48, 16, 48, 16),
+                                    color: red,
+                                    alignment: Alignment.centerRight,
+                                    child: const Icon(
+                                      Icons.delete,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                  // background: Container(
+                                  //   padding:
+                                  //       const EdgeInsets.fromLTRB(48, 16, 48, 16),
+                                  //   color: primary,
+                                  //   alignment: Alignment.centerRight,
+                                  //   child: const Icon(
+                                  //     Icons.shopping_bag,
+                                  //     color: Colors.white,
+                                  //   ),
+                                  // ),
+                                  onDismissed: (direction) {
+                                    widget.store.unBuyProduct(index);
+                                  },
+                                  key: Key(index.toString()),
+                                  child: CardBuy(
+                                    productList: item.product,
+                                    product: item.product.product,
                                   ),
                                 ),
-                                // background: Container(
-                                //   padding:
-                                //       const EdgeInsets.fromLTRB(48, 16, 48, 16),
-                                //   color: primary,
-                                //   alignment: Alignment.centerRight,
-                                //   child: const Icon(
-                                //     Icons.shopping_bag,
-                                //     color: Colors.white,
-                                //   ),
-                                // ),
-                                onDismissed: (direction) {
-                                  widget.store.unBuyProduct(index);
+                                onTap: () {
+                                  showModal(
+                                      context,
+                                      loadModal(
+                                          Text(
+                                            "Edite a quantidade do produto!",
+                                            style: titleModal,
+                                          ),
+                                          Row(
+                                            children: [
+                                              Expanded(
+                                                child: Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    const Text("Quantidade"),
+                                                    const SizedBox(
+                                                      height: 8,
+                                                    ),
+                                                    TextField(
+                                                      keyboardType:
+                                                          TextInputType.number,
+                                                      onChanged: (value) {
+                                                        widget.store
+                                                            .quantityToPatch(
+                                                                value);
+                                                      },
+                                                      decoration:
+                                                          getInputDecoration(
+                                                              "Quantidade"),
+                                                    )
+                                                  ],
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          ButtonModalProps("Remover",
+                                              function: () {
+                                            Navigator.pop(context);
+                                            showModal(
+                                                context,
+                                                loadModal(
+                                                    Text(
+                                                      "Você deseja remover o produto ${item.product.product.name} da lista?",
+                                                      style: titleModal,
+                                                    ),
+                                                    const Text(
+                                                        "É importante lembrar que pode ficar tranquilo, o produto continuará na sua listas de produtos, apenas não estará mais nessa lista!"),
+                                                    ButtonModalProps("Não",
+                                                        function: () {
+                                                      Navigator.pop(context);
+                                                    }),
+                                                    ButtonModalProps("Sim",
+                                                        function: () async {
+                                                      await widget.store
+                                                          .removeProductList(
+                                                              item.product,
+                                                              index);
+                                                      Navigator.pop(context);
+                                                    })));
+                                          }),
+                                          ButtonModalProps("Salvar",
+                                              function: () async {
+                                            await widget.store.patchProductList(
+                                                item.product, index);
+                                            Navigator.pop(context);
+                                          })));
                                 },
-                                key: Key(index.toString()),
-                                child: CardBuy(
-                                  productList: item.product,
-                                  product: item.product.product,
-                                ),
                               );
                             } else {
                               return const SizedBox.shrink();
@@ -287,12 +428,17 @@ class _MarketModeState extends State<MarketMode> {
                                   style: titleModal,
                                 ),
                                 ComboboxProduct(
-                                    products: widget.user.state.value!.createdProducts!,
+                                    products: widget
+                                        .user.state.value!.createdProducts!,
                                     fnProduct: (product) {
                                       widget.store.addProductToList(product);
                                     }),
                                 ButtonModalProps("Novo", function: () {
-
+                                  loadModalProducts(widget.productsStore,
+                                      context, false, () {}, (product) async {
+                                    widget.store.productToAdd = product;
+                                    widget.store.confirmProductToList();
+                                  });
                                 }),
                                 ButtonModalProps("Adicionar",
                                     function: () async {
@@ -311,6 +457,7 @@ class _MarketModeState extends State<MarketMode> {
                         context,
                         MaterialPageRoute(
                           builder: (context) => FocusMode(
+                            productsStore: widget.productsStore,
                             user: widget.user,
                             store: widget.store,
                           ),

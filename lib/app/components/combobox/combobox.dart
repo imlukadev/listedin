@@ -6,9 +6,13 @@ import 'package:listedin/app/styles/colors.dart';
 import 'package:listedin/app/styles/texts.dart';
 
 class Combobox extends StatefulWidget {
-  const Combobox(
-      {super.key, required this.categories, required this.fnCategory});
+  Combobox(
+      {super.key,
+      required this.categories,
+      required this.fnCategory,
+      this.selectedValue});
   final List<Category> categories;
+  Category? selectedValue;
   final dynamic Function(Category category) fnCategory;
   @override
   State<Combobox> createState() => _ComboboxState();
@@ -18,36 +22,63 @@ class _ComboboxState extends State<Combobox> {
   Category? selectedValue;
   final TextEditingController textEditingController = TextEditingController();
 
+  @override
+  void initState() {
+    super.initState();
+    setState(() {
+      if (widget.selectedValue!=null){
+      selectedValue = widget.categories
+          .where((element) => element.id ==  widget.selectedValue!.id)
+          .toList()[0];
+      }
+
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return DropdownButtonHideUnderline(
       child: DropdownButton2<Category>(
-        style: textXsSemibold,
+        style: TextStyle(
+          fontFamily: 'Montserrat',
+          fontSize: 10,
+          fontWeight: FontWeight.w600,
+          color: selectedValue == null ? text : selectedValue!.color,
+        ),
         iconStyleData: IconStyleData(
-            icon: Icon(
-          Icons.unfold_more,
-          size: 16,
-          color: text,
-        )),
+          icon: Icon(
+            Icons.unfold_more,
+            size: 16,
+            color: Colors.black,
+          ),
+        ),
         isExpanded: true,
-        hint: Text('Selecione', style: textXsSemibold),
+        hint: Text(
+          'Selecione',
+          style: TextStyle(
+            fontFamily: 'Montserrat',
+            fontSize: 10,
+            fontWeight: FontWeight.w600,
+            color: text,
+          ),
+        ),
         items: widget.categories
             .map((item) => DropdownMenuItem(
-                value: item,
-                child: Container(
-                  child: Text(item.name, style: textSmMedium),
-                  decoration: const BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(8))),
-                )))
+                  value: item,
+                  child: Container(
+                    decoration: const BoxDecoration(
+                        borderRadius: BorderRadius.all(Radius.circular(8))),
+                    child: Text(item.name,
+                        style: TextStyle(fontSize: 14, color: item.color)),
+                  ),
+                ))
             .toList(),
         value: selectedValue,
-
         onChanged: (value) {
           setState(() {
             selectedValue = value;
           });
-          if (value!=null) {
+          if (value != null) {
             widget.fnCategory(value);
           }
         },
@@ -63,7 +94,7 @@ class _ComboboxState extends State<Combobox> {
         dropdownStyleData: DropdownStyleData(
           maxHeight: 200,
           offset: const Offset(0, 252),
-          padding: EdgeInsets.all(8),
+          padding: const EdgeInsets.all(8),
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(16),
@@ -109,23 +140,23 @@ class _ComboboxState extends State<Combobox> {
             child: TextFormField(
               expands: true,
               maxLines: null,
-              style: textSmMedium,
+              style: TextStyle(fontSize: 14),
               controller: textEditingController,
               decoration: InputDecoration(
-                  contentPadding: const EdgeInsets.symmetric(
-                    horizontal: 10,
-                    vertical: 8,
-                  ),
-                  hintText: 'Busque aqui!',
-                  hintStyle: textSmMedium,
-                  border: InputBorder.none),
+                contentPadding: const EdgeInsets.symmetric(
+                  horizontal: 10,
+                  vertical: 8,
+                ),
+                hintText: 'Busque aqui!',
+                hintStyle: TextStyle(fontSize: 14),
+                border: InputBorder.none,
+              ),
             ),
           ),
           searchMatchFn: (item, searchValue) {
             return item.value.toString().contains(searchValue);
           },
         ),
-        //This to clear the search value when you close the menu
         onMenuStateChange: (isOpen) {
           if (!isOpen) {
             textEditingController.clear();
@@ -135,7 +166,6 @@ class _ComboboxState extends State<Combobox> {
     );
   }
 }
-
 
 class ComboboxProduct extends StatefulWidget {
   const ComboboxProduct(
@@ -149,7 +179,6 @@ class ComboboxProduct extends StatefulWidget {
 class _ComboboxProductState extends State<ComboboxProduct> {
   Product? selectedValue;
   final TextEditingController textEditingController = TextEditingController();
-
 
   @override
   Widget build(BuildContext context) {
@@ -179,7 +208,7 @@ class _ComboboxProductState extends State<ComboboxProduct> {
           setState(() {
             selectedValue = value;
           });
-          if (value!=null) {
+          if (value != null) {
             widget.fnProduct(value);
           }
         },

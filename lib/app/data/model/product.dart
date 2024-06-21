@@ -31,6 +31,7 @@ class Product {
     data["name"] = name;
     data["price"] = price;
     data["category"] = category.toJSON();
+    data['user'] = user?.toSimpleJSON();
     return data;
   }
 
