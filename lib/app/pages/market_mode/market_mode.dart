@@ -55,7 +55,9 @@ class _MarketModeState extends State<MarketMode> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar:  Header(userStore: widget.user,),
+      appBar: Header(
+        userStore: widget.user,
+      ),
       body: Center(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -73,6 +75,8 @@ class _MarketModeState extends State<MarketMode> {
                 Expanded(
                   child: InkWell(
                     onTap: () {
+                    widget.store.quantity.value = 0;
+                    widget.store.price.value = 0;
                       Navigator.pop(context);
                     },
                     child: Text(
@@ -133,42 +137,42 @@ class _MarketModeState extends State<MarketMode> {
                               return InkWell(
                                 child: Column(
                                   children: [
-                                  Dismissible(
-                                  direction: DismissDirection.startToEnd,
-                                  // background: Container(
-                                  //   padding:
-                                  //       const EdgeInsets.fromLTRB(48, 16, 48, 16),
-                                  //   color: red,
-                                  //   alignment: Alignment.centerLeft,
-                                  //   child: const Icon(
-                                  //     Icons.delete,
-                                  //     color: Colors.white,
-                                  //   ),
-                                  // ),
-                                  background: Container(
-                                    padding: const EdgeInsets.fromLTRB(
-                                        48, 16, 48, 16),
-                                    color: primary,
-                                    alignment: Alignment.centerLeft,
-                                    child: const Icon(
-                                      Icons.shopping_bag,
-                                      color: Colors.white,
+                                    Dismissible(
+                                      direction: DismissDirection.startToEnd,
+                                      // background: Container(
+                                      //   padding:
+                                      //       const EdgeInsets.fromLTRB(48, 16, 48, 16),
+                                      //   color: red,
+                                      //   alignment: Alignment.centerLeft,
+                                      //   child: const Icon(
+                                      //     Icons.delete,
+                                      //     color: Colors.white,
+                                      //   ),
+                                      // ),
+                                      background: Container(
+                                        padding: const EdgeInsets.fromLTRB(
+                                            48, 16, 48, 16),
+                                        color: primary,
+                                        alignment: Alignment.centerLeft,
+                                        child: const Icon(
+                                          Icons.shopping_bag,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                      onDismissed: (direction) {
+                                        widget.store.buyProduct(index);
+                                      },
+                                      key: Key(index.toString()),
+                                      child: CardBuy(
+                                        productList: item.product,
+                                        product: item.product.product,
+                                      ),
                                     ),
-                                  ),
-                                  onDismissed: (direction) {
-                                    widget.store.buyProduct(index);
-                                  },
-                                  key: Key(index.toString()),
-                                  child: CardBuy(
-                                    productList: item.product,
-                                    product: item.product.product,
-                                  ),
-                                ),
-                                    SizedBox(height: 16,)
+                                    SizedBox(
+                                      height: 16,
+                                    )
                                   ],
                                 ),
-                                
-                                
                                 onTap: () {
                                   showModal(
                                       context,
@@ -267,41 +271,42 @@ class _MarketModeState extends State<MarketMode> {
                               return InkWell(
                                 child: Column(
                                   children: [
-                                     Dismissible(
-                                  direction: DismissDirection.endToStart,
-                                  background: Container(
-                                    padding: const EdgeInsets.fromLTRB(
-                                        48, 16, 48, 16),
-                                    color: red,
-                                    alignment: Alignment.centerRight,
-                                    child: const Icon(
-                                      Icons.delete,
-                                      color: Colors.white,
+                                    Dismissible(
+                                      direction: DismissDirection.endToStart,
+                                      background: Container(
+                                        padding: const EdgeInsets.fromLTRB(
+                                            48, 16, 48, 16),
+                                        color: red,
+                                        alignment: Alignment.centerRight,
+                                        child: const Icon(
+                                          Icons.delete,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                      // background: Container(
+                                      //   padding:
+                                      //       const EdgeInsets.fromLTRB(48, 16, 48, 16),
+                                      //   color: primary,
+                                      //   alignment: Alignment.centerRight,
+                                      //   child: const Icon(
+                                      //     Icons.shopping_bag,
+                                      //     color: Colors.white,
+                                      //   ),
+                                      // ),
+                                      onDismissed: (direction) {
+                                        widget.store.unBuyProduct(index);
+                                      },
+                                      key: Key(index.toString()),
+                                      child: CardBuy(
+                                        productList: item.product,
+                                        product: item.product.product,
+                                      ),
                                     ),
-                                  ),
-                                  // background: Container(
-                                  //   padding:
-                                  //       const EdgeInsets.fromLTRB(48, 16, 48, 16),
-                                  //   color: primary,
-                                  //   alignment: Alignment.centerRight,
-                                  //   child: const Icon(
-                                  //     Icons.shopping_bag,
-                                  //     color: Colors.white,
-                                  //   ),
-                                  // ),
-                                  onDismissed: (direction) {
-                                    widget.store.unBuyProduct(index);
-                                  },
-                                  key: Key(index.toString()),
-                                  child: CardBuy(
-                                    productList: item.product,
-                                    product: item.product.product,
-                                  ),
-                                ),
-                                    SizedBox(height: 16,)
+                                    SizedBox(
+                                      height: 16,
+                                    )
                                   ],
                                 ),
-                               
                                 onTap: () {
                                   showModal(
                                       context,
@@ -414,6 +419,8 @@ class _MarketModeState extends State<MarketMode> {
                   content: "Finalizar compra em modo mercado",
                   onPressed: () {
                     widget.store.patchPurchasedQuantity();
+                    widget.store.quantity.value = 0;
+                    widget.store.price.value = 0;
                     Navigator.pop(context);
                   },
                   small: true,
@@ -451,7 +458,7 @@ class _MarketModeState extends State<MarketMode> {
                                       widget.store.addProductToList(product);
                                     }),
                                 ButtonModalProps("Novo", function: () {
-                                   Navigator.pop(context);
+                                  Navigator.pop(context);
                                   loadModalProducts(widget.productsStore,
                                       context, false, () {}, (product) async {
                                     widget.store.productToAdd = product;
