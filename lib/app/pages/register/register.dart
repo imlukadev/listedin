@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:listedin/app/components/button/button.dart';
-import 'package:listedin/app/components/header/header.dart';
 import 'package:listedin/app/components/input/input.dart';
 import 'package:listedin/app/pages/lists/lists.dart';
 import 'package:listedin/app/pages/login/login.dart';
