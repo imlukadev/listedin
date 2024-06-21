@@ -109,7 +109,9 @@ class _ListPageState extends State<ListPage> {
     }
 
     return Scaffold(
-      appBar:  Header(userStore: widget.userStore,),
+      appBar: Header(
+        userStore: widget.userStore,
+      ),
       body: Column(
         children: [
           Padding(

@@ -26,7 +26,7 @@ class ListStats extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               Text(
-                "RS $price",
+                "R\$ $price",
                 style: TextStyle(
                     fontFamily: 'Montserrat',
                     fontSize: 16,

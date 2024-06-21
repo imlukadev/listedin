@@ -141,7 +141,7 @@ class CardBuy extends StatelessWidget {
                       Row(
                         children: [
                           Text(
-                            "RS",
+                            "R\$",
                             style: TextStyle(
                                 fontFamily: 'Montserrat',
                                 fontSize: 16,

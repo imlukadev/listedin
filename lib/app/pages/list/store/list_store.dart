@@ -109,6 +109,12 @@ class ListStore {
     try {
       ProductList result = await productListRepository.patchProductQunatity(
           item.productId, item.listId, quantityToUpdate);
+      //           ShopList list = state.value!;
+      // int index = list.products!.indexWhere((element) =>
+      //     element.productId == result.productId &&
+      //     element.listId == result.listId);
+      // list.products![index] = result;
+      // state.value = list;
       List<ProductList> list = state.value!.products!;
       list[index] = result;
       state.value!.products = List.from(list);
