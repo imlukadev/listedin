@@ -1,8 +1,4 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
-import 'package:listedin/app/data/model/list.dart';
-import 'package:listedin/app/data/repositories/list_repository.dart';
 import 'package:listedin/app/data/repositories/user_repository.dart';
 
 import '../../../data/model/user.dart';

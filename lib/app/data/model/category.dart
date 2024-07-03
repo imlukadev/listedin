@@ -10,12 +10,15 @@ class Category {
     Color color = Color(int.parse(map['color'].replaceAll('#', '0xFF')));
     return Category(map['id'], map['name'], color);
   }
+  String colorToJson(Color color) {
+    return "#${color.value.toRadixString(16).padLeft(8, '0')}";
+  }
 
   Map<String, dynamic> toJSON() {
     Map<String, dynamic> data = <String, dynamic>{};
     data['id'] = id;
     data['name'] = name;
-    data["color"] = color.toString();
+    data["color"] = colorToJson(color);
     return data;
   }
 }

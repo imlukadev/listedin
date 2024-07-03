@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:listedin/app/data/http/http_client.dart';
 // import 'package:listedin/app/data/model/list.dart';
 import 'package:listedin/app/data/repositories/list_repository.dart';
 import 'week_day.dart';
 
 class WeekList extends StatefulWidget {
   final bool darkModeOn;
-  final ListRepository listRepository;
+  final ListRepository listRepository = ListRepository(HttpClient());
 
-  const WeekList({
+  WeekList({
     super.key,
     required this.darkModeOn,
-    required this.listRepository,
   });
 
   @override

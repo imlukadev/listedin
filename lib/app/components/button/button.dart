@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:listedin/app/styles/colors.dart';
 import 'package:listedin/app/styles/icons/arrow.dart';
+import 'package:listedin/app/styles/texts.dart';
 
 class Button extends StatelessWidget {
   final dynamic Function() onPressed;
@@ -9,11 +10,13 @@ class Button extends StatelessWidget {
   final Color color;
   final bool isGoogle;
   final bool textBlack;
+  final bool small;
 
   const Button(
       {super.key,
       this.isGoogle = false,
       this.textBlack = false,
+      this.small = false,
       required this.onPressed,
       required this.content,
       required this.color,
@@ -40,8 +43,10 @@ class Button extends StatelessWidget {
           overlayColor: MaterialStateColor.resolveWith(getColor),
           foregroundColor: MaterialStateProperty.resolveWith(getColor),
           backgroundColor: MaterialStateProperty.resolveWith(getColor),
-          padding: const MaterialStatePropertyAll(
-              EdgeInsets.fromLTRB(32, 24, 32, 24)),
+          padding: small
+              ? const MaterialStatePropertyAll(EdgeInsets.fromLTRB(0, 0, 0, 0))
+              : const MaterialStatePropertyAll(
+                  EdgeInsets.fromLTRB(32, 24, 32, 24)),
           shape: MaterialStateProperty.all<RoundedRectangleBorder>(
             RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(32.0),
@@ -49,6 +54,7 @@ class Button extends StatelessWidget {
           ),
         ),
         child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             isLogin
                 ? Image.asset(
@@ -65,8 +71,10 @@ class Button extends StatelessWidget {
                 content,
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                  color: textBlack ? text : white,
-                ),
+                    fontFamily: 'Montserrat',
+                    fontSize: 12,
+                    fontWeight: FontWeight.w400,
+                    color: white),
               ),
             ),
             isLogin

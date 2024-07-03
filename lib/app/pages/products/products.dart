@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:listedin/app/components/card/card.dart';
+import 'package:listedin/app/components/footer/footer.dart';
 import 'package:listedin/app/components/header/header.dart';
 import 'package:listedin/app/components/input/input.dart';
+import 'package:listedin/app/components/overlay/overlay.dart';
 import 'package:listedin/app/data/http/http_client.dart';
-import 'package:listedin/app/data/model/user.dart';
 import 'package:listedin/app/data/repositories/product_repository.dart';
 import 'package:listedin/app/pages/products/store/products_store.dart';
+import 'package:listedin/app/pages/user_store/user_store.dart';
 import 'package:listedin/app/styles/colors.dart';
 
 class ProductsPage extends StatefulWidget {
-  const ProductsPage({super.key, required this.user});
-  final User user;
+  const ProductsPage({super.key, required this.userStore});
+  final UserStore userStore;
 
   @override
   State<ProductsPage> createState() => _ProductsPageState();
@@ -18,22 +20,41 @@ class ProductsPage extends StatefulWidget {
 
 class _ProductsPageState extends State<ProductsPage> {
   late ProductsStore store;
+  bool isEditing = false;
 
   @override
   void initState() {
     super.initState();
     store = ProductsStore(
-      user: widget.user,
+      user: widget.userStore.state.value!,
       repository: ProductRepository(HttpClient()),
     );
     store.getProducts();
-    // print();
+    store.getCategories();
+  }
+
+  void toggleEditing() {
+    setState(() {
+      isEditing = !isEditing;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const Header(),
+      appBar:  Header(userStore: widget.userStore,),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          loadModalProducts(store, context, isEditing, toggleEditing, () {});
+        },
+        tooltip: 'Criar produto!',
+        backgroundColor: primary,
+        shape: const CircleBorder(),
+        child: Icon(
+          Icons.add,
+          color: white,
+        ),
+      ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -41,7 +62,7 @@ class _ProductsPageState extends State<ProductsPage> {
           Padding(
             padding: const EdgeInsets.fromLTRB(24, 24, 24, 24),
             child: Text(
-              "Suas Listas!",
+              "Seus Produtos!",
               style: TextStyle(
                   fontFamily: 'Montserrat',
                   fontSize: 20,
@@ -89,9 +110,91 @@ class _ProductsPageState extends State<ProductsPage> {
                         final item = store.state.value[index];
                         return Column(
                           children: [
-                            CardBuy(
-                              isList: false,
-                              product: item,
+                            InkWell(
+                              child: CardBuy(
+                                isList: false,
+                                product: item,
+                              ),
+                              onTap: () {
+                                loadModalProductsUpdate(store, context,
+                                    isEditing, toggleEditing, () {}, item);
+                                //               showModal(
+                                // context,
+                                // loadModal(
+                                //     Row(
+                                //       children: [
+                                //         Expanded(
+                                //         //     child: Text(
+                                //         //   "Nome do Produto",
+                                //         //   style: titleModal,
+                                //         // ))
+                                //         child:  TextField(
+
+                                // onChanged: (value) => store.updateName(value),
+                                // decoration: InputDecoration(
+                                //   hintText: "Nome do Produto",
+                                //   hintStyle: titleModal.copyWith(color: Colors.grey),
+                                // )
+                                //         ),
+                                //          ),
+                                //         InkWell(
+                                //           onTap: () {},
+                                //           child: Icon(
+                                //             Icons.edit,
+                                //             color: primary,
+                                //           ),
+                                //         )
+                                //       ],
+                                //     ),
+                                //     Row(
+                                //       children: [
+                                //         Expanded(
+                                //           child: Column(
+                                //             crossAxisAlignment: CrossAxisAlignment.start,
+                                //             children: [
+                                //               Text("Preço"),
+                                //               SizedBox(
+                                //                 height: 8,
+                                //               ),
+                                //               TextField(
+                                //                 onChanged: (value) {
+                                //                   store.updatePrice(value);
+                                //                 },
+                                //                 decoration: getInputDecoration("Preço"),
+                                //               )
+                                //             ],
+                                //           ),
+                                //         ),
+                                //         SizedBox(
+                                //           width: 32,
+                                //         ),
+                                //         Expanded(
+                                //           child: Column(
+                                //             crossAxisAlignment: CrossAxisAlignment.start,
+                                //             children: [
+                                //               Text("Categoria"),
+                                //               SizedBox(
+                                //                 height: 8,
+                                //               ),
+                                //               Combobox(
+                                //                 categories: store.categoryState.value,
+                                //                 fnCategory: (category) {
+                                //                   store.uppdateCategory(category);
+                                //                 },
+                                //               )
+                                //             ],
+                                //           ),
+                                //         ),
+                                //       ],
+                                //     ),
+                                //     ButtonModalProps("Cancelar", function: () {
+                                //       Navigator.pop(context);
+                                //     }),
+                                //     ButtonModalProps("Criar", function: () async {
+                                //       await store.createProduct();
+                                //       Navigator.pop(context);
+                                //     })));
+                              },
                             ),
                             const SizedBox(height: 16),
                           ],
@@ -106,6 +209,11 @@ class _ProductsPageState extends State<ProductsPage> {
             ),
           )
         ],
+      ),
+      bottomNavigationBar: Footer(
+        isDark: false,
+        isProducts: true,
+        userStore: widget.userStore,
       ),
     );
   }
